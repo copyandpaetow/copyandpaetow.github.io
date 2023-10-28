@@ -1,0 +1,10 @@
+.flow > * + * {
+	margin-top: var(--flow-space, 1em);
+}
+
+.list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--gutter);
+}

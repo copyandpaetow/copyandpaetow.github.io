@@ -4,50 +4,44 @@
 	box-sizing: border-box;
 }
 
+html {
+	line-height: 1.5;
+}
+
 html:focus-visible {
 	scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+	html:focus-within {
+		scroll-behavior: auto;
+	}
+}
+
 body {
 	min-height: 100vh;
-	font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
-	line-height: 1.5;
+}
+
+:where(body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, menu) {
 	margin: 0;
+	padding: 0;
+}
+
+:where(h1, h2, h3, button, input, label) {
+	line-height: 1.1;
 }
 
 h1,
 h2,
-h3,
-h4,
-p,
-li,
-figure,
-figcaption,
-blockquote,
-dl,
-dd,
-ul,
-ol,
-dialog {
-	margin: 0;
-	padding: 0;
-	max-width: 80ch;
+h3 {
+	text-wrap: balance;
 }
 
-a,
-textarea,
-select,
-button,
 input,
-label,
-code {
+button,
+textarea,
+select {
 	font: inherit;
-	color: currentColor;
-}
-
-a {
-	text-decoration: underline;
-	cursor: pointer;
 }
 
 ul,
@@ -55,26 +49,22 @@ ol {
 	list-style: none;
 }
 
-input:focus,
-button:focus {
-	outline: 2px solid blue;
-	outline-offset: var(--space-70);
+img,
+picture {
+	max-width: 100%;
+	display: block;
 }
 
 input:focus-visible {
 	outline: 2px solid transparent;
-	border-color: blue;
+	border-color: var(--blue);
 }
 
 button:focus:not(:focus-visible) {
-	outline: none;
+	outline-color: transparent;
 }
 
 button:focus-visible {
 	outline: 2px solid transparent;
-	box-shadow: 0 0 0 2px #fff, 0 0 0 4px blue;
-}
-img {
-	max-width: 100%;
-	display: block;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
 }

@@ -1,9 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Cube from "../components/Cube.astro";
 ---
 
 <script></script>
 
-<Layout title="Bewegung" />
+<Layout title="Bewegung">
+	<section id="cube" class="centered">
+		<Cube />
+		<menu>
+			<a href="/all">all cube jokes</a>
+			<a href="#now">enough with the cube jokes</a>
+		</menu>
+	</section>
+	<section id="now">now</section>
+	<section id="about">about</section>
+</Layout>
 
-<style lang="scss"></style>
+<style lang="scss">
+	section {
+		min-height: 80vh;
+	}
+
+	menu {
+		display: grid;
+		gap: var(--space-0);
+		grid-auto-columns: max-content;
+		place-content: center;
+	}
+
+	.centered {
+		display: grid;
+		place-content: center;
+		gap: var(--space-4);
+	}
+</style>

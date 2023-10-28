@@ -1,50 +1,43 @@
 :root {
-	--multiplier: 1.5;
-	--space-100: 1rem;
-	--space-200: calc(var(--space-100) * var(--multiplier)); /* 1.5rem */
-	--space-300: calc(var(--space-200) * var(--multiplier)); /* 2.25rem */
-	--space-400: calc(var(--space-300) * var(--multiplier)); /* 3.375rem */
-	--space-500: calc(var(--space-400) * var(--multiplier)); /* 5.063rem */
-	--space-600: calc(var(--space-500) * var(--multiplier)); /* 7.594rem */
-	--space-700: calc(var(--space-600) * var(--multiplier)); /* 11.391rem */
-	--space-800: calc(var(--space-700) * var(--multiplier)); /* 17.0865rem */
+	/*font sizes*/
+	--font--2: clamp(0.7813rem, 0.7747rem + 0.0326vw, 0.8rem);
+	--font--1: clamp(0.9375rem, 0.9158rem + 0.1087vw, 1rem);
+	--font-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+	--font-1: clamp(1.35rem, 1.2761rem + 0.3696vw, 1.5625rem);
+	--font-2: clamp(1.62rem, 1.5041rem + 0.5793vw, 1.9531rem);
+	--font-3: clamp(1.9438rem, 1.7707rem + 0.8652vw, 2.4413rem);
+	--font-4: clamp(2.3325rem, 2.0823rem + 1.2511vw, 3.0519rem);
+	--font-base: Inter, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
 
-	--space-90: calc(var(--space-100) / var(--multiplier)); /* 0.667rem */
-	--space-80: calc(var(--space-90) / var(--multiplier)); /* 0.444rem */
-	--space-70: calc(var(--space-80) / var(--multiplier)); /* 0.296rem */
-	--space-60: calc(var(--space-70) / var(--multiplier)); /* 0.198rem */
-	--space-50: calc(var(--space-60) / var(--multiplier)); /* 0.132rem */
-	--space-40: calc(var(--space-50) / var(--multiplier)); /* 0.088rem */
-	--space-30: calc(var(--space-40) / var(--multiplier)); /* 0.059rem */
+	/*spacings*/
+	--space--3: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem);
+	--space--2: clamp(0.5625rem, 0.5408rem + 0.1087vw, 0.625rem);
+	--space--1: clamp(0.875rem, 0.8533rem + 0.1087vw, 0.9375rem);
+	--space-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+	--space-1: clamp(1.6875rem, 1.6223rem + 0.3261vw, 1.875rem);
+	--space-2: clamp(2.25rem, 2.163rem + 0.4348vw, 2.5rem);
+	--space-3: clamp(3.375rem, 3.2446rem + 0.6522vw, 3.75rem);
+	--space-4: clamp(4.5rem, 4.3261rem + 0.8696vw, 5rem);
+	--space-5: clamp(6.75rem, 6.4891rem + 1.3043vw, 7.5rem);
+	--gutter: clamp(1.125rem, 0.6467rem + 2.3913vw, 2.5rem);
 
-	--main-row-gap: var(--space-500);
-
-	--border-radius: var(--space-90);
-	--border-size: var(--space-30);
-	--border-color: grey;
-
-	--h: 205;
-	--s: 33%;
-
-	--grey-10: hsla(var(--h), var(--s), 10%, 1);
-	--grey-20: hsla(var(--h), var(--s), 20%, 1);
-	--grey-30: hsla(var(--h), var(--s), 30%, 1);
-	--grey-40: hsla(var(--h), var(--s), 40%, 1);
-	--grey-50: hsla(var(--h), var(--s), 50%, 1);
-	--grey-60: hsla(var(--h), var(--s), 60%, 1);
-	--grey-70: hsla(var(--h), var(--s), 70%, 1);
-	--grey-80: hsla(var(--h), var(--s), 80%, 1);
-	--grey-85: hsla(var(--h), var(--s), 85%, 1);
-	--grey-90: hsla(var(--h), var(--s), 90%, 1);
-	--grey-93: hsla(var(--h), var(--s), 93%, 1);
-	--grey-95: hsla(var(--h), var(--s), 95%, 1);
-	--grey-97: hsla(var(--h), var(--s), 97%, 1);
-
-	--color-main: hsla(0, 0%, 10%, 1);
-	--color-secondary: hsla(0, 0%, 95%, 1);
-	--color-card: hsla(0, 0%, 15%, 1);
-	--color-background: var(--grey-95);
-
-	--glass-background-color: rgba(255, 255, 255, 0.125);
-	--glass-border-color: rgba(17, 25, 40, 0.26);
+	/*colors*/
+	--grey-10: hsl(210, 17%, 98%);
+	--grey-20: hsl(210, 17%, 95%);
+	--grey-30: hsl(210, 16%, 93%);
+	--grey-40: hsl(210, 14%, 89%);
+	--grey-50: hsl(210, 14%, 83%);
+	--grey-60: hsl(210, 11%, 71%);
+	--grey-70: hsl(210, 7%, 56%);
+	--grey-80: hsl(210, 9%, 31%);
+	--grey-85: hsl(210, 10%, 23%);
+	--grey-90: hsl(210, 11%, 15%);
+	--red: hsl(5, 61%, 54%);
+	--orange: hsl(23, 70%, 51%);
+	--yellow: hsl(45, 82%, 45%);
+	--green: hsl(72, 46%, 41%);
+	--cyan: hsl(175, 49%, 45%);
+	--blue: hsl(208, 49%, 50%);
+	--purple: hsl(251, 40%, 64%);
+	--magenta: hsl(329, 54%, 59%);
 }
