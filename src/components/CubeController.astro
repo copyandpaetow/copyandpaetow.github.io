@@ -1,0 +1,31 @@
+---
+
+---
+
+<script>
+	const flipButton = document.getElementById("js-flip") as HTMLButtonElement;
+
+	flipButton.addEventListener("click", (event: MouseEvent) => {
+		const scene = (event.target as HTMLElement).closest("[data-cube-direction]") as HTMLElement;
+
+		const currentDirection = scene.dataset.cubeDirection ?? "horizontal";
+
+		scene.dataset.cubeDirection = currentDirection === "horizontal" ? "vertical" : "horizontal";
+	});
+</script>
+
+<menu class="controller">
+	<button>pause</button>
+	<button>play</button>
+	<button>faster</button>
+	<button>slower</button>
+	<button id="js-flip">flip</button>
+</menu>
+
+<style lang="scss">
+	.controller {
+		display: grid;
+		grid-auto-flow: column;
+		justify-content: center;
+	}
+</style>

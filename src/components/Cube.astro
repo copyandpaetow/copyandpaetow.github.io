@@ -1,44 +1,46 @@
 ---
-
+import CubeController from "./CubeController.astro";
 ---
 
-<script></script>
+<script>
+	/*
+	- how to add more walls? 
+	=> we could replace the wall with js
+	=> we could add them in the HTML and hide them with display:none etc
 
-<div class="cube-wrapper">
+	- could we keep the walls but add a lot of content within? 
+
+
+
+*/
+</script>
+
+<div class="cube-wrapper" data-cube-direction="horizontal">
 	<div class="scene">
-		<div class="cube">
-			<div class="wall horizontal"></div>
-			<div class="wall horizontal"></div>
-			<div class="wall vertical"></div>
-			<div class="wall vertical"></div>
-			<div class="wall applicate"></div>
-			<div class="wall applicate"></div>
+		<div class="cube" data-animation>
+			<div class="wall horizontal"><button>1h</button></div>
+			<div class="wall horizontal"><button>3h</button></div>
+
+			<div class="wall applicate"><button>2h</button></div>
+			<div class="wall applicate"><button>4h</button></div>
+
+			<div class="wall vertical"><button>5v</button></div>
+			<div class="wall vertical"><button>6v</button></div>
 		</div>
 	</div>
-	<menu class="controller">
-		<button>pause</button>
-		<button>play</button>
-		<button>faster</button>
-		<button>slower</button>
-		<button>flip</button>
-	</menu>
+
+	<CubeController />
 </div>
 
-<style>
+<style lang="scss">
 	.cube-wrapper {
-		--width: clamp(150px, 25vw, 350px);
+		--width: clamp(150px, 25vw, 300px);
 
 		width: calc(var(--width) * 1.5);
 		aspect-ratio: 1;
 		display: grid;
 		grid-template-rows: 1fr max-content;
-		gap: var(--gutter);
-	}
-
-	.controller {
-		display: grid;
-		grid-auto-flow: column;
-		justify-content: center;
+		gap: var(--space-5);
 	}
 
 	.scene {
@@ -49,26 +51,50 @@
 		perspective: calc(var(--width) * 5);
 		position: relative;
 		margin: auto;
+		transition: rotate 1s ease;
 	}
 
-	.scene * {
+	[data-cube-direction="vertical"] .scene {
+		rotate: 90deg;
+	}
+
+	[data-cube-direction="vertical"] .vertical {
+		rotate: -90deg;
+	}
+	[data-cube-direction="vertical"] .applicate {
+		rotate: calc(-90deg * var(--direction));
+	}
+
+	.scene :where(.cube, .wall) {
 		transform-style: preserve-3d;
 		position: absolute;
 		inset: 0;
 	}
 
 	.cube {
+		--animation-name: spin;
+		--animation-duration: 6s;
+		--animation-iterations: infinite;
+		--animation-playstate: running;
 		rotate: y var(--rotation);
-		animation: spin 60s linear infinite; /* adds a slow spinning animation */
 	}
 
-	.wall:nth-child(odd) {
+	.scene:hover .cube,
+	.scene:focus-within .cube {
+		--animation-playstate: paused;
+	}
+
+	.wall {
+		display: grid;
+		place-content: center;
+	}
+
+	:is(.horizontal, .vertical, .applicate):nth-of-type(odd) {
 		--direction: 1;
 	}
 
-	.wall:nth-child(even) {
+	:is(.horizontal, .vertical, .applicate):nth-of-type(even) {
 		--direction: -1;
-		filter: invert();
 	}
 
 	.wall {
@@ -82,25 +108,25 @@
 
 	.vertical {
 		background-color: var(--green);
-		--turnAxis: rotateX(var(--turnVal));
+		--turnAxis: rotateX(var(--turnValue));
 	}
 
 	:is(.horizontal, .vertical) {
-		--turnVal: calc(90deg * var(--direction));
+		--turnValue: calc(90deg * var(--direction));
 	}
 
 	:is(.horizontal, .applicate) {
-		--turnAxis: rotateY(var(--turnVal));
+		--turnAxis: rotateY(var(--turnValue));
 	}
 
 	.applicate {
 		background-color: var(--blue);
-		--turnVal: calc(90deg - 90deg * var(--direction));
+		--turnValue: calc(90deg - 90deg * var(--direction));
 	}
 
 	@keyframes spin {
-		100% {
-			rotate: y calc(360deg + var(--rotation));
+		to {
+			rotate: y calc(-360deg + var(--rotation));
 		}
 	}
 </style>
