@@ -8,3 +8,10 @@
 	flex-wrap: wrap;
 	gap: var(--gutter);
 }
+
+[data-animation] {
+	animation: var(--animation-name, none) var(--animation-duration, 1s)
+		var(--animation-easing, linear) var(--animation-delay, 0s) var(--animation-iterations, 1)
+		var(--animation-direction, normal) var(--animation-fill, none)
+		var(--animation-playstate, running);
+}

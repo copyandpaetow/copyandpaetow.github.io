@@ -1,106 +1,131 @@
 ---
-
+import CubeController from "./CubeController.astro";
 ---
 
-<script></script>
+<script>
+	/*
+maybe it doesnt work with 6 slides. Maybe we need 8 with like 2x 4rings
+
+*/
+	const cube = document.querySelector(".cube") as HTMLElement;
+
+	cube.addEventListener("focusin", (event: FocusEvent) => {
+		console.log(event);
+		const target = (event.target as HTMLElement).closest("[data-position]") as HTMLElement;
+
+		cube.dataset.currentPosition = target.dataset.position;
+	});
+</script>
 
 <div class="cube-wrapper">
 	<div class="scene">
-		<div class="cube">
-			<div class="wall horizontal"></div>
-			<div class="wall horizontal"></div>
-			<div class="wall vertical"></div>
-			<div class="wall vertical"></div>
-			<div class="wall applicate"></div>
-			<div class="wall applicate"></div>
+		<div class="cube" data-current-position="front">
+			<div data-position="front"><button>front</button></div>
+			<div data-position="right"><button>right</button></div>
+			<div data-position="back"><button>back</button></div>
+			<div data-position="left"><button>left</button></div>
+			<div data-position="top"><button>top</button></div>
+			<div data-position="bottom"><button>bottom</button></div>
 		</div>
 	</div>
-	<menu class="controller">
-		<button>pause</button>
-		<button>play</button>
-		<button>faster</button>
-		<button>slower</button>
-		<button>flip</button>
-	</menu>
+
+	<CubeController />
 </div>
 
-<style>
+<style lang="scss">
 	.cube-wrapper {
-		--width: clamp(150px, 25vw, 350px);
+		--width: clamp(150px, 25vw, 300px);
 
 		width: calc(var(--width) * 1.5);
 		aspect-ratio: 1;
 		display: grid;
 		grid-template-rows: 1fr max-content;
-		gap: var(--gutter);
-	}
-
-	.controller {
-		display: grid;
-		grid-auto-flow: column;
-		justify-content: center;
+		gap: var(--space-5);
 	}
 
 	.scene {
-		--rotation: 20deg;
-
 		width: var(--width);
 		aspect-ratio: 1;
+		border: 1px solid #ccc;
 		perspective: calc(var(--width) * 5);
-		position: relative;
-		margin: auto;
-	}
-
-	.scene * {
-		transform-style: preserve-3d;
-		position: absolute;
-		inset: 0;
+		margin: var(--space-2);
+		place-self: center;
 	}
 
 	.cube {
-		rotate: y var(--rotation);
-		animation: spin 60s linear infinite; /* adds a slow spinning animation */
+		--half-width: calc((var(--width) / 2));
+		--rotateX: 0deg;
+		--rotateY: 0deg;
+
+		width: var(--width);
+		aspect-ratio: 1;
+		position: relative;
+		transform-style: preserve-3d;
+		transform: translateZ(var(--half-width)) rotateX(var(--rotateX)) rotateY(var(--rotateY));
+		transition: transform 1s;
+
+		&[data-current-position="front"] {
+			--rotateX: 0deg;
+			--rotateY: 0deg;
+		}
+
+		&[data-current-position="back"] {
+			--rotateX: 0deg;
+			--rotateY: -180deg;
+		}
+
+		&[data-current-position="right"] {
+			--rotateX: 0deg;
+			--rotateY: -90deg;
+		}
+
+		&[data-current-position="left"] {
+			--rotateX: 0deg;
+			--rotateY: -270deg;
+		}
+
+		&[data-current-position="top"] {
+			--rotateX: -90deg;
+			--rotateY: 0deg;
+		}
+
+		&[data-current-position="bottom"] {
+			--rotateX: 90deg;
+			--rotateY: 0deg;
+		}
 	}
 
-	.wall:nth-child(odd) {
-		--direction: 1;
-	}
+	.cube > div {
+		--background-color: var(--red);
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-content: center;
+		background-color: var(--background-color);
 
-	.wall:nth-child(even) {
-		--direction: -1;
-		filter: invert();
-	}
-
-	.wall {
-		--turn: var(--turnAxis);
-		transform: var(--turn) translateZ(calc(var(--width) / 2));
-	}
-
-	.horizontal {
-		background-color: var(--red);
-	}
-
-	.vertical {
-		background-color: var(--green);
-		--turnAxis: rotateX(var(--turnVal));
-	}
-
-	:is(.horizontal, .vertical) {
-		--turnVal: calc(90deg * var(--direction));
-	}
-
-	:is(.horizontal, .applicate) {
-		--turnAxis: rotateY(var(--turnVal));
-	}
-
-	.applicate {
-		background-color: var(--blue);
-		--turnVal: calc(90deg - 90deg * var(--direction));
-	}
-
-	@keyframes spin {
-		100% {
-			rotate: y calc(360deg + var(--rotation));
+		&[data-position="front"] {
+			--background-color: var(--red);
+			transform: rotateY(0deg) translateZ(var(--half-width));
+		}
+		&[data-position="back"] {
+			--background-color: var(--green);
+			transform: rotateY(180deg) translateZ(var(--half-width));
+		}
+		&[data-position="right"] {
+			--background-color: var(--yellow);
+			transform: rotateY(90deg) translateZ(var(--half-width));
+		}
+		&[data-position="left"] {
+			--background-color: var(--cyan);
+			transform: rotateY(-90deg) translateZ(var(--half-width));
+		}
+		&[data-position="top"] {
+			--background-color: var(--orange);
+			transform: rotateX(90deg) translateZ(var(--half-width));
+		}
+		&[data-position="bottom"] {
+			--background-color: var(--magenta);
+			transform: rotateX(-90deg) translateZ(var(--half-width));
 		}
 	}
 </style>
