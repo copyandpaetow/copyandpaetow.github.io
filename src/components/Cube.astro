@@ -4,28 +4,28 @@ import CubeController from "./CubeController.astro";
 
 <script>
 	/*
-	- how to add more walls? 
-	=> we could replace the wall with js
-	=> we could add them in the HTML and hide them with display:none etc
-
-	- could we keep the walls but add a lot of content within? 
-
-
+maybe it doesnt work with 6 slides. Maybe we need 8 with like 2x 4rings
 
 */
+	const cube = document.querySelector(".cube") as HTMLElement;
+
+	cube.addEventListener("focusin", (event: FocusEvent) => {
+		console.log(event);
+		const target = (event.target as HTMLElement).closest("[data-position]") as HTMLElement;
+
+		cube.dataset.currentPosition = target.dataset.position;
+	});
 </script>
 
-<div class="cube-wrapper" data-cube-direction="horizontal">
+<div class="cube-wrapper">
 	<div class="scene">
-		<div class="cube" data-animation>
-			<div class="wall horizontal"><button>1h</button></div>
-			<div class="wall horizontal"><button>3h</button></div>
-
-			<div class="wall applicate"><button>2h</button></div>
-			<div class="wall applicate"><button>4h</button></div>
-
-			<div class="wall vertical"><button>5v</button></div>
-			<div class="wall vertical"><button>6v</button></div>
+		<div class="cube" data-current-position="front">
+			<div data-position="front"><button>front</button></div>
+			<div data-position="right"><button>right</button></div>
+			<div data-position="back"><button>back</button></div>
+			<div data-position="left"><button>left</button></div>
+			<div data-position="top"><button>top</button></div>
+			<div data-position="bottom"><button>bottom</button></div>
 		</div>
 	</div>
 
@@ -44,89 +44,88 @@ import CubeController from "./CubeController.astro";
 	}
 
 	.scene {
-		--rotation: 20deg;
-
 		width: var(--width);
 		aspect-ratio: 1;
+		border: 1px solid #ccc;
 		perspective: calc(var(--width) * 5);
-		position: relative;
-		margin: auto;
-		transition: rotate 1s ease;
-	}
-
-	[data-cube-direction="vertical"] .scene {
-		rotate: 90deg;
-	}
-
-	[data-cube-direction="vertical"] .vertical {
-		rotate: -90deg;
-	}
-	[data-cube-direction="vertical"] .applicate {
-		rotate: calc(-90deg * var(--direction));
-	}
-
-	.scene :where(.cube, .wall) {
-		transform-style: preserve-3d;
-		position: absolute;
-		inset: 0;
+		margin: var(--space-2);
+		place-self: center;
 	}
 
 	.cube {
-		--animation-name: spin;
-		--animation-duration: 6s;
-		--animation-iterations: infinite;
-		--animation-playstate: running;
-		rotate: y var(--rotation);
+		--half-width: calc((var(--width) / 2));
+		--rotateX: 0deg;
+		--rotateY: 0deg;
+
+		width: var(--width);
+		aspect-ratio: 1;
+		position: relative;
+		transform-style: preserve-3d;
+		transform: translateZ(var(--half-width)) rotateX(var(--rotateX)) rotateY(var(--rotateY));
+		transition: transform 1s;
+
+		&[data-current-position="front"] {
+			--rotateX: 0deg;
+			--rotateY: 0deg;
+		}
+
+		&[data-current-position="back"] {
+			--rotateX: 0deg;
+			--rotateY: -180deg;
+		}
+
+		&[data-current-position="right"] {
+			--rotateX: 0deg;
+			--rotateY: -90deg;
+		}
+
+		&[data-current-position="left"] {
+			--rotateX: 0deg;
+			--rotateY: -270deg;
+		}
+
+		&[data-current-position="top"] {
+			--rotateX: -90deg;
+			--rotateY: 0deg;
+		}
+
+		&[data-current-position="bottom"] {
+			--rotateX: 90deg;
+			--rotateY: 0deg;
+		}
 	}
 
-	.scene:hover .cube,
-	.scene:focus-within .cube {
-		--animation-playstate: paused;
-	}
-
-	.wall {
+	.cube > div {
+		--background-color: var(--red);
+		position: absolute;
+		inset: 0;
 		display: grid;
 		place-content: center;
-	}
+		background-color: var(--background-color);
 
-	:is(.horizontal, .vertical, .applicate):nth-of-type(odd) {
-		--direction: 1;
-	}
-
-	:is(.horizontal, .vertical, .applicate):nth-of-type(even) {
-		--direction: -1;
-	}
-
-	.wall {
-		--turn: var(--turnAxis);
-		transform: var(--turn) translateZ(calc(var(--width) / 2));
-	}
-
-	.horizontal {
-		background-color: var(--red);
-	}
-
-	.vertical {
-		background-color: var(--green);
-		--turnAxis: rotateX(var(--turnValue));
-	}
-
-	:is(.horizontal, .vertical) {
-		--turnValue: calc(90deg * var(--direction));
-	}
-
-	:is(.horizontal, .applicate) {
-		--turnAxis: rotateY(var(--turnValue));
-	}
-
-	.applicate {
-		background-color: var(--blue);
-		--turnValue: calc(90deg - 90deg * var(--direction));
-	}
-
-	@keyframes spin {
-		to {
-			rotate: y calc(-360deg + var(--rotation));
+		&[data-position="front"] {
+			--background-color: var(--red);
+			transform: rotateY(0deg) translateZ(var(--half-width));
+		}
+		&[data-position="back"] {
+			--background-color: var(--green);
+			transform: rotateY(180deg) translateZ(var(--half-width));
+		}
+		&[data-position="right"] {
+			--background-color: var(--yellow);
+			transform: rotateY(90deg) translateZ(var(--half-width));
+		}
+		&[data-position="left"] {
+			--background-color: var(--cyan);
+			transform: rotateY(-90deg) translateZ(var(--half-width));
+		}
+		&[data-position="top"] {
+			--background-color: var(--orange);
+			transform: rotateX(90deg) translateZ(var(--half-width));
+		}
+		&[data-position="bottom"] {
+			--background-color: var(--magenta);
+			transform: rotateX(-90deg) translateZ(var(--half-width));
 		}
 	}
 </style>
