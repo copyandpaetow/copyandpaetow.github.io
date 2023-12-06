@@ -4,67 +4,61 @@
 	box-sizing: border-box;
 }
 
-html {
+:where(*) {
+	margin: 0;
+	padding: 0;
+}
+
+:where(html) {
 	line-height: 1.5;
-}
+	font-family: system-ui, sans-serif;
 
-html:focus-visible {
-	scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	html:focus-within {
-		scroll-behavior: auto;
+	@media (prefers-reduced-motion: no-preference) {
+		& :focus-within {
+			scroll-behavior: smooth;
+		}
 	}
 }
 
-body {
-	min-height: 100vh;
-}
-
-:where(body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, menu) {
-	margin: 0;
-	padding: 0;
+:where(body) {
+	min-height: 100dvh;
 }
 
 :where(h1, h2, h3, button, input, label) {
 	line-height: 1.1;
 }
 
-h1,
-h2,
-h3 {
+:where(h1, h2, h3) {
 	text-wrap: balance;
 }
 
-input,
-button,
-textarea,
-select {
+:where(select, button, input, textarea) {
 	font: inherit;
 }
 
-ul,
-ol {
+:where(ul, ol) {
 	list-style: none;
 }
 
-img,
-picture {
+:where(img, picture) {
 	max-width: 100%;
 	display: block;
 }
 
-input:focus-visible {
+:where(input):focus-visible {
 	outline: 2px solid transparent;
-	border-color: var(--blue);
+	border-color: var(--blue, blue);
 }
 
-button:focus:not(:focus-visible) {
-	outline-color: transparent;
-}
+:where(button) {
+	& :focus:not(:focus-visible) {
+		outline-color: transparent;
+	}
 
-button:focus-visible {
-	outline: 2px solid transparent;
-	box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+	& :focus-visible {
+		outline: 2px solid transparent;
+		box-shadow:
+			0 0 0 2px #fff,
+			0 0 0 4px var(--blue, blue);
+	}
 }

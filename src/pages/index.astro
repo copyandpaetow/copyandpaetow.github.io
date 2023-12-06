@@ -1,37 +1,82 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Cube from "../components/Cube.astro";
+import Book from "../components/book.astro";
 ---
 
 <script></script>
 
 <Layout title="Bewegung">
-	<section id="cube" class="centered">
-		<Cube />
-		<menu>
-			<a href="/all">all cube jokes</a>
-			<a href="#now">enough with the cube jokes</a>
-		</menu>
-	</section>
-	<section id="now">now</section>
-	<section id="about">about</section>
+	<nav>
+		<button>instructions</button>
+		<button>shenanigans</button>
+		<ul>
+			<li>book title</li>
+		</ul>
+	</nav>
+
+	<header>
+		<h1>copy and paetow</h1>
+	</header>
+
+	<main class="scene" style="--amount: 4">
+		<Book title="About Me" id="about-me" position={1}>hello</Book>
+		<Book title="About somebody else" id="somebody" position={2}>hello</Book>
+		<Book title="Your Joke here" id="joke" position={3}>hello</Book>
+		<Book title="pew pew" id="pew-pew" position={4}>hello</Book>
+	</main>
+	<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 </Layout>
 
-<style lang="scss">
-	section {
-		min-height: 80vh;
+<style is:global>
+	body {
+		--padding: minmax(1rem, 1fr);
+
+		display: grid;
+		grid-template-columns:
+			[full-start] var(--padding)
+			[main-start] minmax(calc(100vw - 2 * 1rem), 70rem)
+			[main-end] var(--padding)
+			[full-end];
+
+		grid-template-rows:
+			[nav-start] max-content
+			[nav-end header-start] max-content
+			[header-end main-start] minmax(80dvh, 1fr)
+			[footer-start] 20vh
+			[main-end] minmax(10vh, max-content)
+			[footer-end];
 	}
 
-	menu {
-		display: grid;
-		gap: var(--space-0);
-		grid-auto-columns: max-content;
-		place-content: center;
+	nav {
+		display: flex;
+		grid-area: nav / full;
 	}
 
-	.centered {
+	header {
+		padding-block: var(--space-5) 20vh;
+		text-align: center;
+		color: var(--grey-10);
+		grid-area: header / full;
+	}
+
+	main {
+		grid-area: main;
 		display: grid;
-		place-content: center;
-		gap: var(--space-4);
+		gap: 1rem;
+		grid-auto-rows: max-content;
+	}
+
+	.scene {
+		perspective: 4000px;
+		perspective-origin: 166% -100%;
+	}
+
+	footer {
+		grid-area: footer / full;
+
+		display: grid;
+		place-content: end center;
+		color: var(--grey-10);
+		background-color: var(--grey-70);
 	}
 </style>

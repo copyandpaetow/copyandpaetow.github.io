@@ -1,0 +1,162 @@
+---
+export interface Props {
+	title: string;
+	id: string;
+	position: number;
+}
+
+const { title, id, position } = Astro.props;
+---
+
+<script></script>
+
+<article class="book-container" style=`--position:${position}`>
+	<menu class="book-menu">
+		<a href="#" aria-label="put book back into stack">🔙</a>
+		<a href=`#${id}-front` class="read-front" aria-label="switch to book front">↺</a>
+		<a href=`#${id}-back` class="read-back" aria-label="switch to book back">↺</a>
+	</menu>
+	<div class="book">
+		<a class="front spline" href=`#${id}-front`><span>{title}</span><span>copyandpaetow</span></a>
+		<section id=`${id}-front` class="top cover front">top</section>
+		<section id=`${id}-back` class="bottom cover back">bottom</section>
+		<aisde class="back pages">back</aisde>
+		<aisde class="left pages">left</aisde>
+		<aisde class="right pages">right</aisde>
+	</div>
+</article>
+
+<style is:global>
+	.book-container {
+		--z: calc(var(--amount) - var(--position));
+
+		display: grid;
+		grid-template-columns: 1fr max-content;
+		grid-template-areas: "book menu";
+		gap: 1rem;
+
+		position: relative;
+		z-index: var(--z);
+		transform-style: preserve-3d;
+
+		.book {
+			grid-area: book;
+		}
+
+		& [id] {
+			scroll-margin-top: 50vh;
+		}
+
+		.book-menu {
+			grid-area: menu;
+			display: none;
+			grid-auto-flow: row;
+		}
+
+		&:has(:target) {
+			--z: calc(var(--amount) + 1);
+		}
+
+		&:has(:target) .book-menu {
+			display: grid;
+		}
+
+		&:has(:target.front) .read-front {
+			display: none;
+		}
+		&:has(:target.back) .read-back {
+			display: none;
+		}
+	}
+
+	.book-menu {
+		gap: 4px;
+		& a {
+			background-color: var(--grey-70);
+			border-radius: 2px;
+			padding: 4px 8px;
+			text-decoration: none;
+			text-align: center;
+			color: black;
+
+			&:visited {
+				color: currentColor;
+			}
+		}
+	}
+
+	.book {
+		--width: clamp(100px, 50vw, 500px);
+		--thickness: var(--book-thickness, clamp(50px, 10vh, 200px));
+		--aspect-ratio: 0.75;
+		--length: calc(var(--width) * var(--aspect-ratio));
+		--bg-color: var(--book-color, var(--grey-70));
+		--border: 4px solid black;
+
+		--rotateX: 0deg;
+		--rotateY: 0deg;
+		--rotateZ: 0deg;
+
+		justify-self: center;
+		width: var(--width);
+		height: var(--thickness);
+		position: relative;
+		transform-style: preserve-3d;
+		transform: translateZ(calc(var(--thickness) * -1)) rotateX(var(--rotateX))
+			rotateY(var(--rotateY)) rotateX(var(--rotateZ));
+		transition: transform 2s ease;
+
+		&:has(:target.front) {
+			--rotateX: -90deg;
+			--rotateY: 90deg;
+		}
+
+		&:has(:target.back) {
+			--rotateX: 90deg;
+			--rotateY: -90deg;
+		}
+
+		& > * {
+			position: absolute;
+			font-size: 20px;
+			font-weight: bold;
+			color: white;
+			background-color: var(--bg-color);
+			display: grid;
+			place-content: center;
+			inset: 0;
+			border: var(--border-width, 4px) solid black;
+		}
+
+		.front {
+			transform: rotateY(0deg) translateZ(calc((var(--width) * 0.75) / 2));
+		}
+		.back {
+			transform: rotateY(180deg) translateZ(calc((var(--width) * 0.75) / 2));
+		}
+		.right {
+			width: var(--length);
+			left: calc((100% - var(--length)) / 2);
+			transform: rotateY(90deg) translateZ(calc(var(--width) / 2));
+		}
+		.left {
+			width: var(--length);
+			left: calc((100% - var(--length)) / 2);
+			transform: rotateY(-90deg) translateZ(calc(var(--width) / 2));
+		}
+		.top {
+			aspect-ratio: var(--aspect-ratio);
+			top: calc((var(--thickness) - var(--width)) / 2);
+			left: calc((var(--width) - var(--length)) / 2);
+			width: calc(var(--length));
+			transform: rotateX(90deg) rotateZ(90deg) translateZ(calc(var(--thickness) / 2));
+		}
+		.bottom {
+			aspect-ratio: var(--aspect-ratio);
+			width: calc(var(--length));
+			top: calc((var(--thickness) - var(--width)) / 2);
+			left: calc((var(--width) - var(--length)) / 2);
+			transform: rotateX(-90deg) rotateZ(90deg) translateZ(calc(var(--thickness) / 2));
+		}
+	}
+</style>
