@@ -1,0 +1,26 @@
+.brutalist-button {
+	border-radius: 2px;
+	padding: 0.5rem;
+	text-decoration: none;
+	text-align: center;
+
+	border: var(--border-width, 4px) solid black;
+	height: 3rem;
+	min-width: 3rem;
+	font-weight: bold;
+
+	&[data-button-type="primary"] {
+		color: var(--text);
+		background-color: var(--book-background);
+	}
+
+	&[data-button-type="secondary"] {
+		color: var(--grey-10);
+		background-color: var(--grey-90);
+
+		&:has(+ :target) {
+			color: var(--text);
+			background-color: var(--book-background);
+		}
+	}
+}

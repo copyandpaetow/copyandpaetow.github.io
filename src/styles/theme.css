@@ -41,5 +41,10 @@
 	--purple: hsl(251, 40%, 64%);
 	--magenta: hsl(329, 54%, 59%);
 
+	--book-background: var(--grey-50);
 	--text: var(--grey-90);
+}
+
+body {
+	background-color: var(--grey-85);
 }

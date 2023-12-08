@@ -7,18 +7,44 @@ import Book from "../components/book.astro";
 
 <Layout title="Bewegung">
 	<nav>
-		<button>instructions</button>
-		<button>shenanigans</button>
-		<ul>
-			<li>book title</li>
+		<a href="#instructions" role="button" data-button-type="secondary" class="brutalist-button"
+			>instructions</a
+		>
+		<a href="#shenanigans" role="button" data-button-type="secondary" class="brutalist-button"
+			>shenanigans</a
+		>
+		<a href="#overview" role="button" data-button-type="secondary" class="brutalist-button"
+			>overview</a
+		>
+		<ul id="overview">
+			<li>
+				<a href="about">About Me</a>
+			</li>
+			<li>
+				<a href="scroll">Scroll</a>
+			</li>
+			<li>
+				<a href="cube">cube</a>
+			</li>
 		</ul>
 	</nav>
 
 	<header>
+		<div class="logo">
+			<div class="brutalist-button">CTRL</div>
+			<div class="brutalist-button">C</div>
+			<div class="brutalist-button">CTRL</div>
+			<div class="brutalist-button">C</div>
+			<div class="brutalist-button">CTRL</div>
+			<div class="brutalist-button remark">C</div>
+			<div class="brutalist-button">CTRL</div>
+			<div class="brutalist-button">Paetow</div>
+		</div>
+
 		<h1>copy and paetow</h1>
 	</header>
 
-	<main class="scene" style="--amount: 4">
+	<main class="scene" style="--amount: 8">
 		<Book title="About Me" id="about-me" order={1} color="blue">
 			<a slot="front-header">About Me</a>
 			<p slot="front-body">written by a mad man - not my mum</p>
@@ -28,82 +54,165 @@ import Book from "../components/book.astro";
 		</Book>
 		<Book title="Your Joke here" id="joke" order={3} color="green" offset={-1}>hello</Book>
 		<Book title="pew pew" id="pew-pew" order={4} color="yellow" size="s" offset={2}>hello</Book>
+		<Book title="About Me" id="about-me" order={5} color="blue" offset={2}>
+			<a slot="front-header">About Me</a>
+			<p slot="front-body">written by a mad man - not my mum</p>
+		</Book>
+		<Book title="About somebody else" id="somebody" order={6} color="red" size="l" offset={-1}>
+			hello
+		</Book>
+		<Book title="Your Joke here" id="joke" order={7} color="green" offset={3}>hello</Book>
+		<Book title="pew pew" id="pew-pew" order={8} color="yellow" size="s" offset={0}>hello</Book>
 	</main>
 	<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 </Layout>
 
 <style is:global>
-	body {
-		--padding: minmax(1rem, 1fr);
-		--footer-main-intersection: 20vh;
+	@layer defaults {
+		body {
+			--padding: minmax(1rem, 1fr);
+			--footer-main-intersection: 20vh;
 
-		display: grid;
-		grid-template-columns:
-			[full-start] var(--padding)
-			[main-start] minmax(calc(320px - 2 * 1rem), 60rem)
-			[main-end] var(--padding)
-			[full-end];
+			display: grid;
+			grid-template-columns:
+				[full-start] var(--padding)
+				[main-start] minmax(calc(320px - 2 * 1rem), 60rem)
+				[main-end] var(--padding)
+				[full-end];
 
-		grid-template-rows:
-			[nav-start] max-content
-			[nav-end header-start] max-content
-			[header-end main-start] minmax(80svh, 1fr)
-			[footer-start] var(--footer-main-intersection)
-			[main-end] minmax(10vh, max-content)
-			[footer-end];
-	}
-
-	nav {
-		display: flex;
-		grid-area: nav / full;
-	}
-
-	header {
-		padding-block: var(--space-5) 20vh;
-		text-align: center;
-		color: var(--grey-10);
-		grid-area: header / full;
-	}
-
-	main {
-		grid-area: main;
-		display: grid;
-		gap: 1rem;
-		grid-auto-rows: max-content;
-	}
-
-	.scene {
-		perspective: calc(100vw * 5);
-		perspective-origin: 166vw -66vw;
-		position: relative;
-
-		&::after {
-			content: "";
-			position: absolute;
-			background-color: hsla(0, 0%, 0%, 0.5);
-			left: calc((100vw - 100%) / -2);
-			top: calc(var(--footer-main-intersection) * -1);
-			height: 100svh;
-			width: calc(100vw - 17.2px);
-			transform: scaleY(1.25);
-			transform-origin: bottom;
-			pointer-events: none;
-			opacity: 0;
-			z-index: var(--amount);
-			transition: opacity 400ms ease;
+			grid-template-rows:
+				[nav-start] max-content
+				[nav-end header-start] max-content
+				[header-end main-start] 1fr
+				[footer-start] var(--footer-main-intersection)
+				[main-end] minmax(10vh, max-content)
+				[footer-end];
 		}
 
-		&:has(:target)::after {
-			opacity: 1;
+		nav {
+			grid-area: nav / full;
+		}
+
+		header {
+			padding-block: var(--space-5) 20vh;
+			grid-area: header / full;
+		}
+
+		main {
+			grid-area: main;
+			display: grid;
+			gap: 1rem;
+			grid-auto-rows: max-content;
+			padding-bottom: 10%;
+		}
+
+		footer {
+			grid-area: footer / full;
+
+			display: grid;
+			place-content: end center;
+			color: var(--grey-10);
+			background-color: var(--grey-70);
 		}
 	}
 
-	footer {
-		grid-area: footer / full;
+	@layer components {
+		nav {
+			--padding-inline: 2rem;
 
-		display: grid;
-		place-content: end center;
-		color: var(--grey-10);
-		background-color: var(--grey-70);
+			display: grid;
+			grid-auto-flow: column;
+			justify-content: end;
+			align-items: center;
+			gap: 1rem;
+
+			padding: 1rem var(--padding-inline);
+			position: relative;
+
+			& ul {
+				display: none;
+				position: absolute;
+				right: var(--padding-inline);
+				top: 100%;
+				border: var(--border-width, 4px) solid black;
+				color: var(--text);
+				background-color: var(--book-background);
+				padding: 8px;
+				scroll-margin-top: 100px;
+			}
+
+			&:has(:target) ul {
+				display: block;
+			}
+		}
+
+		.scene {
+			perspective: calc(100vw * 5);
+			perspective-origin: 166vw -66vw;
+			position: relative;
+
+			&::after {
+				content: "";
+				position: absolute;
+				background-color: hsla(0, 0%, 0%, 0.5);
+				left: calc((100vw - 100%) / -2);
+				top: calc(var(--footer-main-intersection) * -1);
+				height: 100%;
+				width: calc(100vw - 17.2px);
+				transform: scaleY(1.25);
+				transform-origin: bottom;
+				pointer-events: none;
+				opacity: 0;
+				z-index: var(--amount);
+				transition: opacity 400ms ease;
+			}
+
+			&:has(:target)::after {
+				opacity: 1;
+			}
+		}
+
+		header {
+			display: grid;
+			place-content: center;
+			text-align: center;
+			color: var(--grey-10);
+			gap: 0.5rem;
+
+			&:has(:hover) .remark::after {
+				opacity: 1;
+			}
+		}
+
+		.logo {
+			display: grid;
+			grid-template-columns: max-content max-content;
+			grid-auto-rows: max-content;
+			gap: 0.5rem;
+
+			& > div {
+				width: max-content;
+			}
+
+			& > div:nth-of-type(2n + 1) {
+				padding-inline: 1rem;
+			}
+			& > div:last-of-type {
+				padding-inline: 2rem;
+			}
+
+			.remark {
+				position: relative;
+			}
+
+			.remark::after {
+				content: "(just to be sure)";
+				position: absolute;
+				left: 50%;
+				width: 500%;
+				opacity: 0;
+				transition: opacity: 400ms ease;
+			}
+		}
 	}
 </style>

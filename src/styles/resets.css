@@ -20,10 +20,6 @@
 	}
 }
 
-:where(body) {
-	min-height: 100dvh;
-}
-
 :where(h1, h2, h3, button, input, label) {
 	line-height: 1.1;
 }
