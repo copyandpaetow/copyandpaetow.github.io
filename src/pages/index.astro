@@ -19,10 +19,15 @@ import Book from "../components/book.astro";
 	</header>
 
 	<main class="scene" style="--amount: 4">
-		<Book title="About Me" id="about-me" position={1}>hello</Book>
-		<Book title="About somebody else" id="somebody" position={2}>hello</Book>
-		<Book title="Your Joke here" id="joke" position={3}>hello</Book>
-		<Book title="pew pew" id="pew-pew" position={4}>hello</Book>
+		<Book title="About Me" id="about-me" order={1} color="blue">
+			<a slot="front-header">About Me</a>
+			<p slot="front-body">written by a mad man - not my mum</p>
+		</Book>
+		<Book title="About somebody else" id="somebody" order={2} color="red" size="l" offset={-3}>
+			hello
+		</Book>
+		<Book title="Your Joke here" id="joke" order={3} color="green" offset={-1}>hello</Book>
+		<Book title="pew pew" id="pew-pew" order={4} color="yellow" size="s" offset={2}>hello</Book>
 	</main>
 	<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 </Layout>
@@ -30,19 +35,20 @@ import Book from "../components/book.astro";
 <style is:global>
 	body {
 		--padding: minmax(1rem, 1fr);
+		--footer-main-intersection: 20vh;
 
 		display: grid;
 		grid-template-columns:
 			[full-start] var(--padding)
-			[main-start] minmax(calc(100vw - 2 * 1rem), 70rem)
+			[main-start] minmax(calc(320px - 2 * 1rem), 60rem)
 			[main-end] var(--padding)
 			[full-end];
 
 		grid-template-rows:
 			[nav-start] max-content
 			[nav-end header-start] max-content
-			[header-end main-start] minmax(80dvh, 1fr)
-			[footer-start] 20vh
+			[header-end main-start] minmax(80svh, 1fr)
+			[footer-start] var(--footer-main-intersection)
 			[main-end] minmax(10vh, max-content)
 			[footer-end];
 	}
@@ -67,8 +73,29 @@ import Book from "../components/book.astro";
 	}
 
 	.scene {
-		perspective: 4000px;
-		perspective-origin: 166% -100%;
+		perspective: calc(100vw * 5);
+		perspective-origin: 166vw -66vw;
+		position: relative;
+
+		&::after {
+			content: "";
+			position: absolute;
+			background-color: hsla(0, 0%, 0%, 0.5);
+			left: calc((100vw - 100%) / -2);
+			top: calc(var(--footer-main-intersection) * -1);
+			height: 100svh;
+			width: calc(100vw - 17.2px);
+			transform: scaleY(1.25);
+			transform-origin: bottom;
+			pointer-events: none;
+			opacity: 0;
+			z-index: var(--amount);
+			transition: opacity 400ms ease;
+		}
+
+		&:has(:target)::after {
+			opacity: 1;
+		}
 	}
 
 	footer {

@@ -2,96 +2,132 @@
 export interface Props {
 	title: string;
 	id: string;
-	position: number;
+	order: number;
+	color: string;
+	size?: "s" | "m" | "l";
+	offset?: number;
 }
 
-const { title, id, position } = Astro.props;
+const { title, id, order, color, size, offset } = Astro.props;
 ---
 
-<script></script>
+<script>
+	/*
 
-<article class="book-container" style=`--position:${position}`>
-	<menu class="book-menu">
-		<a href="#" aria-label="put book back into stack">🔙</a>
-		<a href=`#${id}-front` class="read-front" aria-label="switch to book front">↺</a>
-		<a href=`#${id}-back` class="read-back" aria-label="switch to book back">↺</a>
-	</menu>
+todo:
+- navigation
+- backdrop creates an overflow
+
+- instead of the no-js class, we can use the script media query
+
+js enhancements:
+- page-jump-offset needs to be calculated dynamically
+- z-index should stay while in animation
+- move books before the current / opened one and after out of the way
+- allow rotating the open book with mouse or touch
+- turn all anchor tags into buttons that dont navigate to another side or do a real page jump
+
+
+*/
+</script>
+
+<article
+	class="book-container"
+	style=`
+	--stack-order:${order}; 
+	--book-color: var(--${color}); 
+	--book-thickness: var(--size-${size ?? "m"});
+	--book-offset: ${offset ?? 0};
+	`
+>
 	<div class="book">
-		<a class="front spline" href=`#${id}-front`><span>{title}</span><span>copyandpaetow</span></a>
-		<section id=`${id}-front` class="top cover front">top</section>
-		<section id=`${id}-back` class="bottom cover back">bottom</section>
-		<aisde class="back pages">back</aisde>
-		<aisde class="left pages">left</aisde>
-		<aisde class="right pages">right</aisde>
+		<a class="spline" href=`#${id}-front` role="button">
+			<div><p>{title}</p></div>
+			<p>copyandpaetow</p>
+		</a>
+		<section id=`${id}-front` class="front-cover">
+			<slot name="front-header" />
+			<slot name="front-body" />
+		</section>
+		<section id=`${id}-back` class="back-cover">
+			<slot name="back-header" />
+			<slot name="back-body" />
+		</section>
+		<aside class="paper-back"></aside>
+		<aside class="paper-bottom"></aside>
+		<aside class="paper-top"></aside>
 	</div>
+	<menu>
+		<a href="#" role="button" aria-label="put book back into stack"
+			><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1216 1312"
+				><path
+					d="M1202 1066q0 40-28 68l-136 136q-28 28-68 28t-68-28L608 976l-294 294q-28 28-68 28t-68-28L42 1134q-28-28-28-68t28-68l294-294L42 410q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68L880 704l294 294q28 28 28 68z"
+				></path></svg
+			></a
+		>
+		<a href=`#${id}-front` role="button" class="read-front" aria-label="switch to book front"
+			><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"
+				><path
+					d="M7 0v15h1V0H7ZM4.615 3.013A.5.5 0 0 1 5 3.5v8a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.447-.724l4-8a.5.5 0 0 1 .562-.263Zm5.77 0a.5.5 0 0 1 .562.263l4 8A.5.5 0 0 1 14.5 12h-4a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .385-.487Z"
+				></path></svg
+			></a
+		>
+		<a href=`#${id}-back` role="button" class="read-back" aria-label="switch to book back"
+			><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15"
+				><path
+					d="M7 0v15h1V0H7ZM4.615 3.013A.5.5 0 0 1 5 3.5v8a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.447-.724l4-8a.5.5 0 0 1 .562-.263Zm5.77 0a.5.5 0 0 1 .562.263l4 8A.5.5 0 0 1 14.5 12h-4a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .385-.487Z"
+				></path></svg
+			></a
+		>
+	</menu>
 </article>
 
 <style is:global>
 	.book-container {
-		--z: calc(var(--amount) - var(--position));
+		--z: calc(var(--amount) - var(--stack-order));
+		--size-s: clamp(40px, 4vh, 80px);
+		--size-m: clamp(50px, 5vh, 100px);
+		--size-l: clamp(70px, 7vh, 140px);
 
-		display: grid;
-		grid-template-columns: 1fr max-content;
-		grid-template-areas: "book menu";
-		gap: 1rem;
+		--book-background: var(--grey-50);
+		--border: 4px solid black;
+		--width: clamp(280px, 50vw, 500px);
+		--thickness: var(--book-thickness);
+		--z-axis-offset: 1;
+
+		margin-inline: auto;
 
 		position: relative;
 		z-index: var(--z);
 		transform-style: preserve-3d;
 
-		.book {
-			grid-area: book;
-		}
-
 		& [id] {
 			scroll-margin-top: 50vh;
 		}
 
-		.book-menu {
-			grid-area: menu;
+		& menu {
 			display: none;
-			grid-auto-flow: row;
 		}
 
 		&:has(:target) {
 			--z: calc(var(--amount) + 1);
 		}
 
-		&:has(:target) .book-menu {
+		&:has(:target) menu {
 			display: grid;
 		}
 
-		&:has(:target.front) .read-front {
+		&:has(:target.front-cover) .read-front {
 			display: none;
 		}
-		&:has(:target.back) .read-back {
+		&:has(:target.back-cover) .read-back {
 			display: none;
-		}
-	}
-
-	.book-menu {
-		gap: 4px;
-		& a {
-			background-color: var(--grey-70);
-			border-radius: 2px;
-			padding: 4px 8px;
-			text-decoration: none;
-			text-align: center;
-			color: black;
-
-			&:visited {
-				color: currentColor;
-			}
 		}
 	}
 
 	.book {
-		--width: clamp(100px, 50vw, 500px);
-		--thickness: var(--book-thickness, clamp(50px, 10vh, 200px));
 		--aspect-ratio: 0.75;
 		--length: calc(var(--width) * var(--aspect-ratio));
-		--bg-color: var(--book-color, var(--grey-70));
-		--border: 4px solid black;
 
 		--rotateX: 0deg;
 		--rotateY: 0deg;
@@ -101,62 +137,160 @@ const { title, id, position } = Astro.props;
 		width: var(--width);
 		height: var(--thickness);
 		position: relative;
+		transform: translateX(calc(var(--book-offset) * 1rem));
 		transform-style: preserve-3d;
-		transform: translateZ(calc(var(--thickness) * -1)) rotateX(var(--rotateX))
-			rotateY(var(--rotateY)) rotateX(var(--rotateZ));
-		transition: transform 2s ease;
+		transition: transform 1500ms ease;
 
-		&:has(:target.front) {
-			--rotateX: -90deg;
-			--rotateY: 90deg;
+		&:has(:target.front-cover) {
+			transform: translateZ(var(--width)) rotateX(90deg) rotateY(-90deg)
+				translateZ(calc((var(--width) / -5)));
 		}
 
-		&:has(:target.back) {
-			--rotateX: 90deg;
-			--rotateY: -90deg;
+		&:has(:target.back-cover) {
+			transform: translateZ(var(--width)) rotateZ(-90deg) rotateX(-90deg)
+				translateZ(calc((var(--width) / 5)));
 		}
 
 		& > * {
 			position: absolute;
-			font-size: 20px;
-			font-weight: bold;
-			color: white;
-			background-color: var(--bg-color);
-			display: grid;
-			place-content: center;
 			inset: 0;
-			border: var(--border-width, 4px) solid black;
 		}
 
-		.front {
+		.spline {
 			transform: rotateY(0deg) translateZ(calc((var(--width) * 0.75) / 2));
 		}
-		.back {
+		.paper-back {
 			transform: rotateY(180deg) translateZ(calc((var(--width) * 0.75) / 2));
 		}
-		.right {
+		.paper-top {
 			width: var(--length);
 			left: calc((100% - var(--length)) / 2);
 			transform: rotateY(90deg) translateZ(calc(var(--width) / 2));
 		}
-		.left {
+		.paper-bottom {
 			width: var(--length);
 			left: calc((100% - var(--length)) / 2);
 			transform: rotateY(-90deg) translateZ(calc(var(--width) / 2));
 		}
-		.top {
+		.front-cover {
+			aspect-ratio: var(--aspect-ratio);
+			width: calc(var(--length));
+			top: calc((var(--thickness) - var(--width)) / 2);
+			left: calc((var(--width) - var(--length)) / 2);
+			transform: rotateX(-90deg) rotateZ(90deg) translateZ(calc(var(--thickness) / 2));
+		}
+		.back-cover {
 			aspect-ratio: var(--aspect-ratio);
 			top: calc((var(--thickness) - var(--width)) / 2);
 			left: calc((var(--width) - var(--length)) / 2);
 			width: calc(var(--length));
 			transform: rotateX(90deg) rotateZ(90deg) translateZ(calc(var(--thickness) / 2));
 		}
-		.bottom {
-			aspect-ratio: var(--aspect-ratio);
-			width: calc(var(--length));
-			top: calc((var(--thickness) - var(--width)) / 2);
-			left: calc((var(--width) - var(--length)) / 2);
-			transform: rotateX(-90deg) rotateZ(90deg) translateZ(calc(var(--thickness) / 2));
+	}
+
+	.book-container :where(menu) {
+		position: absolute;
+		left: 50%;
+		top: calc((var(--width) / -2));
+		display: grid;
+		grid-auto-columns: 1fr;
+		grid-auto-flow: column;
+		gap: 4px;
+		transform-style: preserve-3d;
+		transform: translateX(-50%) translateZ(calc((var(--width) * 0.75) / 2)) translateY(-50%);
+
+		@media screen and (min-width: 40rem) {
+			grid-auto-flow: row;
+			left: 100%;
+			transform: translateZ(calc((var(--width) * 0.75) / 2)) translateY(calc((var(--width) / 5)));
+		}
+
+		& a {
+			background-color: var(--book-background);
+			border-radius: 2px;
+			padding: 8px;
+			text-decoration: none;
+			text-align: center;
+			color: var(--text);
+			border: var(--border-width, 4px) solid black;
+			aspect-ratio: 1;
+			height: 3rem;
+
+			&:visited {
+				color: currentColor;
+			}
+		}
+	}
+
+	.book > * {
+		background-color: var(--book-background);
+		border: var(--border-width, 4px) solid black;
+		color: var(--text);
+	}
+
+	.book :where(section) {
+		display: grid;
+		grid-template-rows: 1fr 1.618fr;
+		grid-template-areas:
+			"header"
+			"body";
+
+		& :first-child {
+			grid-area: header;
+		}
+		& :last-child {
+			grid-area: body;
+		}
+
+		&::before {
+			content: "";
+			width: 100%;
+			height: 100%;
+			background-color: var(--book-color);
+			grid-area: body;
+			border-block-start: var(--border-width, 4px) solid black;
+		}
+	}
+
+	.book :where(aside) {
+		--size: calc(1rem / 4);
+		--paper-color: var(--grey-85);
+
+		background: repeating-linear-gradient(
+			0deg,
+			var(--book-background),
+			var(--book-background) var(--size),
+			var(--paper-color) var(--size),
+			var(--paper-color) calc(var(--size) * 2)
+		);
+	}
+
+	.spline {
+		display: grid;
+		grid-template-columns: 1.618fr 1fr;
+		grid-template-areas: "name title";
+		place-items: center;
+		text-decoration: none;
+		font-weight: bold;
+
+		& > div {
+			padding-inline: var(--space-1);
+			justify-self: start;
+			grid-area: name;
+			width: 100%;
+			overflow: hidden;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			display: -webkit-box;
+		}
+
+		&::before {
+			content: "";
+			width: 100%;
+			height: 100%;
+			background-color: var(--book-color);
+			grid-area: name;
+			border-inline-end: var(--border-width, 4px) solid black;
 		}
 	}
 </style>
