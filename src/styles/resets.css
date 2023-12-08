@@ -20,6 +20,10 @@
 	}
 }
 
+:where(body) {
+	contain: layout;
+}
+
 :where(h1, h2, h3, button, input, label) {
 	line-height: 1.1;
 }

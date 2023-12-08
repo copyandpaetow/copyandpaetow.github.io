@@ -54,15 +54,15 @@ import Book from "../components/book.astro";
 		</Book>
 		<Book title="Your Joke here" id="joke" order={3} color="green" offset={-1}>hello</Book>
 		<Book title="pew pew" id="pew-pew" order={4} color="yellow" size="s" offset={2}>hello</Book>
-		<Book title="About Me" id="about-me" order={5} color="blue" offset={2}>
+		<Book title="About Me" id="about-me2" order={5} color="blue" offset={2}>
 			<a slot="front-header">About Me</a>
 			<p slot="front-body">written by a mad man - not my mum</p>
 		</Book>
-		<Book title="About somebody else" id="somebody" order={6} color="red" size="l" offset={-1}>
+		<Book title="About somebody else" id="somebody2" order={6} color="red" size="l" offset={-1}>
 			hello
 		</Book>
-		<Book title="Your Joke here" id="joke" order={7} color="green" offset={3}>hello</Book>
-		<Book title="pew pew" id="pew-pew" order={8} color="yellow" size="s" offset={0}>hello</Book>
+		<Book title="Your Joke here" id="joke2" order={7} color="green" offset={3}>hello</Book>
+		<Book title="pew pew" id="pew-pew2" order={8} color="yellow" size="s" offset={0}>hello</Book>
 	</main>
 	<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 </Layout>
@@ -72,6 +72,7 @@ import Book from "../components/book.astro";
 		body {
 			--padding: minmax(1rem, 1fr);
 			--footer-main-intersection: 20vh;
+			--header-spacing: var(--space-5);
 
 			display: grid;
 			grid-template-columns:
@@ -94,7 +95,6 @@ import Book from "../components/book.astro";
 		}
 
 		header {
-			padding-block: var(--space-5) 20vh;
 			grid-area: header / full;
 		}
 
@@ -157,10 +157,9 @@ import Book from "../components/book.astro";
 				background-color: hsla(0, 0%, 0%, 0.5);
 				left: calc((100vw - 100%) / -2);
 				top: calc(var(--footer-main-intersection) * -1);
-				height: 100%;
-				width: calc(100vw - 17.2px);
-				transform: scaleY(1.25);
-				transform-origin: bottom;
+				height: 100vh;
+				width: 100vw;
+				transform: scaleY(5);
 				pointer-events: none;
 				opacity: 0;
 				z-index: var(--amount);
@@ -178,6 +177,7 @@ import Book from "../components/book.astro";
 			text-align: center;
 			color: var(--grey-10);
 			gap: 0.5rem;
+			padding-block: var(--header-spacing);
 
 			&:has(:hover) .remark::after {
 				opacity: 1;
@@ -189,6 +189,7 @@ import Book from "../components/book.astro";
 			grid-template-columns: max-content max-content;
 			grid-auto-rows: max-content;
 			gap: 0.5rem;
+			place-content: center;
 
 			& > div {
 				width: max-content;

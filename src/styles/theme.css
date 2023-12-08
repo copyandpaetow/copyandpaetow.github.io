@@ -48,3 +48,7 @@
 body {
 	background-color: var(--grey-85);
 }
+
+h1 {
+	font-size: var(--font-4);
+}
