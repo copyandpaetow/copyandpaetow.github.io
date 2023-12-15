@@ -1,3 +1,10 @@
+@font-face {
+	font-family: "Press Start 2P";
+	src: url("/fonts/pressStart2p.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
 *,
 ::after,
 ::before {
@@ -22,6 +29,7 @@
 
 :where(body) {
 	contain: layout;
+	min-height: 100svh;
 }
 
 :where(h1, h2, h3, button, input, label) {

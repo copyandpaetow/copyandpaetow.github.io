@@ -1,71 +1,74 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Book from "../components/book.astro";
+import TV from "../components/tv.astro";
+import Cassette from "../components/cassette.astro";
 ---
 
-<script></script>
+<script>
+	/*
+- currently TV and Cassette have an empty wrapper just for styles
+=> we could pass a class and define the html element tag from the outside
+
+- we need some kind of settings for the goofyness
+=> To show the casette or go straight to the article could be an option
+=> no animations
+
+- add covers around the cassettes
+=> on hover/click etc the tape could move out a bit but not the cover
+=> needs basic animation though
+
+- make the tv sticky
+- make labels into buttons with popover
+=> custom component for the buttons? The Dialog? Both? One big one?
+=> we need to emulate the close on esc/outside click behaviour
+=> do we need inert as well?
+=> add anchor elements in a <noscript> tag and use @supports selector(:popover-open) to check if they need display: initial or none
+
+- extract styles of the screen and share with the popover
+=> make it match with the tv stickyness
+
+- hide the books coming out of the screen if we are scrolled down too much
+
+- how to change the cassettes in the current slot?
+=> .cassette:has(:popover-open) can give us the current cassette
+=> maybe we need to add the cutout ability to the cassette itselfs because currently it is difficult to position the 
+=> another option would be to make a cutout by painting everything besides a certain space with linear-gradient. The background would then need to be closer (z-index) than the cassettes. So they would need to be slotted in there somehow
+=> if they are in a list together, maybe we can get scroll snapping to work?
+
+
+
+  
+
+
+*/
+</script>
 
 <Layout title="Bewegung">
-	<nav>
-		<a href="#instructions" role="button" data-button-type="secondary" class="brutalist-button"
-			>instructions</a
-		>
-		<a href="#shenanigans" role="button" data-button-type="secondary" class="brutalist-button"
-			>shenanigans</a
-		>
-		<a href="#overview" role="button" data-button-type="secondary" class="brutalist-button"
-			>overview</a
-		>
-		<ul id="overview">
-			<li>
-				<a href="about">About Me</a>
-			</li>
-			<li>
-				<a href="scroll">Scroll</a>
-			</li>
-			<li>
-				<a href="cube">cube</a>
-			</li>
-		</ul>
-	</nav>
+	<nav></nav>
 
-	<header>
-		<div class="logo">
-			<div class="brutalist-button">CTRL</div>
-			<div class="brutalist-button">C</div>
-			<div class="brutalist-button">CTRL</div>
-			<div class="brutalist-button">C</div>
-			<div class="brutalist-button">CTRL</div>
-			<div class="brutalist-button remark">C</div>
-			<div class="brutalist-button">CTRL</div>
-			<div class="brutalist-button">Paetow</div>
-		</div>
+	<header></header>
 
-		<h1>copy and paetow</h1>
-	</header>
-
-	<main class="scene" style="--amount: 8">
-		<Book title="About Me" id="about-me" order={1} color="blue">
-			<a slot="front-header">About Me</a>
-			<p slot="front-body">written by a mad man - not my mum</p>
-		</Book>
-		<Book title="About somebody else" id="somebody" order={2} color="red" size="l" offset={-3}>
-			hello
-		</Book>
-		<Book title="Your Joke here" id="joke" order={3} color="green" offset={-1}>hello</Book>
-		<Book title="pew pew" id="pew-pew" order={4} color="yellow" size="s" offset={2}>hello</Book>
-		<Book title="About Me" id="about-me2" order={5} color="blue" offset={2}>
-			<a slot="front-header">About Me</a>
-			<p slot="front-body">written by a mad man - not my mum</p>
-		</Book>
-		<Book title="About somebody else" id="somebody2" order={6} color="red" size="l" offset={-1}>
-			hello
-		</Book>
-		<Book title="Your Joke here" id="joke2" order={7} color="green" offset={3}>hello</Book>
-		<Book title="pew pew" id="pew-pew2" order={8} color="yellow" size="s" offset={0}>hello</Book>
+	<main class="scene">
+		<TV />
+		<Cassette width="400px" decoType="c"><p>How to fix your printer</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="stripes" id="1">
+			<dialog id="sfs" popover>
+				<a href="#">screen content</a>
+			</dialog>
+			<button popovertarget="sfs">Scrollytelling for squirrels</button>
+		</Cassette>
+		<Cassette width="400px" decoType="b" tapeType="checked">
+			<a href="#od">Connect your database with CSS</a>
+		</Cassette>
+		<Cassette width="400px" decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
 	</main>
-	<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 </Layout>
+<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 
 <style is:global>
 	@layer defaults {
@@ -83,11 +86,25 @@ import Book from "../components/book.astro";
 
 			grid-template-rows:
 				[nav-start] max-content
-				[nav-end header-start] max-content
+				[nav-end header-start] 30vh
 				[header-end main-start] 1fr
 				[footer-start] var(--footer-main-intersection)
 				[main-end] minmax(10vh, max-content)
 				[footer-end];
+		}
+
+		dialog {
+			&::backdrop {
+				content: "";
+			}
+
+			&[popover] .tv-cassette {
+				opacity: 0.5;
+			}
+		}
+
+		.tv-cassette:has(::backdrop) {
+			opacity: 0.5;
 		}
 
 		nav {
@@ -101,9 +118,12 @@ import Book from "../components/book.astro";
 		main {
 			grid-area: main;
 			display: grid;
-			gap: 1rem;
 			grid-auto-rows: max-content;
 			padding-bottom: 10%;
+
+			/* & > .cassette {
+				transform: scale(0.85);
+			} */
 		}
 
 		footer {
@@ -118,101 +138,57 @@ import Book from "../components/book.astro";
 
 	@layer components {
 		nav {
-			--padding-inline: 2rem;
+		}
 
-			display: grid;
-			grid-auto-flow: column;
-			justify-content: end;
-			align-items: center;
-			gap: 1rem;
+		header {
+		}
 
-			padding: 1rem var(--padding-inline);
-			position: relative;
-
-			& ul {
-				display: none;
-				position: absolute;
-				right: var(--padding-inline);
-				top: 100%;
-				border: var(--border-width, 4px) solid black;
-				color: var(--text);
-				background-color: var(--book-background);
-				padding: 8px;
-				scroll-margin-top: 100px;
-			}
-
-			&:has(:target) ul {
-				display: block;
-			}
+		dialog {
+			width: 400px;
+			height: 301.8px;
+			border-radius: 2rem;
+			border: 4px solid black;
+			top: 33.5vh;
+			left: 50%;
+			transform: translateX(-48%);
 		}
 
 		.scene {
 			perspective: calc(100vw * 5);
-			perspective-origin: 166vw -66vw;
+			perspective-origin: 250vw -33vw;
 			position: relative;
 
-			&::after {
-				content: "";
-				position: absolute;
-				background-color: hsla(0, 0%, 0%, 0.5);
-				left: calc((100vw - 100%) / -2);
-				top: calc(var(--footer-main-intersection) * -1);
-				height: 100vh;
-				width: 100vw;
-				transform: scaleY(5);
-				pointer-events: none;
-				opacity: 0;
-				z-index: var(--amount);
-				transition: opacity 400ms ease;
+			& > * {
+				margin-inline: auto;
 			}
 
-			&:has(:target)::after {
-				opacity: 1;
-			}
-		}
-
-		header {
-			display: grid;
-			place-content: center;
-			text-align: center;
-			color: var(--grey-10);
-			gap: 0.5rem;
-			padding-block: var(--header-spacing);
-
-			&:has(:hover) .remark::after {
-				opacity: 1;
-			}
-		}
-
-		.logo {
-			display: grid;
-			grid-template-columns: max-content max-content;
-			grid-auto-rows: max-content;
-			gap: 0.5rem;
-			place-content: center;
-
-			& > div {
-				width: max-content;
+			& * {
+				transform-style: preserve-3d;
+				scroll-margin-top: 100vh;
 			}
 
-			& > div:nth-of-type(2n + 1) {
-				padding-inline: 1rem;
+			& > *:nth-child(1) {
+				z-index: 10;
 			}
-			& > div:last-of-type {
-				padding-inline: 2rem;
+			& > *:nth-child(2) {
+				transform: translateX(-5%);
+				z-index: 9;
 			}
+			& > *:nth-child(3) {
+				transform: translateX(-7%);
+				z-index: 8;
+			}
+			& > *:nth-child(4) {
+				transform: translateX(3%) translateZ(-30px);
 
-			.remark {
-				position: relative;
+				z-index: 6;
 			}
-
-			.remark::after {
-				content: "(just to be sure)";
-				position: absolute;
-				left: 50%;
-				width: 500%;
-				opacity: 0;
-				transition: opacity: 400ms ease;
+			& > *:nth-child(5) {
+				z-index: 5;
+			}
+			& > *:nth-child(6) {
+				transform: translateX(5%) translateZ(30px);
+				z-index: 4;
 			}
 		}
 	}

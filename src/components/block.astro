@@ -1,0 +1,110 @@
+---
+export interface Props {
+	height: string;
+	width: string;
+	depth: string;
+	readingAngle?: string;
+	className?: string;
+}
+
+const { height, width, depth, readingAngle, className = "" } = Astro.props;
+---
+
+<div
+	class=`block ${className}`
+	data-reading-angle={readingAngle ?? "0deg"}
+	style=`
+	--block-height: ${height};
+	--block-width: ${width}; 
+	--block-depth: ${depth};
+`
+>
+	<div class="cover">
+		<slot name="front" />
+	</div>
+	<div class="cover">
+		<slot name="back" />
+	</div>
+	<div class="side">
+		<slot name="bottom" />
+	</div>
+	<div class="side">
+		<slot name="top" />
+	</div>
+	<div class="edge">
+		<slot name="right" />
+	</div>
+	<div class="edge">
+		<slot name="left" />
+	</div>
+</div>
+
+<style is:global>
+	@layer bases {
+		.block {
+			--rotateX: 0deg;
+			--rotateY: 0deg;
+			--rotateZ: 0deg;
+
+			--inner-rotate: 0deg;
+
+			position: relative;
+			width: var(--block-width);
+			height: var(--block-height);
+
+			transform: translateZ(calc(var(--block-depth) / -2));
+			transition: var(--block-transiition);
+
+			& > div {
+				--opposite: 1;
+
+				position: absolute;
+				inset: 0;
+				border: var(--block-border);
+				background: var(--block-background);
+			}
+
+			& > div > * {
+				height: 100%;
+				width: 100%;
+			}
+
+			& > div:nth-child(2n) {
+				--opposite: -1;
+				--inner-rotate: 180deg;
+			}
+
+			.cover {
+				height: var(--block-height);
+				width: var(--block-width);
+				transform: translateZ(calc(var(--block-depth) / 2 * var(--opposite)))
+					rotateY(var(--inner-rotate));
+			}
+			.edge {
+				width: var(--block-depth);
+				height: var(--block-height);
+				left: calc((100% - var(--block-depth)) / 2);
+				transform: rotateY(90deg) translateZ(calc(var(--block-width) / 2 * var(--opposite)))
+					rotateY(var(--inner-rotate));
+			}
+
+			.side {
+				height: var(--block-depth);
+				width: calc(var(--block-width));
+				top: calc((var(--block-height) - var(--block-depth)) / 2);
+				left: calc((100% - var(--block-width)) / 2);
+				transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
+					rotateX(var(--inner-rotate));
+			}
+		}
+
+		.block[data-reading-angle="90deg"] .side {
+			width: var(--block-depth);
+			height: calc(var(--block-width));
+			top: calc((var(--block-height) - var(--block-width)) / 2);
+			left: calc((100% - var(--block-depth)) / 2);
+			transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
+				rotateX(var(--inner-rotate)) rotateZ(-90deg);
+		}
+	}
+</style>

@@ -1,0 +1,186 @@
+---
+import Block from "./block.astro";
+
+export interface Props {
+	decoType?: "a" | "b" | "c";
+	tapeType?: "blank" | "stripes" | "checked";
+	width: string;
+	id?: string;
+}
+
+const { decoType = "a", tapeType = "blank", width, id } = Astro.props;
+---
+
+<article class="cassette" id={id}>
+	<Block width={width} height="60px" depth="200px">
+		<div slot="front" class="front">
+			<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
+				<slot />
+			</div>
+		</div>
+	</Block>
+</article>
+
+<style is:global>
+	@layer components {
+		.cassette {
+			--cassette-background: hsla(0, 0%, 7%, 1);
+
+			--block-background: var(--cassette-background);
+			--block-border: 4px solid black;
+		}
+
+		.cassette .front {
+			--front-width: calc(100% - var(--space--2));
+			--front-height: calc(60px - (4px * 2) - (var(--space--3) * 2));
+
+			display: grid;
+			grid-template-columns: [full-start reader-start] 10% [reader-end tape-start] 1fr [tape-end spacing-start] 2.5% [spacing-end full-end];
+			grid-template-rows: 1fr;
+			padding: var(--space--3) var(--space--2);
+
+			.tape {
+				grid-area: 1 / tape;
+			}
+
+			&::before,
+			&::after {
+				content: "";
+				grid-area: 1 / reader;
+				width: 50%;
+				height: 60%;
+				transform: translateX(50%);
+				background-color: hsla(0, 0%, 0%, 1);
+				align-self: end;
+			}
+			&::after {
+				width: 40%;
+				height: 35%;
+				transform: translateX(calc(75%)) translateY(0%);
+				background-color: var(--cassette-background);
+			}
+		}
+
+		.tape {
+			background-color: white;
+			border-radius: 0.25rem;
+			display: grid;
+			place-content: center;
+			padding-inline: var(--space-1);
+			position: relative;
+			overflow: hidden;
+
+			&[data-tape-type="stripes"] {
+				--stripe-color: var(--grey-40);
+
+				background: repeating-linear-gradient(
+					to bottom,
+					white,
+					white 33%,
+					var(--stripe-color) calc(33% + 1px)
+				);
+			}
+
+			&[data-tape-type="checked"] {
+				--stripe-color: var(--grey-40);
+
+				background: repeating-linear-gradient(
+						to bottom,
+						transparent,
+						transparent 33%,
+						var(--stripe-color) calc(33% + 1px)
+					),
+					repeating-linear-gradient(to right, white, white 5%, var(--stripe-color) calc(5% + 1px));
+			}
+		}
+
+		.tape[data-deco-type="a"] {
+			&::before {
+				content: "";
+			}
+
+			&::after {
+				white-space: pre;
+				display: grid;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: calc(var(--front-height) * 1.25);
+				height: 90%;
+				place-content: end center;
+				text-align: center;
+				content: "Video \A Cassette";
+				font-size: 1px;
+				line-height: 1;
+				transform: rotateZ(-90deg) scale(0.85) translateY(35%) translateX(-5%);
+				background: linear-gradient(
+					to bottom,
+					var(--yellow) 0%,
+					var(--yellow) 33%,
+					var(--orange) 33%,
+					var(--orange) 66%,
+					var(--red) 66%,
+					var(--red) 100%
+				);
+			}
+		}
+
+		.tape[data-deco-type="b"] {
+			&::after,
+			&::before {
+				content: "";
+				position: absolute;
+				height: var(--front-height);
+				width: var(--space-1);
+				inset: 0;
+				background-color: var(--blue);
+			}
+
+			&::before {
+				content: "120";
+				display: grid;
+				place-content: center;
+				line-height: 1;
+				font-size: 1px;
+			}
+
+			&::after {
+				width: var(--space--2);
+				left: calc(100% - var(--space--2));
+			}
+		}
+
+		.tape[data-deco-type="c"] {
+			&::before {
+				white-space: pre;
+				display: grid;
+				position: absolute;
+				inset: 0;
+				width: calc(var(--front-height) * 1.25);
+				height: 90%;
+				place-content: start center;
+				text-align: center;
+				content: "Video \A Cassette";
+				font-size: 1px;
+				transform: rotateZ(-90deg) scale(0.85) translateY(-33%) translateX(-5%);
+				background: linear-gradient(
+					to bottom,
+					var(--red) 0%,
+					var(--red) 50%,
+					var(--magenta) 50%,
+					var(--magenta) 100%
+				);
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				height: var(--front-height);
+				width: var(--space--1);
+				left: calc(100% - var(--space--1));
+				background-color: var(--magenta);
+			}
+		}
+	}
+</style>
