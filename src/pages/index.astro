@@ -37,8 +37,11 @@ import Cassette from "../components/cassette.astro";
 
 
 
-  
+  ##improvements
 
+	- limit scope from slotted elements: https://css-tricks.com/weekly-platform-news-focus-rings-donut-scope-ditching-em-units-and-global-privacy-control/
+
+	- sometimes content from within the cube shines through. There seem to be a 1px gap 
 
 */
 </script>
@@ -48,25 +51,45 @@ import Cassette from "../components/cassette.astro";
 
 	<header></header>
 
-	<main class="scene">
-		<TV />
-		<Cassette width="400px" decoType="c"><p>How to fix your printer</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="stripes" id="1">
+	<TV className="main">
+		<Cassette width="450px" decoType="c" id="1">
+			<a href="#1">the intro nobody asked for</a>
+			<section class="cassette-content screen" slot="screen">
+				<h1>Hi, Lucas here</h1>
+				<p>
+					I am looking for a opportunities to create delight and performant movements on the web.
+				</p>
+			</section>
+		</Cassette>
+
+		<Cassette width="450px" decoType="a" tapeType="stripes" id="2">
 			<dialog id="sfs" popover>
 				<a href="#">screen content</a>
 			</dialog>
 			<button popovertarget="sfs">Scrollytelling for squirrels</button>
 		</Cassette>
-		<Cassette width="400px" decoType="b" tapeType="checked">
+		<Cassette width="450px" decoType="b" tapeType="checked" id="od">
 			<a href="#od">Connect your database with CSS</a>
+			<section class="cassette-content screen" slot="screen">
+				<p>fake news</p>
+			</section>
 		</Cassette>
-		<Cassette width="400px" decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-		<Cassette width="400px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-	</main>
+		<Cassette width="450px" decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked" id="printer">
+			<a href="#printer">How to fix your printer</a>
+			<section class="cassette-content screen" slot="screen">
+				<p>fake news</p>
+			</section>
+		</Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+	</TV>
 </Layout>
 <footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 
@@ -76,6 +99,9 @@ import Cassette from "../components/cassette.astro";
 			--padding: minmax(1rem, 1fr);
 			--footer-main-intersection: 20vh;
 			--header-spacing: var(--space-5);
+			--nav-size: 5rem;
+			--header-size: 20vh;
+			--above-scene: calc(var(--nav-size) + var(--header-size));
 
 			display: grid;
 			grid-template-columns:
@@ -85,11 +111,11 @@ import Cassette from "../components/cassette.astro";
 				[full-end];
 
 			grid-template-rows:
-				[nav-start] max-content
-				[nav-end header-start] 30vh
+				[nav-start] var(--nav-size)
+				[nav-end header-start] var(--header-size)
 				[header-end main-start] 1fr
 				[footer-start] var(--footer-main-intersection)
-				[main-end] minmax(10vh, max-content)
+				[main-end] minmax(calc(var(--above-scene) - 80px), max-content)
 				[footer-end];
 		}
 
@@ -115,15 +141,8 @@ import Cassette from "../components/cassette.astro";
 			grid-area: header / full;
 		}
 
-		main {
+		.main {
 			grid-area: main;
-			display: grid;
-			grid-auto-rows: max-content;
-			padding-bottom: 10%;
-
-			/* & > .cassette {
-				transform: scale(0.85);
-			} */
 		}
 
 		footer {
@@ -151,45 +170,6 @@ import Cassette from "../components/cassette.astro";
 			top: 33.5vh;
 			left: 50%;
 			transform: translateX(-48%);
-		}
-
-		.scene {
-			perspective: calc(100vw * 5);
-			perspective-origin: 250vw -33vw;
-			position: relative;
-
-			& > * {
-				margin-inline: auto;
-			}
-
-			& * {
-				transform-style: preserve-3d;
-				scroll-margin-top: 100vh;
-			}
-
-			& > *:nth-child(1) {
-				z-index: 10;
-			}
-			& > *:nth-child(2) {
-				transform: translateX(-5%);
-				z-index: 9;
-			}
-			& > *:nth-child(3) {
-				transform: translateX(-7%);
-				z-index: 8;
-			}
-			& > *:nth-child(4) {
-				transform: translateX(3%) translateZ(-30px);
-
-				z-index: 6;
-			}
-			& > *:nth-child(5) {
-				z-index: 5;
-			}
-			& > *:nth-child(6) {
-				transform: translateX(5%) translateZ(30px);
-				z-index: 4;
-			}
 		}
 	}
 </style>

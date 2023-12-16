@@ -25,16 +25,16 @@ const { height, width, depth, readingAngle, className = "" } = Astro.props;
 	<div class="cover">
 		<slot name="back" />
 	</div>
-	<div class="side">
+	<div class="edge">
 		<slot name="bottom" />
 	</div>
-	<div class="side">
+	<div class="edge">
 		<slot name="top" />
 	</div>
-	<div class="edge">
+	<div class="side">
 		<slot name="right" />
 	</div>
-	<div class="edge">
+	<div class="side">
 		<slot name="left" />
 	</div>
 </div>
@@ -74,13 +74,13 @@ const { height, width, depth, readingAngle, className = "" } = Astro.props;
 				--inner-rotate: 180deg;
 			}
 
-			.cover {
+			& > .cover {
 				height: var(--block-height);
 				width: var(--block-width);
 				transform: translateZ(calc(var(--block-depth) / 2 * var(--opposite)))
 					rotateY(var(--inner-rotate));
 			}
-			.edge {
+			& > .side {
 				width: var(--block-depth);
 				height: var(--block-height);
 				left: calc((100% - var(--block-depth)) / 2);
@@ -88,7 +88,7 @@ const { height, width, depth, readingAngle, className = "" } = Astro.props;
 					rotateY(var(--inner-rotate));
 			}
 
-			.side {
+			& > .edge {
 				height: var(--block-depth);
 				width: calc(var(--block-width));
 				top: calc((var(--block-height) - var(--block-depth)) / 2);
@@ -98,7 +98,7 @@ const { height, width, depth, readingAngle, className = "" } = Astro.props;
 			}
 		}
 
-		.block[data-reading-angle="90deg"] .side {
+		.block[data-reading-angle="90deg"] > .edge {
 			width: var(--block-depth);
 			height: calc(var(--block-width));
 			top: calc((var(--block-height) - var(--block-width)) / 2);

@@ -1,179 +1,235 @@
 ---
-import Block from "./block.astro";
-import Cassette from "./cassette.astro";
-export interface Props {}
+export interface Props {
+	className: string;
+}
 
-const {} = Astro.props;
+const { className = "" } = Astro.props;
 ---
 
-<article class="tv">
-	<Block width="450px" height="500px" depth="200px">
-		<div slot="front" class="front">
-			<section class="screen">
-				<h1>Hi, Lucas here</h1>
-				<p>
-					I am looking for a opportunities to create delight and performant movements on the web.
-				</p>
-			</section>
-			<div class="light"></div>
-			<section class="tv-cassette">
-				<Cassette width="400px">
-					<p>the intro nobody asked for</p>
-				</Cassette>
-			</section>
-		</div>
-		<div slot="right" class="right">
-			<div class="speaker"></div>
-			<Block width="100px" height="30px" depth="10px">
-				<p slot="front" class="power">POWER</p>
-			</Block>
-		</div>
-		<div slot="back">
-			<div class="antenna"></div>
-		</div>
-	</Block>
-</article>
+<main class=`tv scene ${className} `>
+	<div class="forground">
+		<div class="cover tv-screen"></div>
+		<div class="cover slot"></div>
+		<div class="overlay"></div>
+		<div class="side"></div>
+		<div class="edge"></div>
+	</div>
+
+	<div class="cassettes">
+		<div class="static-background"></div>
+		<slot />
+	</div>
+
+	<div class="background">
+		<div class="cover"></div>
+		<div class="side"></div>
+		<div class="edge"></div>
+	</div>
+</main>
 
 <style is:global>
 	@layer components {
+		.scene {
+			--scene-width: clamp(300px, 50vw, 500px);
+			--scene-depth: 200px;
+
+			perspective: calc(100vw * 5);
+			perspective-origin: 250vw -33vw;
+			position: relative;
+			width: var(--scene-width);
+			margin-inline: auto;
+
+			& * {
+				transform-style: preserve-3d;
+			}
+		}
+
 		.tv {
 			--block-background: hsla(0, 0%, 16%, 1);
 			--block-border: 4px solid black;
 			--tv-color: white;
+			--tv-panel-width: var(--space-1);
+			--tv-height: 500px;
+			--screen-height: calc(var(--tv-height) - 150px - 1rem);
+			--slot-overlap: 170px;
 
-			color: var(--tv-color);
-			position: sticky;
-			top: 30vh;
-		}
-
-		.front {
 			display: grid;
-			grid-auto-flow: row;
-			grid-template-rows: [screen-start] 1fr [screen-end light-start] max-content [light-end slot-start] 70px;
-			gap: var(--space--1);
-			padding: var(--space-1);
-			padding-block-end: 10%;
-			height: 100%;
+			grid-template-columns: 1fr;
+			grid-template-rows:
+				[tv-start] calc(var(--tv-height) - var(--slot-overlap)) [cassette-start] var(--slot-overlap)
+				[tv-end] 1fr [cassette-end];
 
-			.light {
-				background: green;
-				width: 3rem;
-				height: 1rem;
-				border: 4px solid black;
-				margin-inline-start: 1rem;
-			}
-		}
+			.forground,
+			.background {
+				grid-area: tv / 1;
 
-		.front .screen {
-			display: grid;
-			place-content: center;
-			gap: var(--space-1);
-
-			background: hsla(162, 16%, 62%, 1);
-			border-radius: 2rem;
-			border: 8px solid black;
-			box-shadow: inset 0px 0px 20px white;
-			font-family: "Press Start 2P";
-			text-align: center;
-
-			& h1 {
-				font-size: var(--font-2);
+				position: sticky;
+				top: var(--above-scene);
+				pointer-events: none;
 			}
 
-			& p {
-				font-size: var(--font--2);
-			}
-		}
-
-		.tv-cassette {
-			background: black;
-			border-radius: 0.25rem;
-			margin: auto;
-			position: relative;
-			height: 100%;
-
-			p {
-				color: black;
+			:where(.background, .forground, .cassettes) {
+				transform: translateZ(calc(var(--scene-depth) / -2));
 			}
 
-			& .block:first-of-type {
-				transform: translateZ(calc(200px / -4)) translateY(5px);
+			.forground {
+				z-index: 2;
+
+				.cover {
+					height: var(--screen-height);
+				}
 			}
 
-			&::after {
-				content: "";
-				position: absolute;
-				right: 0%;
-				top: 0;
-				height: 100%;
-				width: 2rem;
-				background: linear-gradient(to right, transparent, black);
-				transform: translate3d(20px, -7px, 50px);
-				border-end-end-radius: 0.25rem;
-				border-start-end-radius: 0.25rem;
+			.cassettes {
+				z-index: 1;
+				position: relative;
+				grid-area: cassette / 1;
 			}
-		}
 
-		.antenna {
-			--opposite: 1;
-
-			position: relative;
-			height: 250px;
-			width: 50px;
-			transform: translateY(-90%) translateX(200%);
-
-			&::after,
-			&::before {
-				content: "";
-				position: absolute;
-				height: 100%;
-				width: 10px;
-				background: black;
-				transform: rotateZ(calc(20deg * var(--opposite)));
-				transform-origin: bottom;
-				border-start-end-radius: 50%;
-				border-start-start-radius: 50%;
-			}
-			&::before {
+			.background {
 				--opposite: -1;
+				z-index: 0;
 			}
-		}
 
-		.right {
-			--block-background: hsla(0, 0%, 7%, 1);
-
-			padding: var(--space-2);
-			display: grid;
-			place-content: space-between center;
-			grid-auto-flow: row;
-
-			.block {
-				transform: translateZ(10px);
+			:where(.cover, .side, .edge) {
+				position: absolute;
+				inset: 0;
+				border: var(--block-border);
+				background: var(--block-background);
 			}
 
 			.cover {
-				display: grid;
-				place-content: center;
+				transform: translateZ(calc(var(--scene-depth) / 2 * var(--opposite, 1)));
+			}
+			.side {
+				left: calc((var(--scene-width) - var(--scene-depth)) / 2);
+				width: var(--scene-depth);
+				transform: rotateY(90deg) translateZ(calc((var(--scene-width) / 2) * var(--opposite, 1)));
 			}
 
-			.speaker {
-				--dot-color: black;
-				--dot-size: 30%;
-				--dot-density: 3%;
-				--background: hsla(0, 0%, 7%, 1);
+			.edge {
+				height: var(--scene-depth);
+				width: var(--scene-width);
+				top: calc((var(--tv-height) - var(--scene-depth)) / 2);
+				transform: rotateX(-90deg) translateZ(calc((var(--tv-height) / -2) * var(--opposite, 1)));
+			}
 
-				border-radius: 100px;
+			.overlay {
+				width: clamp(300px, 60vw, 100vw);
+				height: 100vh;
+				position: absolute;
+				inset: 0;
+				transform: translateX(-25%) translateY(-97%) translateZ(calc((var(--scene-depth) / -2)));
+				background: var(--grey-85);
+			}
+		}
+
+		.tv .slot.slot {
+			width: 100%;
+			height: 90px;
+			inset: 0;
+
+			border-block-start: transparent;
+			background: var(--block-background);
+			position: absolute;
+			top: calc(100% - 90px);
+		}
+
+		.tv-screen {
+			background: linear-gradient(
+					to bottom,
+					var(--block-background) 0%,
+					var(--block-background) 1rem,
+					transparent 1rem,
+					transparent calc(var(--screen-height) - 1.5rem),
+					var(--block-background) calc(var(--screen-height) - 1.5rem),
+					var(--block-background) 100%
+				),
+				linear-gradient(
+					to right,
+					var(--block-background) 0%,
+					var(--block-background) 1rem,
+					transparent 1rem,
+					transparent calc(var(--scene-width) - 1.5rem),
+					var(--block-background) calc(var(--scene-width) - 1.5rem),
+					var(--block-background) 100%
+				);
+		}
+
+		.cassettes {
+			display: flex;
+			flex-direction: column;
+
+			.screen {
+				display: none;
+				position: absolute;
+				width: calc(var(--scene-width) - 2rem);
+				height: calc(var(--screen-height) - 2rem);
+				top: calc((var(--screen-height) - 1rem) * -1);
+				left: 3rem;
+				transform: translateZ(0px);
+				background-color: white;
+			}
+
+			> [id] {
+				scroll-margin-block-start: calc(var(--tv-height) + 125px);
+			}
+
+			> :target {
+				order: -1;
+			}
+
+			.static-background {
+				z-index: 1;
+				order: -1;
+				position: sticky;
+				margin-top: calc(var(--screen-height) * -1);
+				height: calc(var(--screen-height) - 2rem);
+				width: calc(100% - 2rem);
+				left: 50%;
+				top: var(--above-scene);
+				background: green;
+				transform: translateZ(calc(150px - 1px));
+			}
+
+			&:not(:has(:target)) > article:first-of-type,
+			& :target {
+				position: sticky;
+				top: 607px;
+				transform: translateZ(150px);
+			}
+
+			&:not(:has(:target)) > article:first-of-type .screen,
+			& :target .screen {
+				display: grid;
+			}
+
+			&::before {
+				--cutoff: 70px;
+
+				content: "";
+				position: sticky;
+				display: block;
+				height: 90px;
+				width: 100%;
+				background: linear-gradient(
+					to bottom,
+					black 0%,
+					black var(--cutoff),
+					hsla(0, 0%, 16%, 1) var(--cutoff)
+				);
+				transform: translateZ(100px);
 				border: var(--block-border);
-				width: calc(var(--block-depth) - var(--space-2) * 2);
-				aspect-ratio: 1;
-				background-image: radial-gradient(
-						var(--dot-color) var(--dot-size),
-						transparent var(--dot-size)
-					),
-					radial-gradient(var(--dot-color) var(--dot-size), transparent var(--dot-size));
-				background-position: var(--dot-density);
-				background-size: var(--dot-density) var(--dot-density);
-				background-color: var(--background);
+				margin-top: -90px;
+				top: 607px;
+			}
+
+			&:not(:has(:target)) > article:nth-of-type(2)::before,
+			&:has(> article:first-of-type:target) > article:nth-of-type(2)::before,
+			&:has(:target):has(article:first-of-type:not(:target)) > article:nth-of-type(1)::before {
+				content: "";
+				display: block;
+				height: 150px;
 			}
 		}
 	}
