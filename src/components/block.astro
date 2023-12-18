@@ -1,59 +1,43 @@
 ---
 export interface Props {
-	height: string;
-	width: string;
-	depth: string;
 	readingAngle?: string;
 	className?: string;
+	id?: string;
 }
 
-const { height, width, depth, readingAngle, className = "" } = Astro.props;
+const { readingAngle, className = "", id } = Astro.props;
 ---
 
-<div
-	class=`block ${className}`
-	data-reading-angle={readingAngle ?? "0deg"}
-	style=`
-	--block-height: ${height};
-	--block-width: ${width}; 
-	--block-depth: ${depth};
-`
->
-	<div class="cover">
+<div {...id && { id: id }} class=`block ${className}` data-reading-angle={readingAngle ?? "0deg"}>
+	<div class="block-cover" data-block-side="front">
 		<slot name="front" />
 	</div>
-	<div class="cover">
+	<div class="block-cover" data-block-side="back">
 		<slot name="back" />
 	</div>
-	<div class="edge">
+	<div class="block-edge" data-block-side="bottom">
 		<slot name="bottom" />
 	</div>
-	<div class="edge">
+	<div class="block-edge" data-block-side="top">
 		<slot name="top" />
 	</div>
-	<div class="side">
+	<div class="block-side" data-block-side="right">
 		<slot name="right" />
 	</div>
-	<div class="side">
+	<div class="block-side" data-block-side="left">
 		<slot name="left" />
 	</div>
 </div>
 
 <style is:global>
-	@layer bases {
+	@layer utilities {
 		.block {
-			--rotateX: 0deg;
-			--rotateY: 0deg;
-			--rotateZ: 0deg;
-
-			--inner-rotate: 0deg;
+			--backface-rotate: 0deg;
 
 			position: relative;
 			width: var(--block-width);
 			height: var(--block-height);
-
 			transform: translateZ(calc(var(--block-depth) / -2));
-			transition: var(--block-transiition);
 
 			& > div {
 				--opposite: 1;
@@ -64,47 +48,47 @@ const { height, width, depth, readingAngle, className = "" } = Astro.props;
 				background: var(--block-background);
 			}
 
-			& > div > * {
+			& > div > :where(*) {
 				height: 100%;
 				width: 100%;
 			}
 
 			& > div:nth-child(2n) {
 				--opposite: -1;
-				--inner-rotate: 180deg;
+				--backface-rotate: 180deg;
 			}
 
-			& > .cover {
+			& > .block-cover {
 				height: var(--block-height);
 				width: var(--block-width);
 				transform: translateZ(calc(var(--block-depth) / 2 * var(--opposite)))
-					rotateY(var(--inner-rotate));
+					rotateY(var(--backface-rotate));
 			}
-			& > .side {
+			& > .block-side {
 				width: var(--block-depth);
 				height: var(--block-height);
 				left: calc((100% - var(--block-depth)) / 2);
 				transform: rotateY(90deg) translateZ(calc(var(--block-width) / 2 * var(--opposite)))
-					rotateY(var(--inner-rotate));
+					rotateY(var(--backface-rotate));
 			}
 
-			& > .edge {
+			& > .block-edge {
 				height: var(--block-depth);
 				width: calc(var(--block-width));
 				top: calc((var(--block-height) - var(--block-depth)) / 2);
 				left: calc((100% - var(--block-width)) / 2);
 				transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
-					rotateX(var(--inner-rotate));
+					rotateX(var(--backface-rotate));
 			}
-		}
 
-		.block[data-reading-angle="90deg"] > .edge {
-			width: var(--block-depth);
-			height: calc(var(--block-width));
-			top: calc((var(--block-height) - var(--block-width)) / 2);
-			left: calc((100% - var(--block-depth)) / 2);
-			transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
-				rotateX(var(--inner-rotate)) rotateZ(-90deg);
+			&[data-reading-angle="90deg"] > .block-edge {
+				height: calc(var(--block-width));
+				width: var(--block-depth);
+				top: calc((var(--block-height) - var(--block-width)) / 2);
+				left: calc((100% - var(--block-depth)) / 2);
+				transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
+					rotateX(var(--backface-rotate)) rotateZ(-90deg);
+			}
 		}
 	}
 </style>

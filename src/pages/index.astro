@@ -9,39 +9,23 @@ import Cassette from "../components/cassette.astro";
 - currently TV and Cassette have an empty wrapper just for styles
 => we could pass a class and define the html element tag from the outside
 
-- we need some kind of settings for the goofyness
-=> To show the casette or go straight to the article could be an option
-=> no animations
+
+- make the cassettes responsive and limit scope from slotted elements: https://css-tricks.com/weekly-platform-news-focus-rings-donut-scope-ditching-em-units-and-global-privacy-control/
+
 
 - add covers around the cassettes
-=> on hover/click etc the tape could move out a bit but not the cover
-=> needs basic animation though
+=> on hover/click etc the tape could move out a bit but not the cover or the tape could spin to show the backside of the cover?
 
-- make the tv sticky
-- make labels into buttons with popover
-=> custom component for the buttons? The Dialog? Both? One big one?
-=> we need to emulate the close on esc/outside click behaviour
-=> do we need inert as well?
-=> add anchor elements in a <noscript> tag and use @supports selector(:popover-open) to check if they need display: initial or none
-
-- extract styles of the screen and share with the popover
-=> make it match with the tv stickyness
-
-- hide the books coming out of the screen if we are scrolled down too much
-
-- how to change the cassettes in the current slot?
-=> .cassette:has(:popover-open) can give us the current cassette
-=> maybe we need to add the cutout ability to the cassette itselfs because currently it is difficult to position the 
-=> another option would be to make a cutout by painting everything besides a certain space with linear-gradient. The background would then need to be closer (z-index) than the cassettes. So they would need to be slotted in there somehow
-=> if they are in a list together, maybe we can get scroll snapping to work?
-
+- rebuild the tv
+- screen styles
+- have a small transition for when a screen is clicked
+- sometimes content from within the cube shines through. There seem to be a 1px gap 
 
 
   ##improvements
 
-	- limit scope from slotted elements: https://css-tricks.com/weekly-platform-news-focus-rings-donut-scope-ditching-em-units-and-global-privacy-control/
-
-	- sometimes content from within the cube shines through. There seem to be a 1px gap 
+- use IO to change the tapes on scroll. Needs to be deactivatable via a toggle though
+- scroll snapping for the tapes would be nice
 
 */
 </script>
@@ -51,45 +35,48 @@ import Cassette from "../components/cassette.astro";
 
 	<header></header>
 
-	<TV className="main">
-		<Cassette width="450px" decoType="c" id="1">
-			<a href="#1">the intro nobody asked for</a>
-			<section class="cassette-content screen" slot="screen">
-				<h1>Hi, Lucas here</h1>
-				<p>
-					I am looking for a opportunities to create delight and performant movements on the web.
-				</p>
-			</section>
-		</Cassette>
+	<main class="scene">
+		<TV>
+			<Cassette decoType="c" id="1">
+				<a href="#1">the intro nobody asked for</a>
+				<section class="cassette-content screen" slot="screen">
+					<h1>Hi, Lucas here</h1>
+					<p>
+						I am looking for a opportunities to create delight and performant movements on the web.
+					</p>
+					<button>hello</button>
+				</section>
+			</Cassette>
 
-		<Cassette width="450px" decoType="a" tapeType="stripes" id="2">
-			<dialog id="sfs" popover>
-				<a href="#">screen content</a>
-			</dialog>
-			<button popovertarget="sfs">Scrollytelling for squirrels</button>
-		</Cassette>
-		<Cassette width="450px" decoType="b" tapeType="checked" id="od">
-			<a href="#od">Connect your database with CSS</a>
-			<section class="cassette-content screen" slot="screen">
-				<p>fake news</p>
-			</section>
-		</Cassette>
-		<Cassette width="450px" decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked" id="printer">
-			<a href="#printer">How to fix your printer</a>
-			<section class="cassette-content screen" slot="screen">
-				<p>fake news</p>
-			</section>
-		</Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-		<Cassette width="450px" decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-	</TV>
+			<Cassette decoType="a" tapeType="stripes" id="2">
+				<dialog id="sfs" popover>
+					<a href="#">screen content</a>
+				</dialog>
+				<button popovertarget="sfs">Scrollytelling for squirrels</button>
+			</Cassette>
+			<Cassette decoType="b" tapeType="checked" id="od">
+				<a href="#od">Connect your database with CSS</a>
+				<section class="cassette-content screen" slot="screen">
+					<p>fake news</p>
+				</section>
+			</Cassette>
+			<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+			<Cassette decoType="a" tapeType="checked" id="printer">
+				<a href="#printer">How to fix your printer</a>
+				<section class="cassette-content screen" slot="screen">
+					<p>fake news</p>
+				</section>
+			</Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+		</TV>
+	</main>
 </Layout>
 <footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 
@@ -101,7 +88,7 @@ import Cassette from "../components/cassette.astro";
 			--header-spacing: var(--space-5);
 			--nav-size: 5rem;
 			--header-size: 20vh;
-			--above-scene: calc(var(--nav-size) + var(--header-size));
+			--above-scene: calc((var(--nav-size) + var(--header-size)));
 
 			display: grid;
 			grid-template-columns:
@@ -119,20 +106,6 @@ import Cassette from "../components/cassette.astro";
 				[footer-end];
 		}
 
-		dialog {
-			&::backdrop {
-				content: "";
-			}
-
-			&[popover] .tv-cassette {
-				opacity: 0.5;
-			}
-		}
-
-		.tv-cassette:has(::backdrop) {
-			opacity: 0.5;
-		}
-
 		nav {
 			grid-area: nav / full;
 		}
@@ -141,8 +114,10 @@ import Cassette from "../components/cassette.astro";
 			grid-area: header / full;
 		}
 
-		.main {
+		main {
 			grid-area: main;
+			display: grid;
+			place-content: center;
 		}
 
 		footer {
@@ -152,24 +127,6 @@ import Cassette from "../components/cassette.astro";
 			place-content: end center;
 			color: var(--grey-10);
 			background-color: var(--grey-70);
-		}
-	}
-
-	@layer components {
-		nav {
-		}
-
-		header {
-		}
-
-		dialog {
-			width: 400px;
-			height: 301.8px;
-			border-radius: 2rem;
-			border: 4px solid black;
-			top: 33.5vh;
-			left: 50%;
-			transform: translateX(-48%);
 		}
 	}
 </style>

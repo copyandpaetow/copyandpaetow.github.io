@@ -8,3 +8,20 @@
 	flex-wrap: wrap;
 	gap: var(--gutter);
 }
+
+.scene {
+	--perspective-factor: 10;
+	--origin-x: 200vw;
+	--origin-y: -33vw;
+
+	perspective: calc(100vw * var(--perspective-factor));
+	perspective-origin: var(--origin-x) var(--origin-y);
+
+	& * {
+		transform-style: preserve-3d;
+	}
+
+	@media (min-width: 30rem) {
+		--perspective-factor: 5;
+	}
+}
