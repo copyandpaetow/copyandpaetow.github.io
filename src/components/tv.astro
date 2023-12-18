@@ -1,235 +1,163 @@
 ---
+import Block from "./block.astro";
 export interface Props {
-	className: string;
+	className?: string;
 }
 
 const { className = "" } = Astro.props;
 ---
 
-<main class=`tv scene ${className} `>
-	<div class="forground">
-		<div class="cover tv-screen"></div>
-		<div class="cover slot"></div>
-		<div class="overlay"></div>
-		<div class="side"></div>
-		<div class="edge"></div>
-	</div>
+<div class=`tv-scene ${className}`>
+	<Block className="tv">
+		<div slot="front" class="tv-front">
+			<div class="static-background"></div>
+		</div>
+	</Block>
 
 	<div class="cassettes">
-		<div class="static-background"></div>
 		<slot />
 	</div>
-
-	<div class="background">
-		<div class="cover"></div>
-		<div class="side"></div>
-		<div class="edge"></div>
-	</div>
-</main>
+</div>
 
 <style is:global>
 	@layer components {
-		.scene {
-			--scene-width: clamp(300px, 50vw, 500px);
-			--scene-depth: 200px;
+		.tv-scene {
+			--tv-height: 500px;
+			--tv-width: clamp(300px, 50vw, 500px);
+			--tv-depth: 300px;
+			--tv-background: hsla(0, 0%, 16%, 1);
+			--tv-panel-height: 90px;
+			--tv-slot-height: 70px;
+			--tv-slot-padding: 1rem;
+			--tv-screen-padding: 1rem;
+			--tv-screen-height: calc(
+				var(--tv-height) - var(--tv-slot-height) - var(--tv-slot-padding) - var(--tv-panel-height) -
+					(2 * var(--border-width))
+			);
 
-			perspective: calc(100vw * 5);
-			perspective-origin: 250vw -33vw;
-			position: relative;
-			width: var(--scene-width);
-			margin-inline: auto;
+			--tv-fully-visible: var(--above-scene);
 
-			& * {
-				transform-style: preserve-3d;
-			}
+			--cassette-height: 60px;
+			--cassette-width: calc(var(--tv-width) - 50px);
+			--cassette-depth: 200px;
+			--cassette-inset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
+			--cassette-inset-x: calc((var(--tv-width) - var(--cassette-width)) / 2);
+			--cassette-active-offset-z: 50px;
 		}
 
 		.tv {
-			--block-background: hsla(0, 0%, 16%, 1);
-			--block-border: 4px solid black;
-			--tv-color: white;
-			--tv-panel-width: var(--space-1);
-			--tv-height: 500px;
-			--screen-height: calc(var(--tv-height) - 150px - 1rem);
-			--slot-overlap: 170px;
+			--block-height: var(--tv-height);
+			--block-depth: var(--tv-depth);
+			--block-width: var(--tv-width);
+			--block-background: var(--tv-background);
+			--block-border: var(--border);
 
+			position: sticky;
+			top: var(--tv-fully-visible);
+
+			> [data-block-side="front"] {
+				--block-background: transparent;
+			}
+		}
+
+		.tv-front {
 			display: grid;
-			grid-template-columns: 1fr;
 			grid-template-rows:
-				[tv-start] calc(var(--tv-height) - var(--slot-overlap)) [cassette-start] var(--slot-overlap)
-				[tv-end] 1fr [cassette-end];
+				[screen-start] var(--tv-screen-height)
+				[screen-end tv-slot-start] var(--tv-slot-height)
+				[tv-slot-end tv-panel-start] var(--tv-panel-height)
+				[tv-panel-end];
+			grid-template-columns:
+				[full-start] var(--tv-screen-padding)
+				[center-start] 1fr
+				[center-end] var(--tv-screen-padding)
+				[full-end];
 
-			.forground,
-			.background {
-				grid-area: tv / 1;
-
-				position: sticky;
-				top: var(--above-scene);
-				pointer-events: none;
-			}
-
-			:where(.background, .forground, .cassettes) {
-				transform: translateZ(calc(var(--scene-depth) / -2));
-			}
-
-			.forground {
-				z-index: 2;
-
-				.cover {
-					height: var(--screen-height);
-				}
-			}
-
-			.cassettes {
-				z-index: 1;
-				position: relative;
-				grid-area: cassette / 1;
-			}
-
-			.background {
-				--opposite: -1;
-				z-index: 0;
-			}
-
-			:where(.cover, .side, .edge) {
-				position: absolute;
-				inset: 0;
-				border: var(--block-border);
-				background: var(--block-background);
-			}
-
-			.cover {
-				transform: translateZ(calc(var(--scene-depth) / 2 * var(--opposite, 1)));
-			}
-			.side {
-				left: calc((var(--scene-width) - var(--scene-depth)) / 2);
-				width: var(--scene-depth);
-				transform: rotateY(90deg) translateZ(calc((var(--scene-width) / 2) * var(--opposite, 1)));
-			}
-
-			.edge {
-				height: var(--scene-depth);
-				width: var(--scene-width);
-				top: calc((var(--tv-height) - var(--scene-depth)) / 2);
-				transform: rotateX(-90deg) translateZ(calc((var(--tv-height) / -2) * var(--opposite, 1)));
-			}
-
-			.overlay {
-				width: clamp(300px, 60vw, 100vw);
-				height: 100vh;
-				position: absolute;
-				inset: 0;
-				transform: translateX(-25%) translateY(-97%) translateZ(calc((var(--scene-depth) / -2)));
-				background: var(--grey-85);
-			}
-		}
-
-		.tv .slot.slot {
-			width: 100%;
-			height: 90px;
-			inset: 0;
-
-			border-block-start: transparent;
-			background: var(--block-background);
-			position: absolute;
-			top: calc(100% - 90px);
-		}
-
-		.tv-screen {
 			background: linear-gradient(
 					to bottom,
-					var(--block-background) 0%,
-					var(--block-background) 1rem,
-					transparent 1rem,
-					transparent calc(var(--screen-height) - 1.5rem),
-					var(--block-background) calc(var(--screen-height) - 1.5rem),
-					var(--block-background) 100%
+					var(--tv-background) 0%,
+					var(--tv-background) var(--tv-screen-padding),
+					transparent var(--tv-screen-padding),
+					transparent calc(var(--tv-screen-height) - var(--tv-screen-padding)),
+					var(--tv-background) calc(var(--tv-screen-height) - var(--tv-screen-padding)),
+					var(--tv-background) 100%
 				),
 				linear-gradient(
 					to right,
-					var(--block-background) 0%,
-					var(--block-background) 1rem,
-					transparent 1rem,
-					transparent calc(var(--scene-width) - 1.5rem),
-					var(--block-background) calc(var(--scene-width) - 1.5rem),
-					var(--block-background) 100%
+					var(--tv-background) 0%,
+					var(--tv-background) var(--tv-screen-padding),
+					transparent var(--tv-screen-padding),
+					transparent calc(var(--tv-width) - 2 * var(--tv-screen-padding)),
+					var(--tv-background) calc(var(--tv-width) - 2 * var(--tv-screen-padding)),
+					var(--tv-background) 100%
 				);
+
+			&::before {
+				content: "";
+				grid-area: tv-slot/center;
+				background: var(--black);
+			}
+
+			.static-background {
+				grid-area: screen/full;
+				background: green;
+				transform: translateZ(-1px);
+			}
 		}
 
 		.cassettes {
-			display: flex;
-			flex-direction: column;
+			display: grid;
+			grid-auto-flow: row;
+			grid-auto-rows: max-content;
+
+			transform: translateZ(calc(var(--cassette-inset-z) * -1))
+				translateX(calc(var(--cassette-inset-x)));
 
 			.screen {
 				display: none;
 				position: absolute;
-				width: calc(var(--scene-width) - 2rem);
-				height: calc(var(--screen-height) - 2rem);
-				top: calc((var(--screen-height) - 1rem) * -1);
-				left: 3rem;
-				transform: translateZ(0px);
+				width: calc(var(--tv-width) - (2 * var(--tv-screen-padding)) - (2 * var(--border-width)));
+				height: calc(
+					var(--tv-screen-height) - (2 * var(--tv-screen-padding) - (var(--border-width)))
+				);
+				top: calc((var(--tv-screen-height) - var(--tv-screen-padding) / 2) * -1);
+				left: calc(var(--tv-screen-padding) * -1);
 				background-color: white;
+				transform: translateZ(calc(var(--cassette-active-offset-z) * -1))
+					translateX(calc(var(--cassette-inset-x) / 2 - 1px));
 			}
 
 			> [id] {
-				scroll-margin-block-start: calc(var(--tv-height) + 125px);
+				scroll-margin-block-start: calc(var(--tv-height) + var(--tv-fully-visible));
 			}
 
 			> :target {
 				order: -1;
 			}
 
-			.static-background {
-				z-index: 1;
-				order: -1;
-				position: sticky;
-				margin-top: calc(var(--screen-height) * -1);
-				height: calc(var(--screen-height) - 2rem);
-				width: calc(100% - 2rem);
-				left: 50%;
-				top: var(--above-scene);
-				background: green;
-				transform: translateZ(calc(150px - 1px));
-			}
-
 			&:not(:has(:target)) > article:first-of-type,
 			& :target {
+				--center-offset: calc(var(--tv-slot-height) - var(--cassette-height));
+
 				position: sticky;
-				top: 607px;
-				transform: translateZ(150px);
+				top: calc(var(--tv-fully-visible) + var(--tv-screen-height) + var(--center-offset));
+				transform: translateZ(calc(var(--cassette-inset-z) + var(--cassette-active-offset-z)));
+				margin-top: calc(
+					(var(--tv-slot-height) + var(--tv-slot-padding) + var(--cassette-height) * 1.5) * -1
+				);
 			}
 
 			&:not(:has(:target)) > article:first-of-type .screen,
 			& :target .screen {
+				grid-row: 1/2;
 				display: grid;
 			}
 
-			&::before {
-				--cutoff: 70px;
+			& > *:not(:target) {
+				--buffer: 50%;
 
-				content: "";
 				position: sticky;
-				display: block;
-				height: 90px;
-				width: 100%;
-				background: linear-gradient(
-					to bottom,
-					black 0%,
-					black var(--cutoff),
-					hsla(0, 0%, 16%, 1) var(--cutoff)
-				);
-				transform: translateZ(100px);
-				border: var(--block-border);
-				margin-top: -90px;
-				top: 607px;
-			}
-
-			&:not(:has(:target)) > article:nth-of-type(2)::before,
-			&:has(> article:first-of-type:target) > article:nth-of-type(2)::before,
-			&:has(:target):has(article:first-of-type:not(:target)) > article:nth-of-type(1)::before {
-				content: "";
-				display: block;
-				height: 150px;
+				top: calc(var(--tv-fully-visible) + var(--buffer));
 			}
 		}
 	}

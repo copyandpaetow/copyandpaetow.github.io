@@ -32,6 +32,7 @@
 	--grey-80: hsl(210, 9%, 31%);
 	--grey-85: hsl(210, 10%, 23%);
 	--grey-90: hsl(210, 11%, 15%);
+	--black: hsl(0, 0%, 5%);
 	--red: hsl(5, 61%, 54%);
 	--orange: hsl(23, 70%, 51%);
 	--yellow: hsl(45, 82%, 45%);
@@ -43,10 +44,15 @@
 
 	--book-background: var(--grey-50);
 	--text: var(--grey-90);
+
+	--border-width: var(--space--3);
+	--border-color: var(--black);
+	--border: var(--border-width) solid var(--black);
+	--background: var(--grey-85);
 }
 
 body {
-	background-color: var(--grey-85);
+	background-color: var(--background);
 }
 
 h1 {
