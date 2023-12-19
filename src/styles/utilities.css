@@ -22,6 +22,14 @@
 	}
 
 	@media (min-width: 30rem) {
+		--perspective-factor: 8;
+	}
+
+	@media (min-width: 40rem) {
+		--perspective-factor: 6;
+	}
+
+	@media (min-width: 50rem) {
 		--perspective-factor: 5;
 	}
 }

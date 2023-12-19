@@ -10,8 +10,8 @@ export interface Props {
 const { decoType = "a", tapeType = "blank", id } = Astro.props;
 ---
 
-<article class="cassette" {...id && { id }}>
-	<Block>
+<article class="cassette-scene" {...id && { id }}>
+	<Block className="cassette">
 		<div slot="front" class="cassette-front">
 			<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
 				<slot />
@@ -23,7 +23,7 @@ const { decoType = "a", tapeType = "blank", id } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.cassette {
+		.cassette-scene {
 			--cassette-background: hsla(0, 0%, 7%, 1);
 
 			--block-border: var(--border-width) solid var(--black);

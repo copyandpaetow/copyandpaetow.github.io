@@ -10,7 +10,35 @@ const { className = "" } = Astro.props;
 <div class=`tv-scene ${className}`>
 	<Block className="tv">
 		<div slot="front" class="tv-front">
-			<div class="static-background"></div>
+			<aside class="static-background"></aside>
+			<aside class="tv-slot"></aside>
+			<section class="tv-panel">
+				<label for="controls-play">
+					<Block>
+						<span slot="front">play</span>
+						<input slot="front" type="radio" name="controls" id="controls-play" checked />
+					</Block>
+				</label>
+				<label for="controls-pause">
+					<Block>
+						<span slot="front">pause</span>
+						<input slot="front" type="radio" name="controls" id="controls-pause" />
+					</Block>
+				</label>
+				<label for="controls-eject">
+					<Block>
+						<span slot="front">eject</span>
+						<input slot="front" type="radio" name="controls" id="controls-eject" />
+					</Block>
+				</label>
+
+				<label for="controls-power">
+					<Block>
+						<span slot="front">power</span>
+						<input slot="front" type="checkbox" name="power" id="controls-power" checked />
+					</Block>
+				</label>
+			</section>
 		</div>
 	</Block>
 
@@ -22,18 +50,19 @@ const { className = "" } = Astro.props;
 <style is:global>
 	@layer components {
 		.tv-scene {
-			--tv-height: 500px;
-			--tv-width: clamp(300px, 50vw, 500px);
+			--tv-width: clamp(300px, 90vw, 500px);
+			--tv-height: 550px;
 			--tv-depth: 300px;
 			--tv-background: hsla(0, 0%, 16%, 1);
-			--tv-panel-height: 90px;
+			--tv-panel-height: 50px;
 			--tv-slot-height: 70px;
 			--tv-slot-padding: 1rem;
 			--tv-screen-padding: 1rem;
 			--tv-screen-height: calc(
-				var(--tv-height) - var(--tv-slot-height) - var(--tv-slot-padding) - var(--tv-panel-height) -
-					(2 * var(--border-width))
+				var(--tv-height) - var(--tv-slot-height) - 2 * var(--tv-slot-padding) -
+					var(--tv-panel-height) - (2 * var(--border-width))
 			);
+			--tv-screen-frame: var(--space--1);
 
 			--tv-fully-visible: var(--above-scene);
 
@@ -63,7 +92,7 @@ const { className = "" } = Astro.props;
 		.tv-front {
 			display: grid;
 			grid-template-rows:
-				[screen-start] var(--tv-screen-height)
+				[screen-start] 1fr
 				[screen-end tv-slot-start] var(--tv-slot-height)
 				[tv-slot-end tv-panel-start] var(--tv-panel-height)
 				[tv-panel-end];
@@ -72,6 +101,9 @@ const { className = "" } = Astro.props;
 				[center-start] 1fr
 				[center-end] var(--tv-screen-padding)
 				[full-end];
+
+			padding-block: var(--tv-screen-padding);
+			row-gap: var(--tv-screen-padding);
 
 			background: linear-gradient(
 					to bottom,
@@ -94,14 +126,99 @@ const { className = "" } = Astro.props;
 
 			&::before {
 				content: "";
+				grid-area: screen/center;
+				border: var(--space--1) solid var(--black);
+				border-block-color: var(--light-black);
+				box-shadow:
+					inset 0px 0px 15px 0px hsl(0, 0%, 60%),
+					0px 0px 15px 0px hsl(0, 0%, 40%);
+			}
+
+			.static-background {
+				grid-area: screen/center;
+				background: repeating-radial-gradient(circle at 50% 50%, white, black 0.00085px);
+				transform: translateZ(-1px);
+			}
+
+			.tv-slot {
 				grid-area: tv-slot/center;
 				background: var(--black);
 			}
 
-			.static-background {
-				grid-area: screen/full;
-				background: green;
-				transform: translateZ(-1px);
+			.tv-slot::after {
+				content: "Copy and Paetow VHS Player deluxe";
+				grid-area: tv-slot/center;
+				background: var(--tv-background);
+				position: relative;
+				width: calc(100% - 2 * (var(--border-width)));
+				height: calc(100% - 2 * (var(--border-width)));
+				left: var(--border-width);
+				top: var(--border-width);
+				transform: translateZ(1px) rotateX(-75deg);
+				transform-origin: top;
+				transition: transform 400ms ease 400ms;
+				display: grid;
+				place-content: center;
+				font-weight: bold;
+				color: goldenrod;
+			}
+
+			.tv-panel {
+				grid-area: tv-panel/center;
+				display: grid;
+				grid-template-columns: max-content max-content max-content 1fr max-content;
+				grid-template-areas: "play pause eject power-light power";
+				justify-items: end;
+				gap: var(--space--3);
+			}
+		}
+
+		.tv-panel {
+			--tv-button-depth: 25px;
+			--tv-button-width: clamp(50px, calc(3vw + 1rem), 60px);
+
+			--block-height: var(--tv-panel-height);
+			--block-depth: var(--tv-button-depth);
+			--block-width: var(--tv-button-width);
+			--block-background: var(--tv-background);
+			--block-border: var(--border);
+
+			&::after {
+				--light-color: green;
+
+				content: "";
+				height: calc(var(--tv-panel-height) / 3);
+				width: calc(var(--tv-button-width) / 1.5);
+				background-color: var(--light-color);
+				grid-area: 1 / power-light;
+				align-self: center;
+				transform: translateX(calc(var(--space--3) * -1));
+				box-shadow: 0px 0px 5px var(--light-color);
+			}
+
+			> label {
+				height: var(--tv-panel-height);
+				transform: translateZ(calc(var(--tv-button-depth) + 4px));
+				cursor: pointer;
+				color: white;
+				transition: transform 100ms ease;
+			}
+
+			> label:has(:checked) {
+				transform: translateZ(calc(var(--tv-button-depth) / 3)) translateY(2px);
+				box-shadow: 4px -4px 0 var(--black);
+			}
+
+			[data-block-side="front"] {
+				display: grid;
+				place-content: center;
+			}
+
+			input {
+				position: absolute;
+				width: 0;
+				height: 0;
+				opacity: 0;
 			}
 		}
 
@@ -123,8 +240,8 @@ const { className = "" } = Astro.props;
 				top: calc((var(--tv-screen-height) - var(--tv-screen-padding) / 2) * -1);
 				left: calc(var(--tv-screen-padding) * -1);
 				background-color: white;
-				transform: translateZ(calc(var(--cassette-active-offset-z) * -1))
-					translateX(calc(var(--cassette-inset-x) / 2 - 1px));
+				transform: translateX(calc(var(--cassette-inset-x) / 2 - 1px));
+				padding: var(--tv-screen-frame);
 			}
 
 			> [id] {
@@ -141,24 +258,67 @@ const { className = "" } = Astro.props;
 
 				position: sticky;
 				top: calc(var(--tv-fully-visible) + var(--tv-screen-height) + var(--center-offset));
-				transform: translateZ(calc(var(--cassette-inset-z) + var(--cassette-active-offset-z)));
+				transform: translateZ(calc(var(--cassette-inset-z) - 1px));
 				margin-top: calc(
-					(var(--tv-slot-height) + var(--tv-slot-padding) + var(--cassette-height) * 1.5) * -1
+					(
+							var(--tv-slot-height) + 2 * var(--tv-slot-padding) + var(--cassette-height) -
+								var(--center-offset)
+						) * -1
 				);
+			}
+
+			&:not(:has(:target)) > article:first-of-type .cassette,
+			& :target .cassette {
+				transform: translateZ(calc(var(--cassette-active-offset-z)));
 			}
 
 			&:not(:has(:target)) > article:first-of-type .screen,
 			& :target .screen {
-				grid-row: 1/2;
 				display: grid;
 			}
 
 			& > *:not(:target) {
-				--buffer: 50%;
+				--buffer: 5%;
 
 				position: sticky;
 				top: calc(var(--tv-fully-visible) + var(--buffer));
 			}
+		}
+
+		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-eject:checked) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+
+			.cassette {
+				transform: translateZ(3000px);
+				transition: transform 200ms ease 200ms;
+			}
+		}
+
+		:has(#controls-eject:checked) .tv-slot::after {
+			transform: translateZ(1px) rotateX(0deg);
+		}
+
+		:has(#controls-power:not(:checked)):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-power:not(:checked)) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+		}
+
+		:has(#controls-power:not(:checked)) .static-background {
+			background: var(--black);
+		}
+
+		:has(#controls-power:not(:checked)) .tv-panel::after {
+			--light-color: var(--red);
+		}
+		:has(#controls-power:not(:checked)) .tv-front::before {
+			box-shadow: none;
 		}
 	}
 </style>
