@@ -32,6 +32,7 @@
 	--grey-80: hsl(210, 9%, 31%);
 	--grey-85: hsl(210, 10%, 23%);
 	--grey-90: hsl(210, 11%, 15%);
+	--light-black: hsla(0, 0%, 10%);
 	--black: hsl(0, 0%, 5%);
 	--red: hsl(5, 61%, 54%);
 	--orange: hsl(23, 70%, 51%);

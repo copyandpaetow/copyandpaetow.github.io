@@ -37,7 +37,7 @@ const { readingAngle, className = "", id } = Astro.props;
 			position: relative;
 			width: var(--block-width);
 			height: var(--block-height);
-			transform: translateZ(calc(var(--block-depth) / -2));
+			translate: 0 0 calc(var(--block-depth) / -2);
 
 			& > div {
 				--opposite: 1;

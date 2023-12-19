@@ -6,26 +6,21 @@ import Cassette from "../components/cassette.astro";
 
 <script>
 	/*
-- currently TV and Cassette have an empty wrapper just for styles
-=> we could pass a class and define the html element tag from the outside
-
-
-- make the cassettes responsive and limit scope from slotted elements: https://css-tricks.com/weekly-platform-news-focus-rings-donut-scope-ditching-em-units-and-global-privacy-control/
-
 
 - add covers around the cassettes
-=> on hover/click etc the tape could move out a bit but not the cover or the tape could spin to show the backside of the cover?
+- offset cassettes
 
 - rebuild the tv
 - screen styles
-- have a small transition for when a screen is clicked
-- sometimes content from within the cube shines through. There seem to be a 1px gap 
-
 
   ##improvements
 
 - use IO to change the tapes on scroll. Needs to be deactivatable via a toggle though
 - scroll snapping for the tapes would be nice
+- reset buttons if power is clicked
+- mobile view could be improved
+=> It needs some kind of offset so it can scroll to the bottom. Currently this is not working great
+=> we need at least one cassette in view, so users know that there is something
 
 */
 </script>
@@ -84,10 +79,10 @@ import Cassette from "../components/cassette.astro";
 	@layer defaults {
 		body {
 			--padding: minmax(1rem, 1fr);
-			--footer-main-intersection: 20vh;
+			--footer-main-intersection: 20svh;
 			--header-spacing: var(--space-5);
-			--nav-size: 5rem;
-			--header-size: 20vh;
+			--nav-size: 2rem;
+			--header-size: 10svh;
 			--above-scene: calc((var(--nav-size) + var(--header-size)));
 
 			display: grid;
@@ -102,8 +97,20 @@ import Cassette from "../components/cassette.astro";
 				[nav-end header-start] var(--header-size)
 				[header-end main-start] 1fr
 				[footer-start] var(--footer-main-intersection)
-				[main-end] minmax(calc(var(--above-scene) - 80px), max-content)
+				[main-end] minmax(calc(var(--above-scene) + var(--header-size)), max-content)
 				[footer-end];
+		}
+
+		@media (min-width: 30rem) {
+			body {
+				--header-size: 15svh;
+			}
+		}
+
+		@media (min-width: 40rem) {
+			body {
+				--header-size: 20svh;
+			}
 		}
 
 		nav {
