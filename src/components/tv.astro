@@ -81,8 +81,8 @@ const { className = "" } = Astro.props;
 			--block-background: var(--tv-background);
 			--block-border: var(--border);
 
-			position: sticky;
-			top: var(--tv-fully-visible);
+			/* position: sticky;
+			top: var(--tv-fully-visible); */
 
 			> [data-block-side="front"] {
 				--block-background: transparent;
@@ -256,8 +256,8 @@ const { className = "" } = Astro.props;
 			& :target {
 				--center-offset: calc(var(--tv-slot-height) - var(--cassette-height));
 
-				position: sticky;
-				top: calc(var(--tv-fully-visible) + var(--tv-screen-height) + var(--center-offset));
+				/* position: sticky;
+				top: calc(var(--tv-fully-visible) + var(--tv-screen-height) + var(--center-offset)); */
 				transform: translateZ(calc(var(--cassette-inset-z) - 1px));
 				margin-top: calc(
 					(
@@ -277,12 +277,12 @@ const { className = "" } = Astro.props;
 				display: grid;
 			}
 
-			& > *:not(:target) {
+			/* & > *:not(:target) {
 				--buffer: 5%;
 
 				position: sticky;
 				top: calc(var(--tv-fully-visible) + var(--buffer));
-			}
+			} */
 		}
 
 		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
