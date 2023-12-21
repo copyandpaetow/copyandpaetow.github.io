@@ -19,6 +19,7 @@
 :where(html) {
 	line-height: 1.5;
 	font-family: system-ui, sans-serif;
+	scrollbar-gutter: stable;
 
 	@media (prefers-reduced-motion: no-preference) {
 		& :focus-within {

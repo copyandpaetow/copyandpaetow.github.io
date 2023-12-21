@@ -68,7 +68,7 @@ const { readingAngle, className = "", id } = Astro.props;
 				width: var(--block-depth);
 				height: var(--block-height);
 				left: calc((100% - var(--block-depth)) / 2);
-				transform: rotateY(90deg) translateZ(calc(var(--block-width) / 2 * var(--opposite)))
+				transform: rotateY(90.01deg) translateZ(calc(var(--block-width) / 2 * var(--opposite)))
 					rotateY(var(--backface-rotate));
 			}
 
@@ -77,7 +77,7 @@ const { readingAngle, className = "", id } = Astro.props;
 				width: calc(var(--block-width));
 				top: calc((var(--block-height) - var(--block-depth)) / 2);
 				left: calc((100% - var(--block-width)) / 2);
-				transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
+				transform: rotateX(-90.01deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
 					rotateX(var(--backface-rotate));
 			}
 
@@ -86,8 +86,8 @@ const { readingAngle, className = "", id } = Astro.props;
 				width: var(--block-depth);
 				top: calc((var(--block-height) - var(--block-width)) / 2);
 				left: calc((100% - var(--block-depth)) / 2);
-				transform: rotateX(-90deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
-					rotateX(var(--backface-rotate)) rotateZ(-90deg);
+				transform: rotateX(-90.01deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
+					rotateX(var(--backface-rotate)) rotateZ(-90.01deg);
 			}
 		}
 	}

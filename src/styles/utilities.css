@@ -19,6 +19,7 @@
 
 	& * {
 		transform-style: preserve-3d;
+		outline: 1px solid transparent;
 	}
 
 	@media (min-width: 30rem) {

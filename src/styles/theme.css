@@ -20,6 +20,7 @@
 	--space-4: clamp(4.5rem, 4.3261rem + 0.8696vw, 5rem);
 	--space-5: clamp(6.75rem, 6.4891rem + 1.3043vw, 7.5rem);
 	--gutter: clamp(1.125rem, 0.6467rem + 2.3913vw, 2.5rem);
+	--full-width: 100vw;
 
 	/*colors*/
 	--grey-10: hsl(210, 17%, 98%);
