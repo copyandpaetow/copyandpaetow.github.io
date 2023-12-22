@@ -1,26 +1,29 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TV from "../components/tv.astro";
-import Cassette from "../components/cassette.astro";
+import TV from "../components/TV.astro";
+import Cassette from "../components/Cassette.astro";
+import CassetteScreen from "../components/CassetteScreen.astro";
 ---
 
 <script>
 	/*
 
-- add covers around the cassettes
-- offset cassettes
+- maybe add antennas
+- add navbar with home, overview (see all routes) and settings
+=> 3D rotate
+=> enable sticky
+=> straighten covers
 
-- rebuild the tv
-- screen styles
 
   ##improvements
 
 - use IO to change the tapes on scroll. Needs to be deactivatable via a toggle though
 - scroll snapping for the tapes would be nice
 - reset buttons if power is clicked
-- mobile view could be improved
-=> It needs some kind of offset so it can scroll to the bottom. Currently this is not working great
-=> we need at least one cassette in view, so users know that there is something
+- the screen alignment is currently fragile
+- tape variants show whitespace in smaller viewports
+- unify media queries but try to reduce as much as possible
+
 
 */
 </script>
@@ -34,28 +37,21 @@ import Cassette from "../components/cassette.astro";
 		<TV>
 			<Cassette decoType="c" id="1">
 				<a href="#1">the intro nobody asked for</a>
-				<section class="cassette-content screen" slot="screen">
+				<CassetteScreen slot="screen">
 					<h1>Hi, Lucas here</h1>
 					<p>
 						I am looking for a opportunities to create delight and performant movements on the web.
 					</p>
 					<button>hello</button>
-				</section>
-			</Cassette>
-
-			<Cassette decoType="a" tapeType="stripes" id="2">
-				<dialog id="sfs" popover>
-					<a href="#">screen content</a>
-				</dialog>
-				<button popovertarget="sfs">Scrollytelling for squirrels</button>
+				</CassetteScreen>
 			</Cassette>
 			<Cassette decoType="b" tapeType="checked" id="od">
 				<a href="#od">Connect your database with CSS</a>
-				<section class="cassette-content screen" slot="screen">
+				<CassetteScreen slot="screen">
 					<p>fake news</p>
-				</section>
+				</CassetteScreen>
 			</Cassette>
-			<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+			<Cassette decoType="c" tapeType="stripes" disabled><p>Your joke here</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>

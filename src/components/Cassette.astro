@@ -5,12 +5,25 @@ export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
 	id?: string;
+	disabled?: boolean;
 }
 
-const { decoType = "a", tapeType = "blank", id } = Astro.props;
+const { decoType = "a", tapeType = "blank", id, disabled } = Astro.props;
+
+const randomNumber = (min: number, max: number) => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const randomXOffset = randomNumber(-7, 7);
+const randomZOffset = randomNumber(0, 100);
 ---
 
-<article class="cassette-scene" {...id && { id }}>
+<article
+	class="cassette-scene"
+	{...id && { id }}
+	{...disabled && { "aria-disabled": "true" }}
+	style=`--cassette-offset-x: ${randomXOffset}%; --cassette-offset-z: ${randomZOffset}px;`
+>
 	<Block className="cassette">
 		<div slot="front" class="cassette-front">
 			<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
@@ -18,26 +31,67 @@ const { decoType = "a", tapeType = "blank", id } = Astro.props;
 			</div>
 		</div>
 	</Block>
+	<Block className="cassette-cover" />
 	<slot name="screen" />
 </article>
 
 <style is:global>
 	@layer components {
 		.cassette-scene {
+			display: grid;
+			grid-template-columns:
+				[cover-start] var(--cover-offset-inline)
+				[cassette-start] 1fr
+				[cassette-end] var(--cover-offset-inline)
+				[cover-end];
+
+			grid-template-rows:
+				[cover-start] var(--cover-offset-block)
+				[cassette-start] 1fr
+				[cassette-end] var(--cover-offset-block)
+				[cover-end];
+
+			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
+
+			&[aria-disabled="true"] {
+				transform: rotateY(180.01deg) rotateY(90.01deg) translateX(-50%) rotateY(-90.01deg);
+			}
+		}
+
+		.cassette-cover {
+			--block-background: grey;
+			--block-depth: calc(var(--cassette-depth));
+			--block-border: var(--border);
+
+			transform: rotateY(90.01deg) translateX(calc(var(--cover-offset-depth) * 2))
+				rotateY(-90.01deg);
+
+			grid-area: cover / cover;
+
+			& > [data-block-side="front"] {
+				height: 100%;
+				--block-background: hsla(0, 0%, 0%, 0.6);
+			}
+		}
+
+		.cassette {
 			--cassette-background: hsla(0, 0%, 7%, 1);
 
 			--block-border: var(--border-width) solid var(--black);
 			--block-background: var(--cassette-background);
-			--block-height: var(--cassette-height);
-			--block-width: var(--cassette-width);
-			--block-depth: var(--cassette-depth);
+			--block-aspect-ratio: var(--cassette-aspect-ratio);
+			--block-depth: calc(var(--cassette-depth));
+
+			grid-area: cassette / cassette;
+
+			& > [data-block-side="front"] {
+				height: 100%;
+			}
 		}
 
 		.cassette-front {
-			--front-width: calc(100% - var(--space--2));
-			--front-height: calc(
-				var(--cassette-height) - (var(--border-width) * 2) - (var(--padding-block) * 2)
-			);
+			height: 100%;
+
 			--padding-inline: 0.5rem;
 			--padding-block: 0.25rem;
 
@@ -73,7 +127,7 @@ const { decoType = "a", tapeType = "blank", id } = Astro.props;
 			border-radius: 0.25rem;
 			display: grid;
 			place-content: center;
-			padding-inline: var(--space-1);
+			padding-inline: var(--space-2);
 			position: relative;
 			overflow: hidden;
 
@@ -112,21 +166,21 @@ const { decoType = "a", tapeType = "blank", id } = Astro.props;
 				position: absolute;
 				right: 0;
 				top: 0;
-				width: calc(var(--front-height) * 1.25);
-				height: 90%;
-				place-content: end center;
+				aspect-ratio: 1;
+				height: 100%;
+				place-content: center;
 				text-align: center;
 				content: "Video \A Cassette";
 				font-size: 1px;
 				line-height: 1;
-				transform: rotateZ(-90deg) scale(0.85) translateY(35%) translateX(-5%);
+				transform: rotateZ(-90deg) translateY(20%);
 				background: linear-gradient(
 					to bottom,
 					var(--yellow) 0%,
-					var(--yellow) 33%,
-					var(--orange) 33%,
-					var(--orange) 66%,
-					var(--red) 66%,
+					var(--yellow) 25%,
+					var(--orange) 25%,
+					var(--orange) 50%,
+					var(--red) 50%,
 					var(--red) 100%
 				);
 			}
@@ -163,19 +217,20 @@ const { decoType = "a", tapeType = "blank", id } = Astro.props;
 				display: grid;
 				position: absolute;
 				inset: 0;
-				width: calc(var(--front-height) * 1.25);
-				height: 90%;
+				height: 100%;
+				aspect-ratio: 1;
+				font-size: 1px;
 				place-content: start center;
 				text-align: center;
 				content: "Video \A Cassette";
-				font-size: 1px;
-				transform: rotateZ(-90deg) scale(0.85) translateY(-33%) translateX(-5%);
+				transform: rotateZ(-90deg) translateY(-5%);
 				background: linear-gradient(
 					to bottom,
 					var(--red) 0%,
-					var(--red) 50%,
-					var(--magenta) 50%,
-					var(--magenta) 100%
+					var(--red) 40%,
+					var(--magenta) 40%,
+					var(--magenta) 80%,
+					transparent 80%
 				);
 			}
 

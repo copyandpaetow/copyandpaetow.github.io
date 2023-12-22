@@ -1,14 +1,13 @@
 ---
 export interface Props {
-	readingAngle?: string;
 	className?: string;
 	id?: string;
 }
 
-const { readingAngle, className = "", id } = Astro.props;
+const { className = "", id } = Astro.props;
 ---
 
-<div {...id && { id: id }} class=`block ${className}` data-reading-angle={readingAngle ?? "0deg"}>
+<div {...id && { id: id }} class=`block ${className}`>
 	<div class="block-cover" data-block-side="front">
 		<slot name="front" />
 	</div>
@@ -32,15 +31,20 @@ const { readingAngle, className = "", id } = Astro.props;
 <style is:global>
 	@layer utilities {
 		.block {
-			--backface-rotate: 0deg;
+			--_block-backface-rotate: 0deg;
+			--_block-aspect-ratio: var(--block-aspect-ratio);
+
+			--_block-height: var(--block-height);
+			--_block-width: var(--block-width);
+			--_block-depth: var(--block-depth, var(--block-width));
 
 			position: relative;
-			width: var(--block-width);
-			height: var(--block-height);
-			translate: 0 0 calc(var(--block-depth) / -2);
+			width: var(--_block-width);
+			height: var(--_block-height);
+			aspect-ratio: var(--_block-aspect-ratio);
 
 			& > div {
-				--opposite: 1;
+				--_block-opposite: 1;
 
 				position: absolute;
 				inset: 0;
@@ -48,46 +52,33 @@ const { readingAngle, className = "", id } = Astro.props;
 				background: var(--block-background);
 			}
 
-			& > div > :where(*) {
-				height: 100%;
-				width: 100%;
+			& > div:nth-child(2n) {
+				--_block-opposite: -1;
+				--_block-backface-rotate: 180deg;
 			}
 
-			& > div:nth-child(2n) {
-				--opposite: -1;
-				--backface-rotate: 180deg;
+			& > [data-block-side="front"] {
+				position: relative;
 			}
 
 			& > .block-cover {
-				height: var(--block-height);
-				width: var(--block-width);
-				transform: translateZ(calc(var(--block-depth) / 2 * var(--opposite)))
-					rotateY(var(--backface-rotate));
+				transform: rotateY(90.01deg)
+					translateX(
+						calc(var(--_block-depth) / 2 - var(--_block-depth) / 2 * var(--_block-opposite))
+					)
+					rotateY(-90.01deg) rotateY(var(--_block-backface-rotate));
 			}
+
 			& > .block-side {
-				width: var(--block-depth);
-				height: var(--block-height);
-				left: calc((100% - var(--block-depth)) / 2);
-				transform: rotateY(90.01deg) translateZ(calc(var(--block-width) / 2 * var(--opposite)))
-					rotateY(var(--backface-rotate));
+				width: var(--_block-depth);
+				left: calc(50% + 50% * var(--_block-opposite));
+				transform: translateX(-50%) rotateY(90.01deg) translateX(50%);
 			}
 
 			& > .block-edge {
-				height: var(--block-depth);
-				width: calc(var(--block-width));
-				top: calc((var(--block-height) - var(--block-depth)) / 2);
-				left: calc((100% - var(--block-width)) / 2);
-				transform: rotateX(-90.01deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
-					rotateX(var(--backface-rotate));
-			}
-
-			&[data-reading-angle="90deg"] > .block-edge {
-				height: calc(var(--block-width));
-				width: var(--block-depth);
-				top: calc((var(--block-height) - var(--block-width)) / 2);
-				left: calc((100% - var(--block-depth)) / 2);
-				transform: rotateX(-90.01deg) translateZ(calc(var(--block-height) / 2 * var(--opposite)))
-					rotateX(var(--backface-rotate)) rotateZ(-90.01deg);
+				height: var(--_block-depth);
+				top: calc(50% + 50% * var(--_block-opposite));
+				transform: translateY(-50%) rotateX(90.01deg) translateY(-50%);
 			}
 		}
 	}

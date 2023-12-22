@@ -1,0 +1,23 @@
+---
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<section class=`cassette-content screen ${className}`>
+	<slot />
+</section>
+
+<style is:global>
+	@layer components {
+		.screen {
+			--save-screen-padding: var(--space--1);
+
+			padding: var(--save-screen-padding);
+			background-color: white;
+			overflow: hidden;
+		}
+	}
+</style>
