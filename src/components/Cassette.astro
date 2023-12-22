@@ -22,7 +22,9 @@ const randomZOffset = randomNumber(0, 100);
 	class="cassette-scene"
 	{...id && { id }}
 	{...disabled && { "aria-disabled": "true" }}
-	style=`--cassette-offset-x: ${randomXOffset}%; --cassette-offset-z: ${randomZOffset}px;`
+	style=`
+	--cassette-offset-x: ${randomXOffset}%;
+	--cassette-offset-z: ${randomZOffset}px;`
 >
 	<Block className="cassette">
 		<div slot="front" class="cassette-front">
@@ -31,7 +33,7 @@ const randomZOffset = randomNumber(0, 100);
 			</div>
 		</div>
 	</Block>
-	<Block className="cassette-cover" />
+	<Block className={`cassette-cover ${disabled && "force-full-scene"}`} />
 	<slot name="screen" />
 </article>
 
