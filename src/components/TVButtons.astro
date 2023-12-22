@@ -1,0 +1,140 @@
+---
+import Block from "./block.astro";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<section class=`button-panel ${className}`>
+	<label for="controls-play">
+		<Block>
+			<span slot="front">play</span>
+			<input slot="front" type="radio" name="controls" id="controls-play" checked />
+		</Block>
+	</label>
+	<label for="controls-pause">
+		<Block>
+			<span slot="front">pause</span>
+			<input slot="front" type="radio" name="controls" id="controls-pause" />
+		</Block>
+	</label>
+	<label for="controls-eject">
+		<Block>
+			<span slot="front">eject</span>
+			<input slot="front" type="radio" name="controls" id="controls-eject" />
+		</Block>
+	</label>
+
+	<label for="controls-power">
+		<Block>
+			<span slot="front">power</span>
+			<input slot="front" type="checkbox" name="power" id="controls-power" checked />
+		</Block>
+	</label>
+</section>
+
+<style is:global>
+	@layer components {
+		.button-panel {
+			--tv-button-depth: 25px;
+			--tv-button-gap: var(--space--3);
+			--tv-button-padding-inline: var(--space--2);
+
+			--block-depth: var(--tv-button-depth);
+			--block-background: var(--tv-background);
+			--block-border: var(--border);
+
+			display: grid;
+			grid-template-columns: max-content max-content max-content 1fr max-content;
+			grid-template-areas: "play pause eject power-light power";
+			justify-items: end;
+			gap: var(--tv-button-gap);
+			font-size: var(--tv-button-font-size);
+
+			@media (min-width: 25rem) {
+				--tv-button-font-size: var(--font--1);
+			}
+
+			&::after {
+				--light-color: green;
+
+				content: "";
+				height: calc(100% / 3);
+				aspect-ratio: 2.5;
+				background-color: var(--light-color);
+				grid-area: 1 / power-light;
+				align-self: center;
+				transform: translateX(calc(var(--tv-button-padding-block) * -1));
+				box-shadow: 0px 0px 5px var(--light-color);
+			}
+
+			> label {
+				height: var(--tv-panel-height);
+				transform: translateZ(calc(var(--tv-button-depth) + 4px));
+				cursor: pointer;
+				color: white;
+				transition: transform 100ms ease;
+			}
+
+			> label span {
+				padding: var(--tv-button-padding-block) var(--tv-button-padding-inline);
+			}
+
+			> label:has(:checked) {
+				transform: translateZ(calc(var(--tv-button-depth) / 3)) translateY(2px);
+				box-shadow: 4px -4px 0 var(--black);
+			}
+
+			[data-block-side="front"] {
+				display: grid;
+				place-content: center;
+			}
+
+			input {
+				position: absolute;
+				width: 0;
+				height: 0;
+				opacity: 0;
+			}
+		}
+
+		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-eject:checked) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+
+			.cassette {
+				transform: translateZ(3000px);
+				transition: transform 200ms ease 200ms;
+			}
+		}
+
+		:has(#controls-eject:checked) .cassette-slot::after {
+			transform: translateZ(1px) rotateX(0deg);
+		}
+
+		:has(#controls-power:not(:checked)):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-power:not(:checked)) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+		}
+
+		:has(#controls-power:not(:checked)) .static-background {
+			background: var(--black);
+		}
+
+		:has(#controls-power:not(:checked)) .button-panel::after {
+			--light-color: var(--red);
+		}
+		:has(#controls-power:not(:checked)) .tv-front::before {
+			box-shadow: none;
+		}
+	}
+</style>
