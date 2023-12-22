@@ -68,6 +68,20 @@ const { className = "" } = Astro.props;
 			}
 		}
 
+		@media (min-width: 28rem) {
+			.tv-scene {
+				--cassette-aspect-ratio: 6;
+			}
+		}
+
+		@media (min-width: 32rem) {
+			.tv-scene {
+				--cassette-aspect-ratio: 7;
+				--tv-padding-inline: var(--space-1);
+				--tv-padding-block: var(--space-1);
+			}
+		}
+
 		.tv-scene {
 			/* this are required for safari and firefox interactivity */
 			transform: translateZ(calc(var(--tv-depth) * -1));
@@ -182,6 +196,10 @@ const { className = "" } = Astro.props;
 				transform: translateZ(calc(var(--cassettes-offset-z) * 2));
 			}
 
+			& > article:nth-of-type(2) {
+				transform: none;
+			}
+
 			.screen {
 				--screen-width: calc(
 					var(--tv-width) - (2 * var(--screen-frame-inline)) - (2 * var(--tv-padding-inline)) -
@@ -206,6 +224,11 @@ const { className = "" } = Astro.props;
 			&:not(:has(:target)) > article:first-of-type .screen,
 			& :target .screen {
 				display: grid;
+			}
+
+			&:not(:has(:target)) > article:first-of-type .cassette-cover,
+			& :target .cassette-cover {
+				display: none;
 			}
 
 			> :target {
