@@ -1,5 +1,6 @@
 ---
 import TVButtons from "./TVButtons.astro";
+import StaticBackground from "./TVStaticBackground.astro";
 import Block from "./block.astro";
 export interface Props {
 	className?: string;
@@ -11,9 +12,14 @@ const { className = "" } = Astro.props;
 <div class=`tv-scene flat-scene ${className}`>
 	<Block className="tv">
 		<div slot="front" class="tv-front">
+			<div class="screen-module">
+				<StaticBackground className="static-background" />
+			</div>
+			<div class="vhs-player-module">
+				<TVButtons className="vhs-controls" />
+				<aside class="vhs-slot"></aside>
+			</div>
 			<aside class="static-background"></aside>
-			<aside class="cassette-slot"></aside>
-			<TVButtons className="buttons" />
 		</div>
 		<div slot="right" class="speaker"></div>
 		<div slot="left" class="speaker"></div>
@@ -29,56 +35,74 @@ const { className = "" } = Astro.props;
 		.tv-scene {
 			--tv-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
 			--tv-depth: 300px;
-			--tv-background: hsla(0, 0%, 16%, 1);
-			--tv-padding-block: var(--space--1);
-			--tv-padding-inline: var(--space--1);
+			--tv-background: hsl(255, 2%, 77%);
+			--tv-border-width: 2px;
+			--tv-outer-border-width: 2px;
 
-			--cassettes-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
+			--tv-dark: hsl(255, 2%, 22%);
+			--tv-light: hsl(255, 2%, 67%);
+
+			--tv-outer-border: var(--tv-outer-border-width) solid var(--tv-light);
+
+			--tv-inner-boxshadow: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 
 			--cassette-depth: 220px;
-			--cassette-aspect-ratio: 5;
+			--cassette-aspect-ratio: 4;
 
-			--cover-offset-block: var(--space--3);
-			--cover-offset-inline: var(--space--2);
-			--cover-offset-depth: var(--space--2);
+			--cassettes-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
+			--cassette-active-offset-z: calc(var(--cassette-depth) / 4);
 
-			--tv-button-padding-block: var(--space--3);
-			--tv-button-font-size: var(--font--2);
-			--tv-buttons-padding-block-start: var(--space--1);
+			--module-padding: 0.75rem;
+			--module-border-radius: 0.25rem;
+			--module-gap: 1px;
 
-			--cassette-slot-padding-block-start: var(--space--1);
-			--cassette-slot-height: calc(
-				(var(--tv-width) - var(--tv-padding-inline) * 2) / var(--cassette-aspect-ratio) +
-					var(--cover-offset-block) * 2
+			--screen-module-ratio: 1.2;
+
+			--screen-height: calc(
+				(
+					(var(--tv-width) - 2 * var(--tv-outer-border-width) - 2 * var(--module-padding)) /
+						var(--screen-module-ratio)
+				)
 			);
 
-			--screen-frame-block: var(--space--1);
-			--screen-frame-inline: var(--space--1);
+			--screen-background: black;
+			--screen-border-radius: 1rem;
+			--screen-padding: 0.5rem;
+
+			--vhs-controls-height: 50px;
+			--vhs-padding: 0.25rem;
+			--vhs-slot-ratio: calc(var(--cassette-aspect-ratio) - 0.25);
+
+			--vhs-slot-width: calc(
+				var(--tv-width) - 2 * var(--module-padding) - 2 * var(--tv-outer-border-width)
+			);
+
+			--vhs-slot-height: calc((var(--vhs-slot-width) / (var(--vhs-slot-ratio))));
+
+			--tv-height: calc(
+				var(--screen-height) + var(--vhs-controls-height) + var(--vhs-slot-height) + 2 *
+					var(--vhs-padding) + 2 * var(--tv-outer-border-width) + 3 * var(--module-padding) +
+					var(--module-gap) * 2
+			);
+
+			--screen-border-offset: calc(var(--tv-outer-border-width) + var(--module-padding));
 
 			width: var(--tv-width);
 
+			@media (min-width: 22rem) {
+				--cassette-aspect-ratio: 5;
+				--screen-padding: 1rem;
+				--screen-border-radius: 1.5rem;
+				--tv-outer-border-width: 4px;
+			}
+
 			@media (min-width: 28rem) {
+				--module-padding: 1rem;
+				--screen-padding: 1.25rem;
+				--screen-border-radius: 2rem;
 				--cassette-aspect-ratio: 6;
-			}
-
-			@media (min-width: 32rem) {
-				--cassette-aspect-ratio: 7;
-				--tv-padding-inline: var(--space-1);
-				--tv-padding-block: var(--space-1);
-			}
-		}
-
-		@media (min-width: 28rem) {
-			.tv-scene {
-				--cassette-aspect-ratio: 6;
-			}
-		}
-
-		@media (min-width: 32rem) {
-			.tv-scene {
-				--cassette-aspect-ratio: 7;
-				--tv-padding-inline: var(--space-1);
-				--tv-padding-block: var(--space-1);
+				--tv-outer-border-width: 8px;
 			}
 		}
 
@@ -98,73 +122,108 @@ const { className = "" } = Astro.props;
 		.tv {
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
-			--block-border: var(--border);
+			--block-border: var(--tv-outer-border);
+
+			& > * {
+				border-radius: calc(var(--tv-border-width) / 2);
+			}
 		}
 
 		.tv-front {
 			height: 100%;
 			display: grid;
-			grid-template-rows:
-				[frame-start] var(--screen-frame-block)
-				[screen-start] max-content
-				[screen-end] var(--screen-frame-block)
-				[frame-end cassette-padding-start] var(--cassette-slot-padding-block-start)
-				[cassette-padding-end cassette-slot-start] max-content
-				[cassette-slot-end buttons-padding-start] var(--tv-buttons-padding-block-start)
-				[buttons-padding-end buttons-start] max-content
-				[buttons-end];
+			row-gap: var(--module-gap);
+		}
 
+		.screen-module {
+			aspect-ratio: var(--screen-module-ratio);
+			padding: var(--module-padding);
+
+			border-radius: var(--module-border-radius);
+			box-shadow:
+				0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+
+			display: grid;
 			grid-template-columns:
-				[frame-start] var(--screen-frame-block)
-				[center-start] 1fr
-				[center-end] var(--screen-frame-inline)
-				[frame-end];
+				[full-screen-start] var(--screen-padding)
+				[screen-content-start] 1fr
+				[screen-content-end] var(--screen-padding)
+				[full-screen-end];
 
-			padding: var(--tv-padding-block) var(--tv-padding-inline);
+			grid-template-rows:
+				[full-screen-start] var(--screen-padding)
+				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
+				[screen-content-end] var(--screen-padding)
+				[full-screen-end];
 
 			&::before {
 				content: "";
-				grid-area: frame/frame;
-				width: 100%;
-				aspect-ratio: 1;
-				border-inline: var(--screen-frame-inline) solid var(--black);
-				border-block: var(--screen-frame-block) solid var(--light-black);
-				box-shadow:
-					inset 0px 0px 15px 0px hsl(0, 0%, 60%),
-					0px 0px 15px 0px hsl(0, 0%, 40%);
+				grid-area: full-screen / full-screen;
+				background: var(--screen-background);
+				border-radius: var(--module-border-radius);
+				border-inline: var(--screen-border-radius) solid var(--black);
+				border-block: var(--screen-border-radius) solid var(--light-black);
 			}
 
-			.static-background {
-				grid-area: screen/center;
-				background: repeating-radial-gradient(circle at 50% 50%, white, black 0.00085px);
-			}
-
-			.cassette-slot {
-				grid-area: cassette-slot/frame;
+			&::after {
+				content: "";
+				grid-area: screen-content / screen-content;
+				border-radius: var(--screen-border-radius);
 				background: var(--black);
-				height: var(--cassette-slot-height);
 			}
 
-			.buttons {
-				grid-area: buttons/frame;
+			> .static-background {
+				grid-area: screen-content / screen-content;
+				border-radius: var(--screen-border-radius);
+				background: var(--black);
+				z-index: 1;
+				opacity: 0;
+			}
+		}
+
+		.vhs-player-module {
+			padding: var(--module-padding);
+			border-radius: var(--module-border-radius);
+			padding-top: 0;
+
+			box-shadow:
+				0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+		}
+
+		.vhs-controls {
+			border-radius: var(--module-border-radius);
+			height: var(--vhs-controls-height);
+		}
+
+		.vhs-slot {
+			border-radius: var(--module-border-radius);
+
+			padding: var(--vhs-padding);
+			padding-top: 0;
+			height: calc(var(--vhs-slot-height) + 2 * var(--vhs-padding));
+			box-shadow: var(--tv-inner-boxshadow);
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: var(--vhs-padding);
+				background: var(--black);
+				border-radius: var(--module-border-radius);
 			}
 
-			.cassette-slot::after {
+			&::after {
 				content: "Copy and Paetow VHS Player deluxe";
-				grid-area: tv-slot/center;
 				background: var(--tv-background);
-				position: relative;
-				width: calc(100% - 2 * (var(--border-width)));
-				height: calc(100% - 2 * (var(--border-width)));
-				left: var(--border-width);
-				top: var(--border-width);
+				position: absolute;
+				inset: calc(var(--vhs-padding) + var(--tv-border-width));
 				transform: rotateX(-90.01deg);
 				transform-origin: top;
 				transition: transform 400ms ease 400ms;
 				display: grid;
 				place-content: center;
 				font-weight: bold;
-				color: goldenrod;
 			}
 		}
 
@@ -172,28 +231,45 @@ const { className = "" } = Astro.props;
 			display: grid;
 			grid-auto-flow: row;
 			grid-auto-rows: max-content;
-			padding-inline: var(--tv-padding-inline);
 			row-gap: 2px;
+
+			.cassette {
+				height: calc(var(--vhs-slot-height) - 2 * var(--vhs-padding));
+				aspect-ratio: var(--cassette-aspect-ratio);
+			}
 
 			&:not(:has(:target)) > article:first-of-type,
 			& :target {
-				--button-line-height: 1.1;
-				--button-panel-height: calc(var(--tv-button-font-size) * var(--button-line-height));
-				--first-cassette-offset: calc(
-					(
-							var(--tv-padding-block) + var(--tv-buttons-padding-block-start) +
-								var(--cassette-slot-padding-block-start) + var(--button-panel-height) +
-								var(--cassette-slot-height) + var(--cover-offset-block) * 2
-						) * -1
-				);
-
 				transform: none;
-				margin-top: var(--first-cassette-offset);
+				margin-top: calc(var(--tv-height) * -1);
+				height: var(--tv-height);
+				width: var(--tv-width);
+
+				display: grid;
+				grid-template-columns:
+					var(--screen-border-offset) [content-start] var(--screen-padding) [screen-start] 1fr [screen-end] var(
+						--screen-padding
+					)
+					[content-end] var(--screen-border-offset);
+				grid-template-rows:
+					var(--screen-border-offset) var(--screen-padding) [screen-start] calc(
+						var(--screen-height) - 2 * var(--screen-padding)
+					)
+					[screen-end] var(--screen-padding) var(--module-padding) var(--vhs-controls-height)
+					var(--vhs-padding)
+					[vhs-slot-start]
+					var(--vhs-slot-height)
+					[vhs-slot-end]
+					var(--vhs-padding)
+					var(--screen-border-offset);
 			}
 
 			&:not(:has(:target)) > article:first-of-type .cassette,
 			& :target .cassette {
-				transform: translateZ(calc(var(--cassettes-offset-z) * 2));
+				grid-area: vhs-slot / content;
+
+				transform: translateZ(calc(var(--cassettes-offset-z) + var(--cassette-active-offset-z)))
+					translateY(calc(var(--vhs-padding) * 2));
 			}
 
 			& > article:nth-of-type(2) {
@@ -201,34 +277,14 @@ const { className = "" } = Astro.props;
 			}
 
 			.screen {
-				--screen-width: calc(
-					var(--tv-width) - (2 * var(--screen-frame-inline)) - (2 * var(--tv-padding-inline)) -
-						(2 * var(--border-width)) + 1px
-				);
-				--screen-offset: calc(
-					(
-							var(--screen-width) + (var(--screen-frame-block) / 2) +
-								(var(--cassette-slot-padding-block-start)) + var(--cover-offset-block) * 2
-						) * -1
-				);
-
 				transform: translateZ(var(--cassettes-offset-z));
 				display: none;
-				position: absolute;
-				width: calc(var(--screen-width));
-				aspect-ratio: 1;
-				top: var(--screen-offset);
-				left: calc(var(--cassettes-offset-z) / 2 - 1px);
+				grid-area: screen / screen;
 			}
 
 			&:not(:has(:target)) > article:first-of-type .screen,
 			& :target .screen {
 				display: grid;
-			}
-
-			&:not(:has(:target)) > article:first-of-type .cassette-cover,
-			& :target .cassette-cover {
-				display: none;
 			}
 
 			> :target {
@@ -239,18 +295,18 @@ const { className = "" } = Astro.props;
 
 		.speaker {
 			--grill-separator: var(--space--1);
-			--grill-spacing: 2px;
+			--grill-spacing: 4px;
 
 			display: grid;
-			place-content: end center;
+			place-content: start center;
 			height: 100%;
-			width: var(--block-depth);
-			padding: var(--tv-padding-block) var(--tv-padding-inline);
+			width: 100%;
+			padding: var(--module-padding);
 
 			&::before {
 				content: "";
 				aspect-ratio: 2.5;
-				width: calc(var(--block-depth) - var(--tv-padding-inline) * 2);
+				width: calc(var(--tv-depth) * 0.8);
 				display: block;
 
 				background: linear-gradient(
@@ -264,8 +320,8 @@ const { className = "" } = Astro.props;
 					repeating-linear-gradient(
 						transparent,
 						transparent var(--grill-spacing),
-						var(--black) var(--grill-spacing),
-						var(--black) calc(var(--grill-spacing) * 2)
+						var(--tv-light) var(--grill-spacing),
+						var(--tv-light) calc(var(--grill-spacing) * 2)
 					);
 			}
 		}

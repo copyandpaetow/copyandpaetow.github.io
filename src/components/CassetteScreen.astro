@@ -1,12 +1,13 @@
 ---
 export interface Props {
 	className?: string;
+	overlay?: "lines";
 }
 
-const { className = "" } = Astro.props;
+const { className = "", overlay = "" } = Astro.props;
 ---
 
-<section class=`cassette-content screen ${className}`>
+<section class=`cassette-content screen ${className} ${overlay}`>
 	<slot />
 </section>
 
@@ -14,10 +15,43 @@ const { className = "" } = Astro.props;
 	@layer components {
 		.screen {
 			--save-screen-padding: var(--space--1);
+			--screen-background: hsl(207.1, 15.9%, 61.76%);
 
+			border-radius: var(--screen-border-radius);
 			padding: var(--save-screen-padding);
-			background-color: white;
+			background-color: var(--screen-background);
 			overflow: hidden;
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+
+			box-shadow:
+				inset 0px 0px 15px 0px var(--screen-background),
+				0px 0px 15px 0px var(--screen-background);
+
+			& h1 {
+				font-size: var(--font-1);
+			}
+
+			& h2 {
+				font-size: var(--font--1);
+			}
+		}
+
+		.lines {
+			position: relative;
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(
+					to bottom,
+					hsla(207.1, 15.9%, 61.76%, 0.2) 50%,
+					hsla(207.1, 15.9%, 51.76%, 0.1) 50%
+				);
+				background-size: 100% 4px;
+				pointer-events: none;
+			}
 		}
 	}
 </style>

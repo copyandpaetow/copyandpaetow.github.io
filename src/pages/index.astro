@@ -8,7 +8,6 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 <script>
 	/*
 
-- maybe add antennas
 - add navbar with home, overview (see all routes) and settings
 => 3D rotate
 => enable sticky
@@ -29,7 +28,7 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 */
 </script>
 
-<Layout title="Bewegung">
+<Layout title="Copy and Paetow">
 	<nav></nav>
 
 	<header></header>
@@ -38,7 +37,7 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 		<TV>
 			<Cassette decoType="c" id="1">
 				<a href="#1">the intro nobody asked for</a>
-				<CassetteScreen slot="screen">
+				<CassetteScreen slot="screen" overlay="lines">
 					<h1>Hi, Lucas here</h1>
 					<p>
 						I am looking for a opportunities to create delight and performant movements on the web.
