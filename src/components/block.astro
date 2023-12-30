@@ -72,13 +72,15 @@ const { className = "", id } = Astro.props;
 			& > .block-side {
 				width: var(--_block-depth);
 				left: calc(50% + 50% * var(--_block-opposite));
-				transform: translateX(-50%) rotateY(90.01deg) translateX(50%);
+				transform: translateX(-50%) rotateY(90.01deg) translateX(50%)
+					rotateY(var(--_block-backface-rotate));
 			}
 
 			& > .block-edge {
 				height: var(--_block-depth);
 				top: calc(50% - 50% * var(--_block-opposite));
-				transform: translateY(-50%) rotateX(90.01deg) translateY(-50%);
+				transform: translateY(-50%) rotateX(90.01deg) translateY(-50%)
+					rotateY(var(--_block-backface-rotate));
 			}
 		}
 

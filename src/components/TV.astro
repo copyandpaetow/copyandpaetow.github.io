@@ -1,5 +1,6 @@
 ---
 import TVButtons from "./TVButtons.astro";
+import TVRemote from "./TVRemote.astro";
 import StaticBackground from "./TVStaticBackground.astro";
 import Block from "./block.astro";
 export interface Props {
@@ -10,13 +11,25 @@ const { className = "" } = Astro.props;
 ---
 
 <div class=`tv-scene flat-scene ${className}`>
+	<span class="visually-hidden"
+		>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview the
+		content</span
+	>
+
+	<div class="remote-scene">
+		<button popovertarget="remote"> show tv remote for navigation and settings</button>
+		<div id="remote" popover class="tv-remote scene">
+			<TVRemote className="ontop-of-tv" />
+		</div>
+	</div>
+
 	<Block className="tv">
 		<div slot="front" class="tv-front">
 			<div class="screen-module">
 				<StaticBackground className="static-background" />
 			</div>
 			<div class="vhs-player-module">
-				<TVButtons className="vhs-controls" />
+				<!-- <TVButtons className="vhs-controls" /> -->
 				<aside class="vhs-slot"></aside>
 			</div>
 			<aside class="static-background"></aside>
@@ -29,7 +42,6 @@ const { className = "" } = Astro.props;
 		<slot />
 	</div>
 </div>
-
 <style is:global>
 	@layer components {
 		.tv-scene {
@@ -37,56 +49,53 @@ const { className = "" } = Astro.props;
 			--tv-depth: 300px;
 			--tv-background: hsl(255, 2%, 77%);
 			--tv-border-width: 2px;
-			--tv-outer-border-width: 2px;
-
-			--tv-dark: hsl(255, 2%, 22%);
-			--tv-light: hsl(255, 2%, 67%);
-
-			--tv-outer-border: var(--tv-outer-border-width) solid var(--tv-light);
-
-			--tv-inner-boxshadow: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
+			--tv-border-color: hsl(255, 2%, 67%);
+			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
+			--tv-realism-effect: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
 				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+			--tv-height: calc(
+				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--vhs-slot-padding) + 2 *
+					var(--tv-border-width) + 3 * var(--module-padding) + var(--module-gap) * 2
+			);
+			--tv-outline-color: var(--blue);
+			--tv-outline-width: 2px;
+			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
 
 			--cassette-depth: 220px;
 			--cassette-aspect-ratio: 4;
-
-			--cassettes-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
 			--cassette-active-offset-z: calc(var(--cassette-depth) / 4);
+			--cassettes-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
 
 			--module-padding: 0.75rem;
 			--module-border-radius: 0.25rem;
 			--module-gap: 1px;
-
-			--screen-module-ratio: 1.2;
-
-			--screen-height: calc(
-				(
-					(var(--tv-width) - 2 * var(--tv-outer-border-width) - 2 * var(--module-padding)) /
-						var(--screen-module-ratio)
-				)
-			);
+			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 
 			--screen-background: black;
 			--screen-border-radius: 1rem;
 			--screen-padding: 0.5rem;
+			--screen-border-color: var(--grey-85);
+			--screen-border-color-offset: var(--grey-90);
+			--screen-module-ratio: 1.2;
+			--screen-border-offset: calc(var(--tv-border-width) + var(--module-padding));
+			--screen-height: calc(
+				(
+					(var(--tv-width) - 2 * var(--tv-border-width) - 2 * var(--module-padding)) /
+						var(--screen-module-ratio)
+				)
+			);
 
-			--vhs-controls-height: 50px;
-			--vhs-padding: 0.25rem;
+			--vhs-slot-padding: 0.25rem;
 			--vhs-slot-ratio: calc(var(--cassette-aspect-ratio) - 0.25);
-
 			--vhs-slot-width: calc(
-				var(--tv-width) - 2 * var(--module-padding) - 2 * var(--tv-outer-border-width)
+				var(--tv-width) - 2 * var(--module-padding) - 2 * var(--tv-border-width)
 			);
+			--vhs-slot-height: calc(var(--vhs-slot-width) / var(--vhs-slot-ratio));
 
-			--vhs-slot-height: calc((var(--vhs-slot-width) / (var(--vhs-slot-ratio))));
+			--speaker-grill-color: var(--grey-85);
 
-			--tv-height: calc(
-				var(--screen-height) + var(--vhs-controls-height) + var(--vhs-slot-height) + 2 *
-					var(--vhs-padding) + 2 * var(--tv-outer-border-width) + 3 * var(--module-padding) +
-					var(--module-gap) * 2
-			);
-
-			--screen-border-offset: calc(var(--tv-outer-border-width) + var(--module-padding));
+			--remote-depth: 50px;
 
 			width: var(--tv-width);
 
@@ -94,7 +103,7 @@ const { className = "" } = Astro.props;
 				--cassette-aspect-ratio: 5;
 				--screen-padding: 1rem;
 				--screen-border-radius: 1.5rem;
-				--tv-outer-border-width: 4px;
+				--tv-border-width: 4px;
 			}
 
 			@media (min-width: 28rem) {
@@ -102,7 +111,7 @@ const { className = "" } = Astro.props;
 				--screen-padding: 1.25rem;
 				--screen-border-radius: 2rem;
 				--cassette-aspect-ratio: 6;
-				--tv-outer-border-width: 8px;
+				--tv-border-width: 8px;
 			}
 		}
 
@@ -114,7 +123,8 @@ const { className = "" } = Astro.props;
 				transform: translateZ(calc(var(--tv-depth) - var(--cassettes-offset-z)));
 			}
 
-			.tv {
+			.tv,
+			.remote-scene {
 				transform: translateZ(calc(var(--tv-depth)));
 			}
 		}
@@ -122,7 +132,7 @@ const { className = "" } = Astro.props;
 		.tv {
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
-			--block-border: var(--tv-outer-border);
+			--block-border: var(--tv-border);
 
 			& > * {
 				border-radius: calc(var(--tv-border-width) / 2);
@@ -140,9 +150,7 @@ const { className = "" } = Astro.props;
 			padding: var(--module-padding);
 
 			border-radius: var(--module-border-radius);
-			box-shadow:
-				0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
-				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+			box-shadow: var(--module-realism-effect);
 
 			display: grid;
 			grid-template-columns:
@@ -162,8 +170,8 @@ const { className = "" } = Astro.props;
 				grid-area: full-screen / full-screen;
 				background: var(--screen-background);
 				border-radius: var(--module-border-radius);
-				border-inline: var(--screen-border-radius) solid var(--black);
-				border-block: var(--screen-border-radius) solid var(--light-black);
+				border-inline: var(--screen-border-radius) solid var(--screen-border-color);
+				border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);
 			}
 
 			&::after {
@@ -186,29 +194,20 @@ const { className = "" } = Astro.props;
 			padding: var(--module-padding);
 			border-radius: var(--module-border-radius);
 			padding-top: 0;
-
-			box-shadow:
-				0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
-				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
-		}
-
-		.vhs-controls {
-			border-radius: var(--module-border-radius);
-			height: var(--vhs-controls-height);
+			box-shadow: var(--module-realism-effect);
 		}
 
 		.vhs-slot {
 			border-radius: var(--module-border-radius);
-
-			padding: var(--vhs-padding);
+			padding: var(--vhs-slot-padding);
 			padding-top: 0;
-			height: calc(var(--vhs-slot-height) + 2 * var(--vhs-padding));
-			box-shadow: var(--tv-inner-boxshadow);
+			height: calc(var(--vhs-slot-height) + 2 * var(--vhs-slot-padding));
+			box-shadow: var(--tv-realism-effect);
 
 			&::before {
 				content: "";
 				position: absolute;
-				inset: var(--vhs-padding);
+				inset: var(--vhs-slot-padding);
 				background: var(--black);
 				border-radius: var(--module-border-radius);
 			}
@@ -217,7 +216,7 @@ const { className = "" } = Astro.props;
 				content: "Copy and Paetow VHS Player deluxe";
 				background: var(--tv-background);
 				position: absolute;
-				inset: calc(var(--vhs-padding) + var(--tv-border-width));
+				inset: calc(var(--vhs-slot-padding) * 2);
 				transform: rotateX(-90.01deg);
 				transform-origin: top;
 				transition: transform 400ms ease 400ms;
@@ -234,7 +233,7 @@ const { className = "" } = Astro.props;
 			row-gap: 2px;
 
 			.cassette {
-				height: calc(var(--vhs-slot-height) - 2 * var(--vhs-padding));
+				height: calc(var(--vhs-slot-height) - 2 * var(--vhs-slot-padding));
 				aspect-ratio: var(--cassette-aspect-ratio);
 			}
 
@@ -255,12 +254,12 @@ const { className = "" } = Astro.props;
 					var(--screen-border-offset) var(--screen-padding) [screen-start] calc(
 						var(--screen-height) - 2 * var(--screen-padding)
 					)
-					[screen-end] var(--screen-padding) var(--module-padding) var(--vhs-controls-height)
-					var(--vhs-padding)
+					[screen-end] var(--screen-padding) var(--module-padding)
+					var(--vhs-slot-padding)
 					[vhs-slot-start]
 					var(--vhs-slot-height)
 					[vhs-slot-end]
-					var(--vhs-padding)
+					var(--vhs-slot-padding)
 					var(--screen-border-offset);
 			}
 
@@ -269,7 +268,7 @@ const { className = "" } = Astro.props;
 				grid-area: vhs-slot / content;
 
 				transform: translateZ(calc(var(--cassettes-offset-z) + var(--cassette-active-offset-z)))
-					translateY(calc(var(--vhs-padding) * 2));
+					translateY(calc(var(--vhs-slot-padding) * 2));
 			}
 
 			& > article:nth-of-type(2) {
@@ -294,9 +293,6 @@ const { className = "" } = Astro.props;
 		}
 
 		.speaker {
-			--grill-separator: var(--space--1);
-			--grill-spacing: 4px;
-
 			display: grid;
 			place-content: start center;
 			height: 100%;
@@ -308,21 +304,85 @@ const { className = "" } = Astro.props;
 				aspect-ratio: 2.5;
 				width: calc(var(--tv-depth) * 0.8);
 				display: block;
+				border-radius: 50%;
 
 				background: linear-gradient(
-						to right,
-						transparent 0%,
-						transparent calc(50% - 2px),
-						var(--tv-background) calc(50% - var(--grill-separator)),
-						var(--tv-background) calc(50% + var(--grill-separator)),
-						transparent calc(50% + 2px)
+						90deg,
+						transparent 48.5%,
+						var(--tv-background) 48.5%,
+						var(--tv-background) 51.5%,
+						transparent 51.5%
 					),
-					repeating-linear-gradient(
-						transparent,
-						transparent var(--grill-spacing),
-						var(--tv-light) var(--grill-spacing),
-						var(--tv-light) calc(var(--grill-spacing) * 2)
+					linear-gradient(
+						var(--speaker-grill-color) 0%,
+						var(--tv-background) 10%,
+						var(--tv-background) 40%,
+						var(--speaker-grill-color) 50%,
+						var(--tv-border-color) 50%
 					);
+				background-size: 100% 0.25rem;
+			}
+		}
+
+		.remote-scene {
+			position: relative;
+			height: var(--remote-depth);
+			display: grid;
+
+			& > * {
+				grid-area: 1/1;
+			}
+
+			& > button {
+				position: absolute;
+				bottom: 0;
+				height: calc(var(--remote-depth) * 1.5);
+				width: 100%;
+				appearance: none;
+				color: transparent;
+				background-color: transparent;
+				border: none;
+				transform: translateZ(var(--remote-depth));
+			}
+
+			.tv-remote {
+				display: grid;
+				height: 100%;
+				width: 100%;
+				overflow: initial;
+				color: transparent;
+				background-color: transparent;
+			}
+
+			.ontop-of-tv {
+				position: absolute;
+				transform-origin: left top;
+				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
+					translateZ(calc(var(--remote-depth) * -1 + var(--tv-border-width))) translateX(-50%)
+					translateY(25%);
+			}
+
+			.tv-remote:not(:popover-open) {
+				perspective: none;
+			}
+
+			.tv-remote::backdrop {
+				background: hsla(0, 0%, 0%, 0.5);
+			}
+
+			.tv-remote:popover-open {
+				height: var(--remote-depth);
+				width: var(--tv-width);
+				top: var(--above-scene);
+				left: 50%;
+				transform: translateX(-50%);
+				overflow: visible;
+				position: fixed;
+			}
+
+			.tv-remote:popover-open .ontop-of-tv {
+				transform: translateX(calc(var(--tv-width) / 4));
+				transition: transform 2s ease;
 			}
 		}
 	}

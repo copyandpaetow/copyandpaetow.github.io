@@ -8,21 +8,41 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 <script>
 	/*
 
-- add navbar with home, overview (see all routes) and settings
-=> 3D rotate
-=> enable sticky
-=> straighten covers
+- try new screen shape
+- improve remote color and borders
+- maybe the settings buttons should be inaccessible as long as the remote is not "open"
+- we should be able to define which side the camera "sees", so we can decide which blocks to render or not
+- maybe we can just hide all elements of the remote besides the power button and the base shape
+- the remote screen needs routes for navigation, maybe that should also be a landmark there
+- enable channel functionality (home, up, down, select, scroll snap, arrow keys)
+- enable settings functionality (power, mute, animations)
+- readd a power light on the screen
+- have an intro effect
+=> start rotated, and zoomed out, slowly transition to the normal position
 
-=> we currently only render the visible block elements, if we would rotate the scene, we could check which faces should be visible and only render those?
+## JS
 
-  ##improvements
-
-- use IO to change the tapes on scroll. Needs to be deactivatable via a toggle though
-- scroll snapping for the tapes would be nice
 - reset buttons if power is clicked
-- the screen alignment is currently fragile
+- enable popover functionality for firefox
+- animate putting in a new tape
+- improve the remote animation (initial location is only valid if we are not scrolled down)
+- add and cache sounds
+=> tv on/off
+=> cassette tape cat/willhelm scream
+
+- rotate the scene based on mouse position
+
+## bugs
+
 - tape variants show whitespace in smaller viewports
-- unify media queries but try to reduce as much as possible
+
+## refactorings
+
+- split tv into more managable parts
+
+
+## features
+- add scenery that change with the content of the selected tape
 
 
 */
@@ -36,7 +56,9 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 	<main class="scene">
 		<TV>
 			<Cassette decoType="c" id="1">
-				<a href="#1">the intro nobody asked for</a>
+				<a href="#1" aria-label="jumps to the tv and previews this page"
+					>the intro nobody asked for</a
+				>
 				<CassetteScreen slot="screen" overlay="lines">
 					<h1>Hi, Lucas here</h1>
 					<p>
@@ -51,7 +73,7 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 					<p>fake news</p>
 				</CassetteScreen>
 			</Cassette>
-			<Cassette decoType="c" tapeType="stripes" disabled><p>Your joke here</p></Cassette>
+			<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
@@ -59,9 +81,9 @@ import CassetteScreen from "../components/CassetteScreen.astro";
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
 			<Cassette decoType="a" tapeType="checked" id="printer">
 				<a href="#printer">How to fix your printer</a>
-				<section class="cassette-content screen" slot="screen">
+				<CassetteScreen slot="screen">
 					<p>fake news</p>
-				</section>
+				</CassetteScreen>
 			</Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
 			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>

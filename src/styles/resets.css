@@ -54,20 +54,3 @@
 	display: block;
 }
 
-:where(input):focus-visible {
-	outline: 2px solid transparent;
-	border-color: var(--blue, blue);
-}
-
-:where(button) {
-	& :focus:not(:focus-visible) {
-		outline-color: transparent;
-	}
-
-	& :focus-visible {
-		outline: 2px solid transparent;
-		box-shadow:
-			0 0 0 2px #fff,
-			0 0 0 4px var(--blue, blue);
-	}
-}

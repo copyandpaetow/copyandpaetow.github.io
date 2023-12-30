@@ -12,43 +12,48 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<section class=`button-panel ${className}`>
+<section class=`vhs-control-panel ${className}`>
 	<label for="controls-play">
 		<Fragment set:html={Play} />
 		<input slot="front" type="radio" name="controls" id="controls-play" checked />
+		<span class="visually-hidden">plays the current vhs cassette</span>
 	</label>
 	<label for="controls-pause">
 		<Fragment set:html={Pause} />
 		<input slot="front" type="radio" name="controls" id="controls-pause" />
+		<span class="visually-hidden">pauses all animations</span>
 	</label>
 	<label for="controls-eject">
 		<Fragment set:html={Eject} />
 		<input slot="front" type="radio" name="controls" id="controls-eject" />
+		<span class="visually-hidden">ejects the current tape</span>
 	</label>
 
 	<label for="controls-mute">
 		<Fragment set:html={Mute} />
 		<input slot="front" type="checkbox" name="power" id="controls-mute" />
+		<span class="visually-hidden">mutes all sound effects</span>
 	</label>
 
 	<label for="controls-power">
 		<Fragment set:html={Power} />
 		<input slot="front" type="checkbox" name="power" id="controls-power" checked />
+		<span class="visually-hidden">turns the screen on/off</span>
 	</label>
 </section>
 
 <style is:global>
 	@layer components {
-		.button-panel {
+		.vhs-control-panel {
 			display: grid;
 			grid-template-columns: max-content max-content max-content max-content 1fr max-content;
 			grid-template-areas: "play pause eject mute . power";
 
-			> label {
+			& > label {
 				cursor: pointer;
 				color: white;
 				transition: transform 100ms ease;
-				box-shadow: var(--tv-inner-boxshadow);
+				box-shadow: var(--tv-realism-effect);
 
 				aspect-ratio: 1;
 				height: var(--vhs-controls-height);
@@ -58,29 +63,34 @@ const { className = "" } = Astro.props;
 				border-start-end-radius: 0;
 			}
 
-			> label > svg {
+			& > label:has(input:focus-visible) {
+				outline: var(--tv-outline);
+			}
+
+			& > label > svg {
 				width: 50%;
 				place-self: center;
 			}
 
-			> label:last-of-type {
+			& > label:last-of-type {
 				grid-area: 1 / power;
 			}
 
-			> label:has(:checked) {
+			& > label:has(:checked) {
 				box-shadow:
 					inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
 					inset 0px 0px 5px 1px hsla(0, 0%, 0%, 0.33);
 			}
 
-			> label:has(:checked) path {
+			& > label:has(:checked) path {
 				fill: var(--green);
 			}
-			> label:has(#controls-power:checked) path {
+
+			& > label:has(#controls-power:checked) path {
 				fill: var(--red);
 			}
 
-			> label:has(#controls-mute:checked) path {
+			& > label:has(#controls-mute:checked) path {
 				fill: transparent;
 				stroke: var(--green);
 			}
@@ -92,7 +102,6 @@ const { className = "" } = Astro.props;
 				width: 0;
 				height: 0;
 				z-index: -1;
-				visibility: hidden;
 			}
 		}
 
@@ -109,7 +118,7 @@ const { className = "" } = Astro.props;
 			}
 		}
 
-		:has(#controls-eject:checked) .cassette-slot::after {
+		:has(#controls-eject:checked) .vhs-slot::after {
 			transform: translateZ(1px) rotateX(0deg);
 		}
 

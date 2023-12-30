@@ -101,6 +101,10 @@ const randomZOffset = randomNumber(10, 100);
 			position: relative;
 			overflow: hidden;
 
+			&:has(:focus-visible) {
+				outline: var(--tv-outline);
+			}
+
 			&[data-tape-type="stripes"] {
 				--stripe-color: var(--grey-40);
 

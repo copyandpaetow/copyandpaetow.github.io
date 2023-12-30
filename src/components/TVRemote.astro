@@ -1,0 +1,157 @@
+---
+import Block from "../components/block.astro";
+
+export interface Props {
+	className?: string;
+	id?: string;
+}
+
+const { className = "", id } = Astro.props;
+---
+
+<Block className={`remote-block force-full-scene ${className}`} {...id && { id: id }}>
+	<div slot="front" class="remote">
+		<button class="power-button"
+			><Block className="force-full-scene">
+				<span slot="front">power</span>
+			</Block></button
+		>
+
+		<div class="channel-screen"></div>
+
+		<fieldset>
+			<legend>Channels</legend>
+			<button><span>home</span></button>
+			<button><span>select</span></button>
+			<button><span>up</span></button>
+			<button><span>down</span></button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Settings</legend>
+
+			<label for="controls-mute">
+				<span>mute</span>
+				<input type="checkbox" name="mute" id="controls-mute" />
+			</label>
+
+			<label for="controls-animation">
+				<span>pause animations</span>
+				<input type="checkbox" name="animations" id="controls-animation" />
+			</label>
+
+			<label for="controls-eject">
+				<span>eject</span>
+				<input type="checkbox" name="eject" id="controls-eject" />
+			</label>
+		</fieldset>
+	</div>
+</Block>
+
+<style is:global>
+	@layer components {
+		.remote-block {
+			--block-background: var(--tv-background);
+			--block-depth: 50px;
+			--block-border: 4px solid var(--tv-border-color);
+			width: max-content;
+			color: black;
+		}
+
+		.remote {
+			display: grid;
+			height: 100%;
+			padding: 1rem;
+			padding-block-end: 8rem;
+			row-gap: 0.5rem;
+
+			&:focus-within {
+				outline: var(--tv-outline);
+			}
+
+			& label:has(:focus-visible),
+			& button:focus-visible {
+				outline: var(--tv-outline);
+			}
+		}
+
+		.power-button {
+			--block-background: rgb(255, 0, 0);
+			--block-depth: 10px;
+			--block-border: 2px solid rgb(130, 0, 0);
+
+			width: max-content;
+			justify-self: end;
+
+			& > * {
+				transform: translateZ(5px);
+				transition: transform 200ms ease;
+			}
+
+			&:active > * {
+				transform: translateZ(1px);
+			}
+		}
+
+		.channel-screen {
+			width: 100%;
+			aspect-ratio: 1.5;
+			background-color: hsl(207.1, 15.9%, 61.76%);
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+			border: 8px solid var(--grey-70);
+			border-inline-color: var(--grey-80);
+			box-shadow: inset 0 0 5px 1px hsla(0, 0%, 100%, 0.25);
+		}
+
+		.remote fieldset {
+			--light-shadow-color: #f7f7f7;
+			--dark-shadow-color: #646464;
+			--background-color: #cfcbca;
+
+			border: 2px solid black;
+			padding: 0.5rem;
+			display: flex;
+			gap: 4px;
+
+			& :where(button, label) {
+				flex-basis: 100%;
+				appearance: none;
+				position: relative;
+				border: 2px solid transparent;
+				color: black;
+				background: black;
+				border-radius: 2px;
+				box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+				height: 40px;
+			}
+
+			& :where(button, label) > span {
+				border-radius: 0.45rem;
+				background-color: var(--background-color);
+				height: 100%;
+				display: grid;
+				place-content: center;
+				font-size: var(--font--2);
+
+				box-shadow:
+					inset 1px 1px 1px var(--light-shadow-color),
+					inset -1px -1px 1px var(--dark-shadow-color),
+					2px 2px 2px #000;
+			}
+
+			& :where(button, label):active > span {
+				transform: scale(0.98);
+			}
+
+			& input {
+				appearance: none;
+				background-color: var(--block-background);
+				position: absolute;
+				width: 0;
+				height: 0;
+				z-index: -1;
+			}
+		}
+	}
+</style>
