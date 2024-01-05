@@ -1,0 +1,130 @@
+---
+import Remote from "./remote.astro";
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<div class="tv-remote">
+	<button popovertarget="remote"> show tv remote for navigation and settings</button>
+	<div id="remote" popover class="tv-remote scene">
+		<Remote className="ontop-of-tv">
+			<slot />
+		</Remote>
+	</div>
+</div>
+
+<style is:global>
+	@layer components {
+		.tv-remote {
+			position: relative;
+			height: var(--remote-depth);
+			display: grid;
+
+			& > * {
+				grid-area: 1/1;
+			}
+
+			& > button {
+				position: absolute;
+				bottom: 0;
+				height: calc(var(--remote-depth) * 1.5);
+				width: 100%;
+				appearance: none;
+				color: transparent;
+				background-color: transparent;
+				border: none;
+				transform: translateZ(var(--remote-depth));
+			}
+
+			.tv-remote {
+				display: grid;
+				height: 100%;
+				width: 100%;
+				overflow: initial;
+				color: transparent;
+				background-color: transparent;
+			}
+
+			.ontop-of-tv {
+				position: absolute;
+				transform-origin: left top;
+				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
+					translateZ(calc(var(--remote-depth) * -1 + var(--tv-border-width))) translateX(-50%)
+					translateY(25%);
+			}
+
+			.tv-remote:not(:popover-open) {
+				perspective: none;
+				perspective-origin: initial;
+				contain: none;
+			}
+
+			.tv-remote::backdrop {
+				background: hsla(0, 0%, 0%, 0.5);
+			}
+
+			.tv-remote:popover-open {
+				height: var(--remote-depth);
+				width: var(--tv-width);
+				top: var(--tv-offset);
+				left: 50%;
+				transform: translateX(-50%);
+				overflow: visible;
+				position: fixed;
+			}
+
+			.tv-remote:popover-open .ontop-of-tv {
+				transform: translateX(calc(var(--tv-width) / 4));
+
+				@media (prefers-reduced-motion: no-preference) {
+					transition: transform 2s ease;
+				}
+			}
+
+			.tv-remote:not(:popover-open) .remote > *:not(.power-button) {
+				display: none;
+			}
+		}
+
+		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-eject:checked) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+
+			.cassette {
+				transform: translateZ(3500px);
+				transition: transform 300ms ease 200ms;
+			}
+		}
+
+		:has(#controls-eject:checked) .vhs-slot::after {
+			transform: translateZ(1px) rotateX(0deg);
+		}
+
+		:has(#controls-eject:checked) .static-background {
+			opacity: 1;
+		}
+
+		:has(#controls-power:not(:checked)):has(#controls-eject:checked) .static-background {
+			scale: 0;
+			transition: scale 200ms ease;
+		}
+
+		:has(#controls-power:not(:checked)):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-power:not(:checked)) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+		}
+
+		:has(#controls-animations:checked) .tv-remote:popover-open .ontop-of-tv {
+			transition: none;
+		}
+	}
+</style>

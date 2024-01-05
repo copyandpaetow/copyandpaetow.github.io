@@ -1,0 +1,156 @@
+---
+import StaticBackground from "./static-background.astro";
+import Block from "../block.astro";
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<Block className={`tv ${className}`}>
+	<div slot="front" class="tv-front">
+		<div class="screen-module">
+			<StaticBackground className="static-background" />
+		</div>
+		<div class="vhs-player-module">
+			<aside class="vhs-slot"></aside>
+		</div>
+		<aside class="static-background"></aside>
+	</div>
+	<div slot="right" class="speaker"></div>
+	<div slot="left" class="speaker"></div>
+</Block>
+
+<style is:global>
+	@layer components {
+		.tv {
+			--block-depth: var(--tv-depth);
+			--block-background: var(--tv-background);
+			--block-border: var(--tv-border);
+
+			& > * {
+				border-radius: calc(var(--tv-border-width) / 2);
+			}
+		}
+
+		.tv-front {
+			height: 100%;
+			display: grid;
+			row-gap: var(--module-gap);
+		}
+
+		.screen-module {
+			aspect-ratio: var(--screen-module-ratio);
+			padding: var(--module-padding);
+
+			border-radius: var(--module-border-radius);
+			box-shadow: var(--module-realism-effect);
+
+			display: grid;
+			grid-template-columns:
+				[full-screen-start] var(--screen-padding)
+				[screen-content-start] 1fr
+				[screen-content-end] var(--screen-padding)
+				[full-screen-end];
+
+			grid-template-rows:
+				[full-screen-start] var(--screen-padding)
+				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
+				[screen-content-end] var(--screen-padding)
+				[full-screen-end];
+
+			&::before {
+				content: "";
+				grid-area: full-screen / full-screen;
+				background: var(--screen-background);
+				border-radius: var(--module-border-radius);
+				border-inline: var(--screen-border-radius) solid var(--screen-border-color);
+				border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);
+			}
+
+			&::after {
+				content: "";
+				grid-area: screen-content / screen-content;
+				border-radius: var(--screen-border-radius);
+				background: var(--black);
+			}
+
+			> .static-background {
+				grid-area: screen-content / screen-content;
+				border-radius: var(--screen-border-radius);
+				background: var(--black);
+				z-index: 1;
+				opacity: 0;
+			}
+		}
+
+		.vhs-player-module {
+			padding: var(--module-padding);
+			border-radius: var(--module-border-radius);
+			padding-top: 0;
+			box-shadow: var(--module-realism-effect);
+		}
+
+		.vhs-slot {
+			border-radius: var(--module-border-radius);
+			padding: var(--vhs-slot-padding);
+			padding-top: 0;
+			height: calc(var(--vhs-slot-height) + 2 * var(--vhs-slot-padding));
+			box-shadow: var(--tv-realism-effect);
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: var(--vhs-slot-padding);
+				background: var(--black);
+				border-radius: var(--module-border-radius);
+			}
+
+			&::after {
+				content: "Copy and Paetow VHS Player deluxe";
+				background: var(--tv-background);
+				position: absolute;
+				inset: calc(var(--vhs-slot-padding) * 2);
+				transform: rotateX(-90.01deg);
+				transform-origin: top;
+				transition: transform 400ms ease 400ms;
+				display: grid;
+				place-content: center;
+				font-weight: bold;
+			}
+		}
+
+		.speaker {
+			display: grid;
+			place-content: start center;
+			height: 100%;
+			width: 100%;
+			padding: var(--module-padding);
+
+			&::before {
+				content: "";
+				aspect-ratio: 2.5;
+				width: calc(var(--tv-depth) * 0.8);
+				display: block;
+				border-radius: 50%;
+
+				background: linear-gradient(
+						90deg,
+						transparent 48.5%,
+						var(--tv-background) 48.5%,
+						var(--tv-background) 51.5%,
+						transparent 51.5%
+					),
+					linear-gradient(
+						var(--speaker-grill-color) 0%,
+						var(--tv-background) 10%,
+						var(--tv-background) 40%,
+						var(--speaker-grill-color) 50%,
+						var(--tv-border-color) 50%
+					);
+				background-size: 100% 0.25rem;
+			}
+		}
+	}
+</style>

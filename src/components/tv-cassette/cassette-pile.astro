@@ -1,0 +1,81 @@
+---
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<div class="cassettes">
+	<slot />
+</div>
+
+<style is:global>
+	@layer components {
+		.cassettes {
+			display: grid;
+			grid-auto-flow: row;
+			grid-auto-rows: max-content;
+			row-gap: 2px;
+
+			.cassette {
+				height: calc(var(--vhs-slot-height) - 2 * var(--vhs-slot-padding));
+				aspect-ratio: var(--cassette-aspect-ratio);
+			}
+
+			&:not(:has(:target)) > article:first-of-type,
+			& :target {
+				transform: none;
+				margin-top: calc(var(--tv-height) * -1);
+				height: var(--tv-height);
+				width: var(--tv-width);
+
+				display: grid;
+				grid-template-columns:
+					var(--screen-border-offset) [content-start] var(--screen-padding) [screen-start] 1fr [screen-end] var(
+						--screen-padding
+					)
+					[content-end] var(--screen-border-offset);
+				grid-template-rows:
+					var(--screen-border-offset) var(--screen-padding) [screen-start] calc(
+						var(--screen-height) - 2 * var(--screen-padding)
+					)
+					[screen-end] var(--screen-padding) var(--module-padding)
+					var(--vhs-slot-padding)
+					[vhs-slot-start]
+					var(--vhs-slot-height)
+					[vhs-slot-end]
+					var(--vhs-slot-padding)
+					var(--screen-border-offset);
+			}
+
+			&:not(:has(:target)) > article:first-of-type .cassette,
+			& :target .cassette {
+				grid-area: vhs-slot / content;
+
+				transform: translateZ(calc(var(--cassettes-offset-z) + var(--cassette-active-offset-z)))
+					translateY(calc(var(--vhs-slot-padding) * 2));
+			}
+
+			& > article:nth-of-type(2) {
+				transform: none;
+			}
+
+			.screen {
+				transform: translateZ(var(--cassettes-offset-z));
+				display: none;
+				grid-area: screen / screen;
+			}
+
+			&:not(:has(:target)) > article:first-of-type .screen,
+			& :target .screen {
+				display: grid;
+			}
+
+			> :target {
+				scroll-margin-block-start: calc(var(--tv-width) + var(--above-scene));
+				order: -1;
+			}
+		}
+	}
+</style>

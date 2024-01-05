@@ -1,5 +1,5 @@
 ---
-import Block from "./block.astro";
+import Block from "../block.astro";
 
 export interface Props {
 	decoType?: "a" | "b" | "c";
@@ -52,10 +52,6 @@ const randomZOffset = randomNumber(10, 100);
 			--block-depth: calc(var(--cassette-depth));
 
 			grid-area: 1 / 1;
-
-			& > [data-block-side="front"] {
-				height: 100%;
-			}
 		}
 
 		.cassette-front {

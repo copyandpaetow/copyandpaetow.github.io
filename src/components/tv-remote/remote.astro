@@ -1,5 +1,5 @@
 ---
-import Block from "../components/block.astro";
+import Block from "../block.astro";
 
 export interface Props {
 	className?: string;
@@ -9,19 +9,28 @@ export interface Props {
 const { className = "", id } = Astro.props;
 ---
 
-<Block className={`remote-block force-full-scene ${className}`} {...id && { id: id }}>
-	<div slot="front" class="remote">
-		<button class="power-button"
-			><Block className="force-full-scene">
-				<span slot="front">power</span>
-			</Block></button
-		>
+<script>
+	import "./eject-sound";
+</script>
 
-		<div class="channel-screen"></div>
+<Block className={`remote-block ${className}`} {...id && { id: id }}>
+	<nav slot="front" class="remote">
+		<label for="controls-power" class="power-button">
+			<Block className="force-full-scene">
+				<span slot="front">power</span>
+			</Block>
+			<input type="checkbox" name="power" id="controls-power" checked />
+		</label>
+
+		<ul class="channel-screen">
+			<slot />
+		</ul>
+
+		<noscript> enable javascript for full functionality</noscript>
 
 		<fieldset>
 			<legend>Channels</legend>
-			<button><span>home</span></button>
+			<a href="/"><span>home</span></a>
 			<button><span>select</span></button>
 			<button><span>up</span></button>
 			<button><span>down</span></button>
@@ -42,10 +51,12 @@ const { className = "", id } = Astro.props;
 
 			<label for="controls-eject">
 				<span>eject</span>
-				<input type="checkbox" name="eject" id="controls-eject" />
+				<eject-sound>
+					<input type="checkbox" name="eject" id="controls-eject" />
+				</eject-sound>
 			</label>
 		</fieldset>
-	</div>
+	</nav>
 </Block>
 
 <style is:global>
@@ -54,15 +65,23 @@ const { className = "", id } = Astro.props;
 			--block-background: var(--tv-background);
 			--block-depth: 50px;
 			--block-border: 4px solid var(--tv-border-color);
+
+			--block-render-front: block;
+			--block-render-top: block;
+			--block-render-right: none;
+			--block-render-back: none;
+			--block-render-bottom: none;
+			--block-render-left: block;
+
 			width: max-content;
 			color: black;
 		}
 
 		.remote {
 			display: grid;
-			height: 100%;
+			grid-auto-rows: max-content;
+			height: var(--remote-height);
 			padding: 1rem;
-			padding-block-end: 8rem;
 			row-gap: 0.5rem;
 
 			&:focus-within {
@@ -72,6 +91,15 @@ const { className = "", id } = Astro.props;
 			& label:has(:focus-visible),
 			& button:focus-visible {
 				outline: var(--tv-outline);
+			}
+
+			& input {
+				appearance: none;
+				background-color: var(--block-background);
+				position: absolute;
+				width: 0;
+				height: 0;
+				z-index: -1;
 			}
 		}
 
@@ -102,6 +130,9 @@ const { className = "", id } = Astro.props;
 			border: 8px solid var(--grey-70);
 			border-inline-color: var(--grey-80);
 			box-shadow: inset 0 0 5px 1px hsla(0, 0%, 100%, 0.25);
+			display: grid;
+			grid-auto-flow: row;
+			grid-auto-rows: max-content;
 		}
 
 		.remote fieldset {
@@ -114,7 +145,7 @@ const { className = "", id } = Astro.props;
 			display: flex;
 			gap: 4px;
 
-			& :where(button, label) {
+			& :where(button, label, a) {
 				flex-basis: 100%;
 				appearance: none;
 				position: relative;
@@ -126,7 +157,7 @@ const { className = "", id } = Astro.props;
 				height: 40px;
 			}
 
-			& :where(button, label) > span {
+			& :where(button, label, a) > span {
 				border-radius: 0.45rem;
 				background-color: var(--background-color);
 				height: 100%;
@@ -140,17 +171,8 @@ const { className = "", id } = Astro.props;
 					2px 2px 2px #000;
 			}
 
-			& :where(button, label):active > span {
+			& :where(button, label, a):active > span {
 				transform: scale(0.98);
-			}
-
-			& input {
-				appearance: none;
-				background-color: var(--block-background);
-				position: absolute;
-				width: 0;
-				height: 0;
-				z-index: -1;
 			}
 		}
 	}

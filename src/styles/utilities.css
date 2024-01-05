@@ -16,6 +16,7 @@
 
 	perspective: calc(100vw * var(--perspective-factor));
 	perspective-origin: var(--origin-x) var(--origin-y);
+	contain: layout inline-size;
 
 	& * {
 		transform-style: preserve-3d;
