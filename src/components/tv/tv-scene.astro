@@ -1,4 +1,5 @@
 ---
+import Scene from "../scene.astro";
 import TV from "./tv.astro";
 import Remote from "../tv-remote/tv-remote.astro";
 import Room from "./room.astro";
@@ -43,27 +44,40 @@ const { className = "" } = Astro.props;
 	// }
 </script>
 
-<div class=`tv-scene ${className}` style="--scene-rotate-x: 0deg; --scene-rotate-y: 0deg;">
-	<span class="visually-hidden"
-		>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview the
-		content</span
-	>
+<Scene className="adjust-scene">
+	<div class="tv-scene">
+		<span class="visually-hidden"
+			>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview the
+			content</span
+		>
 
-	<Remote className="interactive">
-		<slot name="remote" />
-	</Remote>
+		<Remote className="interactive">
+			<slot name="remote" />
+		</Remote>
 
-	<TV className="interactive" />
+		<TV className="interactive" />
 
-	<CassettePile>
-		<slot />
-	</CassettePile>
+		<CassettePile>
+			<slot />
+		</CassettePile>
 
-	<Room />
-</div>
+		<Room />
+	</div>
+</Scene>
 
 <style is:global>
 	@layer components {
+		/* .adjust-scene {
+			--perspective: 2000px;
+			--camera-truck: 200px;
+			--camera-pedestal: 0;
+			--camera-dolly: 0;
+
+			--camera-roll: 0deg;
+			--camera-pan: 0deg;
+			--camera-tilt: 0deg;
+		} */
+
 		.tv-scene {
 			--tv-offset: 20svh;
 			--tv-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
@@ -138,6 +152,7 @@ const { className = "" } = Astro.props;
 			}
 		}
 
+		/* 
 		@keyframes zoomin {
 			0%,
 			50% {
@@ -147,7 +162,7 @@ const { className = "" } = Astro.props;
 			to {
 				transform: translateZ(calc(var(--tv-depth) * -1));
 			}
-		}
+		} */
 
 		.tv-scene {
 			/* this are required for safari and firefox interactivity */
@@ -158,13 +173,13 @@ const { className = "" } = Astro.props;
 				transform: translateZ(calc(var(--tv-depth) - var(--cassettes-offset-z)));
 			}
 
-			> .interactive {
+			.interactive {
 				transform: translateZ(calc(var(--tv-depth)));
 			}
 
-			@media (prefers-reduced-motion: no-preference) {
+			/* @media (prefers-reduced-motion: no-preference) {
 				animation: zoomin 5s ease;
-			}
+			} */
 		}
 	}
 </style>

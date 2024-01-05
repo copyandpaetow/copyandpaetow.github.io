@@ -7,7 +7,7 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class="tv-remote">
+<div class={`tv-remote ${className}`}>
 	<button popovertarget="remote"> show tv remote for navigation and settings</button>
 	<div id="remote" popover class="tv-remote scene">
 		<Remote className="ontop-of-tv">
@@ -54,6 +54,8 @@ const { className = "" } = Astro.props;
 				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
 					translateZ(calc(var(--remote-depth) * -1 + var(--tv-border-width))) translateX(-50%)
 					translateY(25%);
+
+				--block-render-bottom: block;
 			}
 
 			.tv-remote:not(:popover-open) {

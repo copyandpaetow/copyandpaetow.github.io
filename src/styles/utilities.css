@@ -9,50 +9,6 @@
 	gap: var(--gutter);
 }
 
-.scene {
-	--perspective-factor: 10;
-	--origin-x: 200vw;
-	--origin-y: -33vw;
-
-	perspective: calc(100vw * var(--perspective-factor));
-	perspective-origin: var(--origin-x) var(--origin-y);
-	contain: layout inline-size;
-
-	& * {
-		transform-style: preserve-3d;
-		outline: 1px solid transparent;
-	}
-
-	@media (min-width: 30rem) {
-		--perspective-factor: 8;
-	}
-
-	@media (min-width: 40rem) {
-		--perspective-factor: 6;
-	}
-
-	@media (min-width: 50rem) {
-		--perspective-factor: 5;
-	}
-}
-
-@media (min-width: 30rem) {
-	.scene {
-		--perspective-factor: 8;
-	}
-}
-
-@media (min-width: 40rem) {
-	.scene {
-		--perspective-factor: 6;
-	}
-}
-
-@media (min-width: 50rem) {
-	.scene {
-		--perspective-factor: 5;
-	}
-}
 
 .visually-hidden {
 	position: absolute;

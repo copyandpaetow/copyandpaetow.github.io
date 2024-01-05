@@ -54,3 +54,7 @@
 	display: block;
 }
 
+:where(a, button, input),
+:where(label:has(input)) {
+	cursor: pointer;
+}

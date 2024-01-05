@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TV from "../components/tv/scene.astro";
+import TV from "../components/tv/tv-scene.astro";
 import TVRemoteLink from "../components/tv-remote/remote-links.astro";
 import Cassette from "../components/tv-cassette/cassette.astro";
 import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
@@ -15,6 +15,11 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 - re-add a power light on the screen
 - improve remote color and borders
 - try new screen shape
+- remote needs a dedicated close button
+
+- simple view: no 3d, sticky monitor
+- tilting view: 3d front, sticky scrolling of the content?
+=> this is not that performant... Maybe it can be done with scoll Animations
 
 ## JS
 
@@ -24,7 +29,7 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 - improve the remote animation (initial location is only valid if we are not scrolled down)
 
 - rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
-
+- noscript elements are placed where there is js used
 
 ## bugs
 
@@ -32,15 +37,14 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 
 ## refactorings
 
-- split tv into more managable parts and group them by feature
-=> maybe a "tv-root" for the custom variables?
-
 - find a common language for the css classes, like for when grapping the blocks for layouting, their front face etc
 => maybe [noun]-scene or [noun]-root, [noun]-layout, [noun]-front/left/right
-- pointer for everything that is clickable
-- noscript elements are placed where there is js used
 
-- should we add a "tv" css file? 
+
+
+
+
+
 
 
 ## features
@@ -59,7 +63,7 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 </script>
 
 <Layout title="Copy and Paetow">
-	<main class="scene">
+	<main>
 		<TV>
 			<Fragment slot="remote">
 				<TVRemoteLink>
