@@ -9,17 +9,14 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 <script>
 	/*
 
-- we should be able to define which side the camera "sees", so we can decide which blocks to render or not
+- we should be able to define which side the camera "sees" initially, so we can decide which blocks to render or not
+=> hide all other sides
 
 - enable channel functionality (up, down, select, scroll snap, arrow keys)
 - re-add a power light on the screen
 - improve remote color and borders
 - try new screen shape
 - remote needs a dedicated close button
-
-- simple view: no 3d, sticky monitor
-- tilting view: 3d front, sticky scrolling of the content?
-=> this is not that performant... Maybe it can be done with scoll Animations
 
 ## JS
 
@@ -34,21 +31,20 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 ## bugs
 
 - tape variants show whitespace in smaller viewports
+- tape ejection on flat view doesnt work
+- the eject/back button can make the user leave the site
+- the remote hovers very visibly 
 
 ## refactorings
 
 - find a common language for the css classes, like for when grapping the blocks for layouting, their front face etc
 => maybe [noun]-scene or [noun]-root, [noun]-layout, [noun]-front/left/right
 
-
-
-
-
-
-
+- unify values
+- extract similar functionallity into classes
 
 ## features
-- we could do a slower intro that gets interrupted as soon as you interact with the page
+- add a preview button, that rolls the camera a little (and zooms out)
 - add more sounds
 - add scenery that change with the content of the selected tape
 - add more realistic VCR effects

@@ -7,6 +7,8 @@ export interface Props {
 	id?: string;
 }
 
+import Eject from "../icons/eject.svg?raw";
+
 const { decoType = "a", tapeType = "blank", id } = Astro.props;
 
 const randomNumber = (min: number, max: number) => {
@@ -17,12 +19,16 @@ const randomXOffset = randomNumber(-3, 3);
 const randomZOffset = randomNumber(10, 100);
 ---
 
+<script>
+	import "./eject-cassette";
+</script>
+
 <article
 	class="cassette-scene"
 	{...id && { id }}
 	style=`
-	--cassette-offset-x: ${randomXOffset}%;
-	--cassette-offset-z: ${randomZOffset}px;`
+--cassette-offset-x: ${randomXOffset}%;
+--cassette-offset-z: ${randomZOffset}px;`
 >
 	<Block className="cassette">
 		<div slot="front" class="cassette-front">
@@ -31,6 +37,12 @@ const randomZOffset = randomNumber(10, 100);
 			</div>
 		</div>
 	</Block>
+
+	<eject-cassette class="eject-cassette">
+		<button>
+			<Fragment set:html={Eject} />
+		</button>
+	</eject-cassette>
 	<slot name="screen" />
 </article>
 
@@ -43,12 +55,25 @@ const randomZOffset = randomNumber(10, 100);
 			font-size: var(--font--1);
 		}
 
+		.eject-cassette button {
+			appearance: none;
+			display: grid;
+			background: inherit;
+			border-color: transparent;
+			outline: 1px solid grey;
+			outline-offset: -5px;
+		}
+
+		.eject-cassette svg {
+			width: 75%;
+			place-self: center;
+		}
+
 		.cassette {
 			--cassette-background: hsla(0, 0%, 10%, 1);
 
 			--block-border: var(--border-width) solid var(--black);
 			--block-background: var(--cassette-background);
-			--block-aspect-ratio: var(--cassette-aspect-ratio);
 			--block-depth: calc(var(--cassette-depth));
 
 			grid-area: 1 / 1;

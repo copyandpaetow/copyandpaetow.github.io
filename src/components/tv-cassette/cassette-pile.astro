@@ -19,8 +19,8 @@ const { className = "" } = Astro.props;
 			row-gap: 2px;
 
 			.cassette {
-				height: calc(var(--vhs-slot-height) - 2 * var(--vhs-slot-padding));
-				aspect-ratio: var(--cassette-aspect-ratio);
+				width: calc(var(--vhs-slot-width) - 4 * var(--vhs-slot-padding));
+				aspect-ratio: 6;
 			}
 
 			&:not(:has(:target)) > article:first-of-type,
@@ -32,26 +32,26 @@ const { className = "" } = Astro.props;
 
 				display: grid;
 				grid-template-columns:
-					var(--screen-border-offset) [content-start] var(--screen-padding) [screen-start] 1fr [screen-end] var(
-						--screen-padding
-					)
-					[content-end] var(--screen-border-offset);
+					var(--tv-border-width) [vhs-slot-start] var(--screen-padding) [screen-start] 1fr [vhs-slot-end eject-button-start]
+					calc(var(--vhs-eject-button-width) - var(--screen-padding))
+					[screen-end] var(--screen-padding) [eject-button-end]
+					var(--tv-border-width);
 				grid-template-rows:
-					var(--screen-border-offset) var(--screen-padding) [screen-start] calc(
+					var(--tv-border-width) var(--screen-padding) [screen-start] calc(
 						var(--screen-height) - 2 * var(--screen-padding)
 					)
-					[screen-end] var(--screen-padding) var(--module-padding)
-					var(--vhs-slot-padding)
+					[screen-end] var(--screen-padding)
+					var(--module-gap)
 					[vhs-slot-start]
 					var(--vhs-slot-height)
 					[vhs-slot-end]
-					var(--vhs-slot-padding)
-					var(--screen-border-offset);
+					var(--module-padding)
+					var(--tv-border-width);
 			}
 
-			&:not(:has(:target)) > article:first-of-type .cassette,
+			&:not(:has(:target)) :first-child .cassette,
 			& :target .cassette {
-				grid-area: vhs-slot / content;
+				grid-area: vhs-slot;
 
 				transform: translateZ(calc(var(--cassettes-offset-z) + var(--cassette-active-offset-z)))
 					translateY(calc(var(--vhs-slot-padding) * 1.5));
@@ -67,12 +67,23 @@ const { className = "" } = Astro.props;
 				grid-area: screen / screen;
 			}
 
-			&:not(:has(:target)) > article:first-of-type .screen,
+			.eject-cassette {
+				display: none;
+				transform: translateZ(var(--cassettes-offset-z));
+				grid-area: vhs-slot / eject-button;
+			}
+
+			&:not(:has(:target)) :first-child .screen,
 			& :target .screen {
 				display: grid;
 			}
 
-			> :target {
+			&:not(:has(:target)) :first-child .eject-cassette,
+			& :target .eject-cassette {
+				display: grid;
+			}
+
+			& > :target {
 				scroll-margin-block-start: calc(var(--tv-width) + var(--above-scene));
 				order: -1;
 			}

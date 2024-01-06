@@ -7,26 +7,13 @@ const { className = "" } = Astro.props;
 ---
 
 <div class=`scene ${className}`>
-	<div class="camera">
-		<slot />
-	</div>
+	<slot />
 </div>
 
 <style is:global>
 	@layer utilities {
 		.scene {
-			--_perspective: var(--perspective, none);
-
-			perspective: var(--_perspective);
-			/* contain: layout inline-size; */
-
-			& * {
-				transform-style: preserve-3d;
-				outline: 1px solid transparent;
-			}
-		}
-
-		.camera {
+			--_perspective: var(--perspective, 200000px);
 			--_camera-truck: var(--camera-truck, 0px);
 			--_camera-pedestal: var(--camera-pedestal, 0px);
 			--_camera-dolly: var(--camera-dolly, 0px);
@@ -39,6 +26,13 @@ const { className = "" } = Astro.props;
 				translateY(var(--_camera-pedestal)) translateZ(calc(var(--_camera-dolly) * -1))
 				rotateX(var(--_camera-roll)) rotateY(var(--_camera-pan)) rotateZ(var(--_camera-tilt))
 				translateZ(calc(var(--_perspective) * -1));
+
+			transform-style: preserve-3d;
+
+			& * {
+				transform-style: preserve-3d;
+				outline: 1px solid transparent;
+			}
 		}
 	}
 </style>

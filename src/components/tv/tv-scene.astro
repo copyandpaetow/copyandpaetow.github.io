@@ -67,7 +67,7 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		/* .adjust-scene {
+		.adjust-scene {
 			--perspective: 2000px;
 			--camera-truck: 200px;
 			--camera-pedestal: 0;
@@ -76,21 +76,23 @@ const { className = "" } = Astro.props;
 			--camera-roll: 0deg;
 			--camera-pan: 0deg;
 			--camera-tilt: 0deg;
-		} */
+
+			transition: transform 2s ease;
+		}
 
 		.tv-scene {
-			--tv-offset: 20svh;
+			--tv-offset: 10svh;
 			--tv-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
 			--tv-depth: 300px;
-			--tv-background: hsl(255, 2%, 77%);
+			--tv-background: hsl(255, 2%, 67%);
 			--tv-border-width: 2px;
 			--tv-border-color: hsl(255, 2%, 67%);
 			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
 			--tv-realism-effect: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
 				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 			--tv-height: calc(
-				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--vhs-slot-padding) + 2 *
-					var(--tv-border-width) + 3 * var(--module-padding) + var(--module-gap) * 2
+				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-border-width) + 1 *
+					var(--module-padding) + var(--module-gap)
 			);
 			--tv-outline-color: var(--blue);
 			--tv-outline-width: 2px;
@@ -103,7 +105,7 @@ const { className = "" } = Astro.props;
 
 			--module-padding: 0.75rem;
 			--module-border-radius: 0.25rem;
-			--module-gap: 1px;
+			--module-gap: 10px;
 			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
 				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 
@@ -113,20 +115,19 @@ const { className = "" } = Astro.props;
 			--screen-border-color: var(--grey-85);
 			--screen-border-color-offset: var(--grey-90);
 			--screen-module-ratio: 1.2;
-			--screen-border-offset: calc(var(--tv-border-width) + var(--module-padding));
 			--screen-height: calc(
-				(
-					(var(--tv-width) - 2 * var(--tv-border-width) - 2 * var(--module-padding)) /
-						var(--screen-module-ratio)
-				)
+				((var(--tv-width) - 2 * var(--tv-border-width)) / var(--screen-module-ratio))
 			);
 
 			--vhs-slot-padding: 0.25rem;
 			--vhs-slot-ratio: calc(var(--cassette-aspect-ratio) - 0.25);
 			--vhs-slot-width: calc(
-				var(--tv-width) - 2 * var(--module-padding) - 2 * var(--tv-border-width)
+				var(--tv-width) - var(--vhs-eject-button-width) - 2 * var(--tv-border-width)
 			);
-			--vhs-slot-height: calc(var(--vhs-slot-width) / var(--vhs-slot-ratio));
+			--vhs-slot-height: calc(
+				var(--vhs-slot-width) / var(--vhs-slot-ratio) + 2 * var(--vhs-slot-padding)
+			);
+			--vhs-eject-button-width: 45px;
 
 			--speaker-grill-color: var(--grey-85);
 
@@ -148,7 +149,7 @@ const { className = "" } = Astro.props;
 				--screen-padding: 1.25rem;
 				--screen-border-radius: 2rem;
 				--cassette-aspect-ratio: 6;
-				--tv-border-width: 8px;
+				--tv-border-width: 16px;
 			}
 		}
 

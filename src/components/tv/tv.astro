@@ -16,7 +16,6 @@ const { className = "" } = Astro.props;
 		<div class="vhs-player-module">
 			<aside class="vhs-slot"></aside>
 		</div>
-		<aside class="static-background"></aside>
 	</div>
 	<div slot="right" class="speaker"></div>
 	<div slot="left" class="speaker"></div>
@@ -38,12 +37,13 @@ const { className = "" } = Astro.props;
 			height: 100%;
 			display: grid;
 			row-gap: var(--module-gap);
+
+			padding-bottom: var(--module-padding);
 		}
 
 		.screen-module {
+			width: 100%;
 			aspect-ratio: var(--screen-module-ratio);
-			padding: var(--module-padding);
-
 			border-radius: var(--module-border-radius);
 			box-shadow: var(--module-realism-effect);
 
@@ -86,25 +86,26 @@ const { className = "" } = Astro.props;
 		}
 
 		.vhs-player-module {
-			padding: var(--module-padding);
-			border-radius: var(--module-border-radius);
-			padding-top: 0;
-			box-shadow: var(--module-realism-effect);
-		}
+			display: grid;
+			grid-template-columns:
+				[vhs-slot-start] 1fr [vhs-slot-end eject-button-start] var(--vhs-eject-button-width)
+				[eject-button-end];
+			height: calc(var(--vhs-slot-height));
 
-		.vhs-slot {
-			border-radius: var(--module-border-radius);
-			padding: var(--vhs-slot-padding);
-			padding-top: 0;
-			height: calc(var(--vhs-slot-height) + 2 * var(--vhs-slot-padding));
-			box-shadow: var(--tv-realism-effect);
+			.vhs-slot {
+				grid-area: 1 / vhs-slot;
+				border-inline: 20px solid grey;
+				border-block: 30px solid darkgrey;
+			}
 
 			&::before {
 				content: "";
-				position: absolute;
-				inset: var(--vhs-slot-padding);
-				background: black;
-				border-radius: var(--module-border-radius);
+				grid-area: 1 / vhs-slot;
+				margin: 9px 6px;
+				box-shadow:
+					inset 0 0 0 100px black,
+					0 0 2px 3px black;
+				z-index: 2;
 			}
 
 			&::after {
