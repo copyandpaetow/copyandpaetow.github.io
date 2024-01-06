@@ -1,0 +1,20 @@
+---
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<li>
+	<slot />
+</li>
+
+<style is:global>
+	@layer utility {
+		.remote li:has(:focus-visible) {
+			color: var(--screen-background);
+			background-color: white;
+		}
+	}
+</style>
