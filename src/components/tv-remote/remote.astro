@@ -7,7 +7,7 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class={`remote-scene ${className}`}>
+<div class={`remote ${className}`}>
 	<!--@ts-expect-error attribute is too new -->
 	<button popovertarget="remote-modal" popovertargetaction="show">
 		show tv remote for navigation and settings</button
@@ -22,15 +22,13 @@ const { className = "" } = Astro.props;
 </div>
 
 <style is:global>
-	@layer defaults {
+	@layer components {
 		.scene {
 			--remote-depth: 50px;
 			--remote-height: clamp(300px, 75svh, 500px);
 		}
-	}
 
-	@layer components {
-		.remote-scene {
+		.remote {
 			position: relative;
 			height: var(--remote-depth);
 			display: grid;
@@ -65,7 +63,7 @@ const { className = "" } = Astro.props;
 				position: absolute;
 				transform-origin: left top;
 				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
-					translateZ(calc(var(--remote-depth) * -1 + var(--tv-border-width))) translateX(-50%)
+					translateZ(calc(var(--remote-depth) * -1 + var(--tv-padding))) translateX(-50%)
 					translateY(25%);
 
 				--block-render-bottom: block;
@@ -84,7 +82,7 @@ const { className = "" } = Astro.props;
 			.remote-modal:popover-open {
 				height: var(--remote-depth);
 				width: var(--tv-width);
-				top: var(--tv-offset);
+				top: var(--scene-padding);
 				left: 50%;
 				transform: translateX(-50%);
 				overflow: visible;
@@ -113,14 +111,14 @@ const { className = "" } = Astro.props;
 			left: 75%;
 		}
 
-		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
-		:has(#controls-eject:checked) .cassettes :target {
+		:has(#controls-eject:checked):not(:has(:target)) .cassette:first-of-type,
+		:has(#controls-eject:checked) .cassette:target {
 			.screen {
 				scale: 0;
 				transition: scale 200ms ease;
 			}
 
-			.cassette {
+			.cassette-body {
 				transform: translateZ(3500px);
 				transition: transform 300ms ease 200ms;
 			}
@@ -143,15 +141,15 @@ const { className = "" } = Astro.props;
 			transition: scale 200ms ease;
 		}
 
-		:has(#controls-power:not(:checked)):not(:has(:target)) .cassettes > article:first-of-type,
-		:has(#controls-power:not(:checked)) .cassettes :target {
+		:has(#controls-power:not(:checked)):not(:has(:target)) .cassette:first-of-type,
+		:has(#controls-power:not(:checked)) .cassette:target {
 			.screen {
 				scale: 0;
 				transition: scale 200ms ease;
 			}
 		}
 
-		:has(#controls-animations:checked) .remote-scene:popover-open .remote-position {
+		:has(#controls-animations:checked) .remote-modal:popover-open .remote-position {
 			transition: none;
 		}
 	}

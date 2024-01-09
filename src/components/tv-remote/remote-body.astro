@@ -18,7 +18,7 @@ const { className = "" } = Astro.props;
 </script>
 
 <Block className={`remote-body ${className}`}>
-	<nav slot="front" class="remote">
+	<nav slot="front" class="remote-front">
 		<label for="controls-power" class="power-button">
 			<Block className="force-full-scene">
 				<span slot="front">power</span>
@@ -80,7 +80,7 @@ const { className = "" } = Astro.props;
 			color: black;
 		}
 
-		.remote {
+		.remote-front {
 			display: grid;
 			grid-auto-rows: max-content;
 			height: var(--remote-height);
@@ -138,7 +138,7 @@ const { className = "" } = Astro.props;
 			grid-auto-rows: max-content;
 		}
 
-		.remote fieldset {
+		.remote-front fieldset {
 			--light-shadow-color: #f7f7f7;
 			--dark-shadow-color: #646464;
 			--background-color: #cfcbca;

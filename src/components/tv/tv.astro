@@ -1,7 +1,7 @@
 ---
 import Block from "../3d/block.astro";
-import VhsPlayer from "./vhs-player.astro";
-import TVScreen from "./tv-screen.astro";
+import StaticBackground from "./static-background.astro";
+import VHSPlayer from "./vhs-player.astro";
 export interface Props {
 	className?: string;
 }
@@ -10,60 +10,109 @@ const { className = "" } = Astro.props;
 ---
 
 <Block className={`tv ${className}`}>
-	<div slot="front" class="tv-front">
-		<TVScreen />
-		<VhsPlayer />
+	<div slot="front" class="tv-layout">
+		<StaticBackground className="static-background screen-content" />
+		<aside class="tv-screen screen-inset"></aside>
+		<VHSPlayer className="vhs-slot" />
 	</div>
 	<div slot="right" class="speaker"></div>
 	<div slot="left" class="speaker"></div>
 </Block>
 
 <style is:global>
-	@layer defaults {
+	@layer components {
 		.scene {
-			--tv-offset: 10svh;
 			--tv-width: var(--scene-width);
 			--tv-depth: 300px;
 			--tv-background: hsl(255, 2%, 67%);
-			--tv-border-width: 12px;
+			--tv-padding: 12px;
 			--tv-border-color: hsl(255, 2%, 67%);
 			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
-			--tv-realism-effect: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
-				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 			--tv-height: calc(
-				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-border-width) + 1 *
-					var(--module-padding) + var(--module-gap)
+				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + 1 *
+					var(--tv-bottom-padding) + var(--module-gap)
 			);
 			--tv-outline-color: var(--blue);
 			--tv-outline-width: 2px;
 			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
 			--tv-light: var(--green);
+			--tv-bottom-padding: 1rem;
+
+			--module-border-radius: 0.25rem;
+			--module-gap: 10px;
+			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+
+			--screen-background: black;
+			--screen-border-radius: 1.5rem;
+			--screen-padding: 1rem;
+			--screen-border-color: var(--grey-85);
+			--screen-border-color-offset: var(--grey-90);
+			--screen-module-ratio: 1.2;
+			--screen-height: calc(
+				((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio))
+			);
 
 			--speaker-grill-color: var(--grey-85);
-
-			@media (min-width: 28rem) {
-				--tv-border-width: 16px;
-			}
 		}
-	}
 
-	@layer components {
 		.tv {
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
 			--block-border: var(--tv-border);
 
 			& > * {
-				border-radius: calc(var(--tv-border-width) / 2);
+				border-radius: calc(var(--tv-padding) / 2);
 			}
 		}
 
-		.tv-front {
-			height: 100%;
+		.tv-layout {
+			height: var(--tv-height);
 			display: grid;
-			row-gap: var(--module-gap);
+			grid-template-columns:
+				var(--tv-padding)
+				[vhs-slot-start screen-frame-start] var(--screen-padding)
+				[screen-content-start] 1fr
+				[vhs-slot-end] var(--vhs-gap)
+				[eject-button-start] calc(
+					var(--vhs-eject-button-width) - var(--screen-padding) - var(--vhs-gap)
+				)
+				[screen-content-end] var(--screen-padding)
+				[screen-frame-end eject-button-end] var(--tv-padding);
 
-			padding-bottom: var(--module-padding);
+			grid-template-rows:
+				var(--tv-padding)
+				[screen-frame-start] var(--screen-padding)
+				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
+				[screen-content-end] var(--screen-padding)
+				[screen-frame-end]
+				var(--module-gap)
+				[vhs-slot-start] var(--vhs-slot-height)
+				[vhs-slot-end] var(--tv-bottom-padding)
+				var(--tv-padding);
+
+			.tv-screen {
+				grid-area: screen-frame;
+			}
+
+			.screen-content {
+				grid-area: screen-content;
+			}
+
+			.vhs-slot {
+				grid-area: vhs-slot;
+			}
+
+			.eject-button {
+				grid-area: vhs-slot / eject-button;
+			}
+		}
+
+		.screen-inset {
+			background: var(--screen-background);
+			border-radius: var(--module-border-radius);
+			border-inline: var(--screen-border-radius) solid var(--screen-border-color);
+			border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);
 		}
 
 		.speaker {
@@ -71,7 +120,7 @@ const { className = "" } = Astro.props;
 			place-content: start center;
 			height: 100%;
 			width: 100%;
-			padding: var(--module-padding);
+			padding: var(--tv-bottom-padding);
 
 			&::before {
 				content: "";
