@@ -1,13 +1,12 @@
 ---
 export interface Props {
 	className?: string;
-	id?: string;
 }
 
-const { id, className = "" } = Astro.props;
+const { className = "" } = Astro.props;
 ---
 
-<div {...id && { id: id }} class=`block ${className}`>
+<div class=`block ${className}`>
 	<div>
 		<slot name="front" />
 	</div>
@@ -39,8 +38,8 @@ const { id, className = "" } = Astro.props;
 			--_block-depth: var(--block-depth, var(--block-width));
 
 			--_block-render-front: var(--block-render-front, block);
-			--_block-render-top: var(--block-render-top, block);
-			--_block-render-right: var(--block-render-right, block);
+			--_block-render-top: var(--block-render-top, none);
+			--_block-render-right: var(--block-render-right, none);
 			--_block-render-back: var(--block-render-back, none);
 			--_block-render-bottom: var(--block-render-bottom, none);
 			--_block-render-left: var(--block-render-left, none);

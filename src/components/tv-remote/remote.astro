@@ -1,179 +1,158 @@
 ---
-import Block from "../block.astro";
-
+import RemoteBody from "./remote-body.astro";
 export interface Props {
 	className?: string;
-	id?: string;
 }
 
-const { className = "", id } = Astro.props;
+const { className = "" } = Astro.props;
 ---
 
-<script>
-	import "./eject-sound";
-</script>
-
-<Block className={`remote-block ${className}`} {...id && { id: id }}>
-	<nav slot="front" class="remote">
-		<label for="controls-power" class="power-button">
-			<Block className="force-full-scene">
-				<span slot="front">power</span>
-			</Block>
-			<input type="checkbox" name="power" id="controls-power" checked />
-		</label>
-
-		<ul class="channel-screen">
+<div class={`remote-scene ${className}`}>
+	<!--@ts-expect-error attribute is too new -->
+	<button popovertarget="remote-modal" popovertargetaction="show">
+		show tv remote for navigation and settings</button
+	>
+	<div id="remote-modal" popover class="remote-modal scene">
+		<!--@ts-expect-error attribute is too new -->
+		<button popovertarget="remote-modal" popovertargetaction="hide">close</button>
+		<RemoteBody className="remote-position">
 			<slot />
-		</ul>
-
-		<noscript> enable javascript for full functionality</noscript>
-
-		<fieldset>
-			<legend>Channels</legend>
-			<a href="/"><span>home</span></a>
-			<button><span>select</span></button>
-			<button><span>up</span></button>
-			<button><span>down</span></button>
-		</fieldset>
-
-		<fieldset>
-			<legend>Settings</legend>
-
-			<label for="controls-mute">
-				<span>mute</span>
-				<input type="checkbox" name="mute" id="controls-mute" />
-			</label>
-
-			<label for="controls-animation">
-				<span>pause animations</span>
-				<input type="checkbox" name="animations" id="controls-animation" />
-			</label>
-
-			<label for="controls-eject">
-				<span>eject</span>
-				<eject-sound>
-					<input type="checkbox" name="eject" id="controls-eject" />
-				</eject-sound>
-			</label>
-		</fieldset>
-	</nav>
-</Block>
+		</RemoteBody>
+	</div>
+</div>
 
 <style is:global>
+	@layer defaults {
+		.scene {
+			--remote-depth: 50px;
+			--remote-height: clamp(300px, 75svh, 500px);
+		}
+	}
+
 	@layer components {
-		.remote-block {
-			--block-background: var(--tv-background);
-			--block-depth: 50px;
-			--block-border: 4px solid var(--tv-border-color);
-
-			--block-render-front: block;
-			--block-render-top: block;
-			--block-render-right: none;
-			--block-render-back: none;
-			--block-render-bottom: none;
-			--block-render-left: block;
-
-			width: max-content;
-			color: black;
-		}
-
-		.remote {
+		.remote-scene {
+			position: relative;
+			height: var(--remote-depth);
 			display: grid;
-			grid-auto-rows: max-content;
-			height: var(--remote-height);
-			padding: 1rem;
-			row-gap: 0.5rem;
-
-			&:focus-within {
-				outline: var(--tv-outline);
-			}
-
-			& label:has(:focus-visible),
-			& button:focus-visible {
-				outline: var(--tv-outline);
-			}
-
-			& input {
-				appearance: none;
-				background-color: var(--block-background);
-				position: absolute;
-				width: 0;
-				height: 0;
-				z-index: -1;
-			}
-		}
-
-		.power-button {
-			--block-background: rgb(255, 0, 0);
-			--block-depth: 10px;
-			--block-border: 2px solid rgb(130, 0, 0);
-
-			width: max-content;
-			justify-self: end;
 
 			& > * {
-				transform: translateZ(5px);
-				transition: transform 200ms ease;
+				grid-area: 1/1;
 			}
 
-			&:active > * {
-				transform: translateZ(1px);
-			}
-		}
-
-		.channel-screen {
-			width: 100%;
-			aspect-ratio: 1.5;
-			background-color: hsl(207.1, 15.9%, 61.76%);
-			font-family: "Press Start 2P";
-			font-size: var(--font--2);
-			border: 8px solid var(--grey-70);
-			border-inline-color: var(--grey-80);
-			box-shadow: inset 0 0 5px 1px hsla(0, 0%, 100%, 0.25);
-			display: grid;
-			grid-auto-flow: row;
-			grid-auto-rows: max-content;
-		}
-
-		.remote fieldset {
-			--light-shadow-color: #f7f7f7;
-			--dark-shadow-color: #646464;
-			--background-color: #cfcbca;
-
-			border: 2px solid black;
-			padding: 0.5rem;
-			display: flex;
-			gap: 4px;
-
-			& :where(button, label, a) {
-				flex-basis: 100%;
+			& > button {
+				position: absolute;
+				bottom: 0;
+				height: calc(var(--remote-depth) * 1.5);
+				width: 100%;
 				appearance: none;
-				position: relative;
-				border: 2px solid transparent;
-				color: black;
-				background: black;
-				border-radius: 2px;
-				box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
-				height: 40px;
+				color: transparent;
+				background-color: transparent;
+				border: none;
+				transform: translateZ(var(--remote-depth));
 			}
 
-			& :where(button, label, a) > span {
-				border-radius: 0.45rem;
-				background-color: var(--background-color);
-				height: 100%;
+			.remote-modal {
 				display: grid;
-				place-content: center;
-				font-size: var(--font--2);
-
-				box-shadow:
-					inset 1px 1px 1px var(--light-shadow-color),
-					inset -1px -1px 1px var(--dark-shadow-color),
-					2px 2px 2px #000;
+				height: 100%;
+				width: 100%;
+				overflow: initial;
+				color: transparent;
+				background: transparent;
+				border-color: transparent;
 			}
 
-			& :where(button, label, a):active > span {
-				transform: scale(0.98);
+			.remote-position {
+				position: absolute;
+				transform-origin: left top;
+				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
+					translateZ(calc(var(--remote-depth) * -1 + var(--tv-border-width))) translateX(-50%)
+					translateY(25%);
+
+				--block-render-bottom: block;
 			}
+
+			.remote-modal:not(:popover-open) {
+				perspective: none;
+				perspective-origin: initial;
+				contain: none;
+			}
+
+			.remote-modal::backdrop {
+				background: hsla(0, 0%, 0%, 0.5);
+			}
+
+			.remote-modal:popover-open {
+				height: var(--remote-depth);
+				width: var(--tv-width);
+				top: var(--tv-offset);
+				left: 50%;
+				transform: translateX(-50%);
+				overflow: visible;
+				position: fixed;
+			}
+
+			.remote-modal:popover-open .remote-position {
+				transform: translateX(calc(var(--tv-width) / 4));
+
+				@media (prefers-reduced-motion: no-preference) {
+					transition: transform 2s ease;
+				}
+			}
+
+			.remote-modal:not(:popover-open) nav > *:not(.power-button) {
+				display: none;
+			}
+		}
+
+		.remote-modal:not(:popover-open) > button {
+			display: none;
+		}
+
+		.remote-modal:popover-open > button {
+			position: absolute;
+			left: 75%;
+		}
+
+		:has(#controls-eject:checked):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-eject:checked) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+
+			.cassette {
+				transform: translateZ(3500px);
+				transition: transform 300ms ease 200ms;
+			}
+		}
+
+		:has(#controls-eject:checked) .vhs-slot::after {
+			transform: translateZ(1px) rotateX(0deg);
+		}
+
+		:has(#controls-eject:checked) .static-background {
+			opacity: 1;
+		}
+
+		:has(#controls-power:not(:checked)) .tv-scene {
+			--tv-light: var(--red);
+		}
+
+		:has(#controls-power:not(:checked)):has(#controls-eject:checked) .static-background {
+			scale: 0;
+			transition: scale 200ms ease;
+		}
+
+		:has(#controls-power:not(:checked)):not(:has(:target)) .cassettes > article:first-of-type,
+		:has(#controls-power:not(:checked)) .cassettes :target {
+			.screen {
+				scale: 0;
+				transition: scale 200ms ease;
+			}
+		}
+
+		:has(#controls-animations:checked) .remote-scene:popover-open .remote-position {
+			transition: none;
 		}
 	}
 </style>

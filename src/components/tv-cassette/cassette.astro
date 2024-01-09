@@ -1,5 +1,5 @@
 ---
-import Block from "../block.astro";
+import Block from "../3d/block.astro";
 
 export interface Props {
 	decoType?: "a" | "b" | "c";
@@ -38,11 +38,14 @@ const randomZOffset = randomNumber(10, 100);
 		</div>
 	</Block>
 
-	<eject-cassette class="eject-cassette">
-		<button>
-			<Fragment set:html={Eject} />
-		</button>
-	</eject-cassette>
+	<div class="eject-cassette">
+		<eject-cassette>
+			<button>
+				<Fragment set:html={Eject} />
+			</button>
+		</eject-cassette>
+	</div>
+
 	<slot name="screen" />
 </article>
 
@@ -55,17 +58,44 @@ const randomZOffset = randomNumber(10, 100);
 			font-size: var(--font--1);
 		}
 
+		.eject-cassette {
+			display: grid;
+			grid-template-rows: 10% 1fr;
+			grid-template-areas:
+				"tv-light"
+				"eject-button";
+			row-gap: 5px;
+			padding-block: var(--vhs-slot-padding);
+		}
+
+		.eject-cassette::before {
+			content: "";
+			grid-area: tv-light;
+			background-color: var(--tv-light);
+		}
+
 		.eject-cassette button {
 			appearance: none;
 			display: grid;
 			background: inherit;
 			border-color: transparent;
 			outline: 1px solid grey;
-			outline-offset: -5px;
+			outline-offset: -1px;
+			height: 100%;
+
+			&::after {
+				content: "";
+				position: absolute;
+
+				left: 50%;
+				height: 100%;
+				width: 45px;
+				transform: translateX(-50%);
+			}
 		}
 
 		.eject-cassette svg {
-			width: 75%;
+			width: 100%;
 			place-self: center;
 		}
 

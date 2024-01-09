@@ -1,32 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TV from "../components/tv/tv-scene.astro";
+import TV from "../components/tv/tv.astro";
 import TVRemoteLink from "../components/tv-remote/remote-links.astro";
 import Cassette from "../components/tv-cassette/cassette.astro";
 import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
+import CassettePile from "../components/tv-cassette/cassette-pile.astro";
+import Remote from "../components/tv-remote/remote.astro";
+import Room from "../components/tv/room.astro";
+import Camera from "../components/3d/camera.astro";
 ---
 
 <script>
 	/*
 
-- we should be able to define which side the camera "sees" initially, so we can decide which blocks to render or not
-=> hide all other sides
-
 - enable channel functionality (up, down, select, scroll snap, arrow keys)
-- re-add a power light on the screen
-- improve remote color and borders
-- try new screen shape
-- remote needs a dedicated close button
-
-## JS
-
-- reset buttons if power is clicked
-- enable popover functionality for firefox
-- animate putting in a new tape
-- improve the remote animation (initial location is only valid if we are not scrolled down)
-
-- rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
-- noscript elements are placed where there is js used
 
 ## bugs
 
@@ -34,19 +21,20 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 - tape ejection on flat view doesnt work
 - the eject/back button can make the user leave the site
 - the remote hovers very visibly 
+- all blocks have an outline but the tv
+- popover functionality for firefox is missing
+- improve the remote animation (initial location is only valid if we are not scrolled down)
 
 ## refactorings
 
-- find a common language for the css classes, like for when grapping the blocks for layouting, their front face etc
-=> maybe [noun]-scene or [noun]-root, [noun]-layout, [noun]-front/left/right
-
-- unify values
+- unify css values
 - extract similar functionallity into classes
+- improve remote color and borders
+- 3d elements should all be blocks
 
-## features
+## future features
 - add a preview button, that rolls the camera a little (and zooms out)
 - add more sounds
-- add scenery that change with the content of the selected tape
 - add more realistic VCR effects
 => https://aleclownes.com/2017/02/01/crt-display.html
 => https://blog.webguy.pw/blog/simulating-a-crt-monitor-in-css/
@@ -54,59 +42,76 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 - add more realistic buttons
 => https://codepen.io/nicolasjesenberger/pen/gOqzJed
 
+- rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
+- animate putting in a new tape
+- add scenery that change with the content of the selected tape and maybe even a parallax effect
 
 */
 </script>
 
 <Layout title="Copy and Paetow">
 	<main>
-		<TV>
-			<Fragment slot="remote">
-				<TVRemoteLink>
-					<a href="about">about</a>
-				</TVRemoteLink>
-				<TVRemoteLink>
-					<a href="dinkelberg">dinkelberg</a>
-				</TVRemoteLink>
-				<TVRemoteLink>
-					<a href="css-printer">css-printer</a>
-				</TVRemoteLink>
-			</Fragment>
-
-			<Cassette decoType="c" id="1">
-				<a href="#1" aria-label="jumps to the tv and previews this page"
-					>the intro nobody asked for</a
+		<Camera>
+			<div class="scene z-layer-interactivity">
+				<span class="visually-hidden"
+					>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview
+					the content</span
 				>
-				<CassetteScreen slot="screen" overlay="lines">
-					<h1>Hi, Lucas here</h1>
-					<p>
-						I am looking for a opportunities to create delight and performant movements on the web.
-					</p>
-					<button>hello</button>
-				</CassetteScreen>
-			</Cassette>
-			<Cassette decoType="b" tapeType="checked" id="od">
-				<a href="#od">Connect your database with CSS</a>
-				<CassetteScreen slot="screen">
-					<p>fake news</p>
-				</CassetteScreen>
-			</Cassette>
-			<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-			<Cassette decoType="a" tapeType="checked" id="printer">
-				<a href="#printer">How to fix your printer</a>
-				<CassetteScreen slot="screen">
-					<p>fake news</p>
-				</CassetteScreen>
-			</Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-		</TV>
+
+				<Remote className="interactive">
+					<TVRemoteLink>
+						<a href="about">about</a>
+					</TVRemoteLink>
+					<TVRemoteLink>
+						<a href="dinkelberg">dinkelberg</a>
+					</TVRemoteLink>
+					<TVRemoteLink>
+						<a href="css-printer">css-printer</a>
+					</TVRemoteLink>
+				</Remote>
+
+				<TV className="interactive" />
+
+				<CassettePile className="interactive-offsetable">
+					<Cassette decoType="c" id="1">
+						<a href="#1" aria-label="jumps to the tv and previews this page"
+							>the intro nobody asked for</a
+						>
+						<CassetteScreen slot="screen" overlay="lines">
+							<h1>Hi, Lucas here</h1>
+							<p>
+								I am looking for a opportunities to create delight and performant movements on the
+								web.
+							</p>
+							<button>hello</button>
+						</CassetteScreen>
+					</Cassette>
+					<Cassette decoType="b" tapeType="checked" id="od">
+						<a href="#od">Connect your database with CSS</a>
+						<CassetteScreen slot="screen">
+							<p>fake news</p>
+						</CassetteScreen>
+					</Cassette>
+					<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+					<Cassette decoType="a" tapeType="checked" id="printer">
+						<a href="#printer">How to fix your printer</a>
+						<CassetteScreen slot="screen">
+							<p>fake news</p>
+						</CassetteScreen>
+					</Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+				</CassettePile>
+
+				<Room />
+			</div>
+		</Camera>
 	</main>
 </Layout>
 
@@ -120,6 +125,29 @@ import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 		main {
 			display: grid;
 			place-content: center;
+		}
+	}
+
+	@layer components {
+		.z-layer-interactivity {
+			/* this are required for safari and firefox interactivity */
+			transform: translateZ(calc(var(--tv-depth) * -1)) rotateX(var(--scene-rotate-x, 0))
+				rotateY(var(--scene-rotate-y, 0));
+
+			.interactive-offsetable {
+				transform: translateZ(calc(var(--tv-depth) - var(--cassettes-offset-z)));
+			}
+
+			.interactive {
+				transform: translateZ(calc(var(--tv-depth)));
+			}
+		}
+
+		.scene {
+			--scene-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
+
+			width: var(--scene-width);
+			padding-block: var(--tv-offset);
 		}
 	}
 </style>

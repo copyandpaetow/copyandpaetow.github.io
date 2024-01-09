@@ -1,6 +1,7 @@
 ---
-import StaticBackground from "./static-background.astro";
-import Block from "../block.astro";
+import Block from "../3d/block.astro";
+import VhsPlayer from "./vhs-player.astro";
+import TVScreen from "./tv-screen.astro";
 export interface Props {
 	className?: string;
 }
@@ -10,18 +11,42 @@ const { className = "" } = Astro.props;
 
 <Block className={`tv ${className}`}>
 	<div slot="front" class="tv-front">
-		<div class="screen-module">
-			<StaticBackground className="static-background" />
-		</div>
-		<div class="vhs-player-module">
-			<aside class="vhs-slot"></aside>
-		</div>
+		<TVScreen />
+		<VhsPlayer />
 	</div>
 	<div slot="right" class="speaker"></div>
 	<div slot="left" class="speaker"></div>
 </Block>
 
 <style is:global>
+	@layer defaults {
+		.scene {
+			--tv-offset: 10svh;
+			--tv-width: var(--scene-width);
+			--tv-depth: 300px;
+			--tv-background: hsl(255, 2%, 67%);
+			--tv-border-width: 12px;
+			--tv-border-color: hsl(255, 2%, 67%);
+			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
+			--tv-realism-effect: inset 0px 0px 1px 1px hsla(0, 0%, 0%, 0.5),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+			--tv-height: calc(
+				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-border-width) + 1 *
+					var(--module-padding) + var(--module-gap)
+			);
+			--tv-outline-color: var(--blue);
+			--tv-outline-width: 2px;
+			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
+			--tv-light: var(--green);
+
+			--speaker-grill-color: var(--grey-85);
+
+			@media (min-width: 28rem) {
+				--tv-border-width: 16px;
+			}
+		}
+	}
+
 	@layer components {
 		.tv {
 			--block-depth: var(--tv-depth);
@@ -39,87 +64,6 @@ const { className = "" } = Astro.props;
 			row-gap: var(--module-gap);
 
 			padding-bottom: var(--module-padding);
-		}
-
-		.screen-module {
-			width: 100%;
-			aspect-ratio: var(--screen-module-ratio);
-			border-radius: var(--module-border-radius);
-			box-shadow: var(--module-realism-effect);
-
-			display: grid;
-			grid-template-columns:
-				[full-screen-start] var(--screen-padding)
-				[screen-content-start] 1fr
-				[screen-content-end] var(--screen-padding)
-				[full-screen-end];
-
-			grid-template-rows:
-				[full-screen-start] var(--screen-padding)
-				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
-				[screen-content-end] var(--screen-padding)
-				[full-screen-end];
-
-			&::before {
-				content: "";
-				grid-area: full-screen / full-screen;
-				background: var(--screen-background);
-				border-radius: var(--module-border-radius);
-				border-inline: var(--screen-border-radius) solid var(--screen-border-color);
-				border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);
-			}
-
-			&::after {
-				content: "";
-				grid-area: screen-content / screen-content;
-				border-radius: var(--screen-border-radius);
-				background: var(--black);
-			}
-
-			> .static-background {
-				grid-area: screen-content / screen-content;
-				border-radius: var(--screen-border-radius);
-				background: var(--black);
-				z-index: 1;
-				opacity: 0;
-			}
-		}
-
-		.vhs-player-module {
-			display: grid;
-			grid-template-columns:
-				[vhs-slot-start] 1fr [vhs-slot-end eject-button-start] var(--vhs-eject-button-width)
-				[eject-button-end];
-			height: calc(var(--vhs-slot-height));
-
-			.vhs-slot {
-				grid-area: 1 / vhs-slot;
-				border-inline: 20px solid grey;
-				border-block: 30px solid darkgrey;
-			}
-
-			&::before {
-				content: "";
-				grid-area: 1 / vhs-slot;
-				margin: 9px 6px;
-				box-shadow:
-					inset 0 0 0 100px black,
-					0 0 2px 3px black;
-				z-index: 2;
-			}
-
-			&::after {
-				content: "Copy and Paetow VHS Player deluxe";
-				background: var(--tv-background);
-				position: absolute;
-				inset: calc(var(--vhs-slot-padding) * 2);
-				transform: rotateX(-90.01deg);
-				transform-origin: top;
-				transition: transform 400ms ease 400ms;
-				display: grid;
-				place-content: center;
-				font-weight: bold;
-			}
 		}
 
 		.speaker {

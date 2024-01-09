@@ -1,0 +1,182 @@
+---
+import Block from "../3d/block.astro";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<script>
+	import "./eject-sound";
+
+	const screen = document.querySelector(".channel-screen");
+	const up = document.querySelector(".up");
+	const down = document.querySelector(".down");
+	const select = document.querySelector(".select");
+</script>
+
+<Block className={`remote-body ${className}`}>
+	<nav slot="front" class="remote">
+		<label for="controls-power" class="power-button">
+			<Block className="force-full-scene">
+				<span slot="front">power</span>
+			</Block>
+			<input type="checkbox" name="power" id="controls-power" checked />
+		</label>
+		<noscript> enable javascript for full functionality</noscript>
+
+		<ul class="channel-screen">
+			<slot />
+		</ul>
+
+		<fieldset id="channels">
+			<legend>Channels</legend>
+			<a href="/"><span>home</span></a>
+			<button class="select"><span>select</span></button>
+			<button class="up"><span>up</span></button>
+			<button class="down"><span>down</span></button>
+		</fieldset>
+
+		<fieldset>
+			<legend>Settings</legend>
+
+			<label for="controls-mute">
+				<span>mute</span>
+				<input type="checkbox" name="mute" id="controls-mute" />
+			</label>
+
+			<label for="controls-animation">
+				<span>pause animations</span>
+				<input type="checkbox" name="animations" id="controls-animation" />
+			</label>
+
+			<label for="controls-eject">
+				<span>eject</span>
+				<eject-sound>
+					<input type="checkbox" name="eject" id="controls-eject" />
+				</eject-sound>
+			</label>
+		</fieldset>
+	</nav>
+</Block>
+
+<style is:global>
+	@layer components {
+		.remote-body {
+			--block-background: var(--tv-background);
+			--block-depth: 50px;
+			--block-border: 4px solid var(--tv-border-color);
+
+			--block-render-front: block;
+			--block-render-top: block;
+			--block-render-right: none;
+			--block-render-back: none;
+			--block-render-bottom: none;
+			--block-render-left: block;
+
+			width: max-content;
+			color: black;
+		}
+
+		.remote {
+			display: grid;
+			grid-auto-rows: max-content;
+			height: var(--remote-height);
+			padding: 1rem;
+			row-gap: 0.5rem;
+
+			&:focus-within {
+				outline: var(--tv-outline);
+			}
+
+			& label:has(:focus-visible),
+			& button:focus-visible {
+				outline: var(--tv-outline);
+			}
+
+			& input {
+				appearance: none;
+				background-color: var(--block-background);
+				position: absolute;
+				width: 0;
+				height: 0;
+				z-index: -1;
+			}
+		}
+
+		.power-button {
+			--block-background: rgb(255, 0, 0);
+			--block-depth: 10px;
+			--block-border: 2px solid rgb(130, 0, 0);
+
+			width: max-content;
+			justify-self: end;
+
+			& > * {
+				transform: translateZ(5px);
+				transition: transform 200ms ease;
+			}
+
+			&:active > * {
+				transform: translateZ(1px);
+			}
+		}
+
+		.channel-screen {
+			width: 100%;
+			aspect-ratio: 1.5;
+			background-color: hsl(207.1, 15.9%, 61.76%);
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+			border: 8px solid var(--grey-70);
+			border-inline-color: var(--grey-80);
+			box-shadow: inset 0 0 5px 1px hsla(0, 0%, 100%, 0.25);
+			display: grid;
+			grid-auto-flow: row;
+			grid-auto-rows: max-content;
+		}
+
+		.remote fieldset {
+			--light-shadow-color: #f7f7f7;
+			--dark-shadow-color: #646464;
+			--background-color: #cfcbca;
+
+			border: 2px solid black;
+			padding: 0.5rem;
+			display: flex;
+			gap: 4px;
+
+			& :where(button, label, a) {
+				flex-basis: 100%;
+				appearance: none;
+				position: relative;
+				border: 2px solid transparent;
+				color: black;
+				background: black;
+				border-radius: 2px;
+				box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+				height: 40px;
+			}
+
+			& :where(button, label, a) > span {
+				border-radius: 0.45rem;
+				background-color: var(--background-color);
+				height: 100%;
+				display: grid;
+				place-content: center;
+				font-size: var(--font--2);
+
+				box-shadow:
+					inset 1px 1px 1px var(--light-shadow-color),
+					inset -1px -1px 1px var(--dark-shadow-color),
+					2px 2px 2px #000;
+			}
+
+			& :where(button, label, a):active > span {
+				transform: scale(0.98);
+			}
+		}
+	}
+</style>

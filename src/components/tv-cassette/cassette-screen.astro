@@ -12,6 +12,11 @@ const { className = "", overlay = "" } = Astro.props;
 </section>
 
 <style is:global>
+	@layer defaults {
+		.scene {
+		}
+	}
+
 	@layer components {
 		.screen {
 			--save-screen-padding: var(--space--1);

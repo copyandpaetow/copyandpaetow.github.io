@@ -6,13 +6,13 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class=`scene ${className}`>
+<div class=`camera ${className}`>
 	<slot />
 </div>
 
 <style is:global>
 	@layer utilities {
-		.scene {
+		.camera {
 			--_perspective: var(--perspective, 200000px);
 			--_camera-truck: var(--camera-truck, 0px);
 			--_camera-pedestal: var(--camera-pedestal, 0px);
@@ -29,7 +29,7 @@ const { className = "" } = Astro.props;
 
 			transform-style: preserve-3d;
 
-			& * {
+			& :where(*) {
 				transform-style: preserve-3d;
 				outline: 1px solid transparent;
 			}
