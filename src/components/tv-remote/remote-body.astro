@@ -9,8 +9,6 @@ const { className = "" } = Astro.props;
 ---
 
 <script>
-	import "./eject-sound";
-
 	const screen = document.querySelector(".channel-screen");
 	const up = document.querySelector(".up");
 	const down = document.querySelector(".down");
@@ -18,10 +16,10 @@ const { className = "" } = Astro.props;
 </script>
 
 <Block className={`remote-body ${className}`}>
-	<nav slot="front" class="remote-front">
+	<nav class="remote-front">
 		<label for="controls-power" class="power-button">
 			<Block className="force-full-scene">
-				<span slot="front">power</span>
+				<span>power</span>
 			</Block>
 			<input type="checkbox" name="power" id="controls-power" checked />
 		</label>
@@ -51,13 +49,6 @@ const { className = "" } = Astro.props;
 				<span>pause animations</span>
 				<input type="checkbox" name="animations" id="controls-animation" />
 			</label>
-
-			<label for="controls-eject">
-				<span>eject</span>
-				<eject-sound>
-					<input type="checkbox" name="eject" id="controls-eject" />
-				</eject-sound>
-			</label>
 		</fieldset>
 	</nav>
 </Block>
@@ -68,6 +59,7 @@ const { className = "" } = Astro.props;
 			--block-background: var(--tv-background);
 			--block-depth: 50px;
 			--block-border: 4px solid var(--tv-border-color);
+			--block-border-radius: var(--tv-border-radius);
 
 			--block-render-front: block;
 			--block-render-top: block;
@@ -158,6 +150,7 @@ const { className = "" } = Astro.props;
 				border-radius: 2px;
 				box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
 				height: 40px;
+				transform-style: unset;
 			}
 
 			& :where(button, label, a) > span {

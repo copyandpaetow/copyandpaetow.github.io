@@ -3,23 +3,29 @@
 export class PopoverFirefox extends HTMLElement {
 	target: HTMLElement;
 
-	/*
-	- I guess it makes more sense to have this around the callee because it could be called from several places
-	- find the caller and callee by their id
-	- check if the popover is supported => if so, do nothing
-	- replace the popover with a dialog or copy it into an empty dialog
-	- trigger that while hiding the popover
-	
-	*/
-
 	connectedCallback() {
-		const target = this.querySelector("[id]") as HTMLButtonElement | HTMLInputElement;
-		const caller = document.querySelector(`[popovertarget]`);
-		const id = caller?.getAttribute("popovertarget");
+		const target = this.querySelector("[id]") as HTMLDialogElement;
 
 		if (target.showPopover) {
 			return;
 		}
+		this.controller = new AbortController();
+		const { signal } = this.controller;
+		const caller = document.querySelectorAll(`[popovertarget=${target.id}]`);
+
+		Array.from(caller).forEach((element) => {
+			element.addEventListener(
+				"click",
+				() => {
+					if (element.getAttribute("popovertargetaction") === "show") {
+						target.showModal();
+					} else {
+						target.close();
+					}
+				},
+				{ signal }
+			);
+		});
 	}
 }
 

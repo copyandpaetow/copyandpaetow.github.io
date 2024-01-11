@@ -10,9 +10,9 @@ const { className = "" } = Astro.props;
 ---
 
 <Block className={`tv ${className}`}>
-	<div slot="front" class="tv-layout">
-		<StaticBackground className="static-background screen-content" />
+	<div class="tv-layout">
 		<aside class="tv-screen screen-inset"></aside>
+		<StaticBackground className="static-background screen-content" />
 		<VHSPlayer className="vhs-slot" />
 	</div>
 	<div slot="right" class="speaker"></div>
@@ -37,13 +37,13 @@ const { className = "" } = Astro.props;
 			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
 			--tv-light: var(--green);
 			--tv-bottom-padding: 1rem;
+			--tv-border-radius: 2px;
 
 			--module-border-radius: 0.25rem;
 			--module-gap: 10px;
 			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
 				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
 
-			--screen-background: black;
 			--screen-border-radius: 1.5rem;
 			--screen-padding: 1rem;
 			--screen-border-color: var(--grey-85);
@@ -60,10 +60,7 @@ const { className = "" } = Astro.props;
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
 			--block-border: var(--tv-border);
-
-			& > * {
-				border-radius: calc(var(--tv-padding) / 2);
-			}
+			--block-border-radius: var(--tv-border-radius);
 		}
 
 		.tv-layout {
@@ -108,8 +105,38 @@ const { className = "" } = Astro.props;
 			}
 		}
 
+		.static-background {
+			--save-screen-padding: 0;
+		}
+
+		.screen-content {
+			--_save-screen-padding: var(--save-screen-padding, var(--space--1));
+			--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+
+			border-radius: var(--screen-border-radius);
+			overflow: hidden;
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+
+			padding: var(--_save-screen-padding);
+			background-color: var(--_screen-background);
+			box-shadow:
+				inset 0px 0px 15px 0px var(--_screen-background),
+				0px 0px 15px 0px var(--_screen-background);
+
+			width: 100%;
+			height: 100%;
+
+			& * {
+				font-size: var(--font--1);
+			}
+			& h1 {
+				font-size: var(--font-1);
+			}
+		}
+
 		.screen-inset {
-			background: var(--screen-background);
+			background: black;
 			border-radius: var(--module-border-radius);
 			border-inline: var(--screen-border-radius) solid var(--screen-border-color);
 			border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);

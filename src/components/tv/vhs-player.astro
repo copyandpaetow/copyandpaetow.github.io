@@ -13,24 +13,28 @@ const { className = "" } = Astro.props;
 <style is:global>
 	@layer components {
 		.scene {
-			--vhs-slot-padding: 0.25rem;
-			--vhs-slot-ratio: calc(var(--cassette-aspect-ratio) - 0.25);
+			--vhs-slot-padding: 0.1rem;
 			--vhs-slot-width: calc(
 				var(--tv-width) - var(--vhs-eject-button-width) - 2 * var(--tv-padding)
 			);
 			--vhs-slot-height: calc(
-				var(--vhs-slot-width) / var(--vhs-slot-ratio) + 2 * var(--vhs-slot-padding)
+				var(--vhs-slot-width) / var(--cassette-aspect-ratio) + 2 * var(--vhs-slot-padding)
 			);
 			--vhs-eject-button-width: 30px;
 			--vhs-gap: 8px;
+		}
+
+		.vhs-player {
+			background: black;
+			overflow: hidden;
+			border-radius: var(--tv-border-radius);
 		}
 
 		.vhs-player span {
 			background: var(--tv-background);
 			position: absolute;
 			inset: calc(var(--vhs-slot-padding) * 2);
-			transform: rotateX(-90.01deg);
-			transform-origin: top;
+			transform: translateY(-100%);
 			transition: transform 400ms ease 400ms;
 			display: grid;
 			place-content: center;

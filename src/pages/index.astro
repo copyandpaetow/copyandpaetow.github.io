@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import TV from "../components/tv/tv.astro";
 import TVRemoteLink from "../components/tv-remote/remote-links.astro";
 import Cassette from "../components/tv-cassette/cassette.astro";
-import CassetteScreen from "../components/tv-cassette/cassette-screen.astro";
 import CassettePile from "../components/tv-cassette/cassette-pile.astro";
 import Remote from "../components/tv-remote/remote.astro";
 import Room from "../components/tv/room.astro";
@@ -13,26 +12,33 @@ import Camera from "../components/3d/camera.astro";
 <script>
 	/*
 
+## today
+
+- improve the remote animation (initial location is only valid if we are not scrolled down)
 - enable channel functionality (up, down, select, scroll snap, arrow keys)
+
 
 ## bugs
 
 - tape variants show whitespace in smaller viewports
-- tape ejection on flat view doesnt work
-- the eject/back button can make the user leave the site
 - the remote hovers very visibly 
 - all blocks have an outline but the tv
-- popover functionality for firefox is missing
-- improve the remote animation (initial location is only valid if we are not scrolled down)
+- the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
 
 ## refactorings
 
 - unify css values
-- extract similar functionallity into classes
+- update custom property names
+- extract similar functionality into classes
 - improve remote color and borders
 - 3d elements should all be blocks
+- unify 3d button components
+- make the realistic inset a class that can be adjusted with custom properties
+
 
 ## future features
+- real inset of the displays
+- shadows
 - add a preview button, that rolls the camera a little (and zooms out)
 - add more sounds
 - add more realistic VCR effects
@@ -77,20 +83,18 @@ import Camera from "../components/3d/camera.astro";
 						<a href="#1" aria-label="jumps to the tv and previews this page"
 							>the intro nobody asked for</a
 						>
-						<CassetteScreen slot="screen" overlay="lines">
+						<Fragment slot="screen">
 							<h1>Hi, Lucas here</h1>
 							<p>
 								I am looking for a opportunities to create delight and performant movements on the
 								web.
 							</p>
 							<button>hello</button>
-						</CassetteScreen>
+						</Fragment>
 					</Cassette>
 					<Cassette decoType="b" tapeType="checked" id="od">
 						<a href="#od">Connect your database with CSS</a>
-						<CassetteScreen slot="screen">
-							<p>fake news</p>
-						</CassetteScreen>
+						<p slot="screen">fake news</p>
 					</Cassette>
 					<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
 					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
@@ -100,9 +104,7 @@ import Camera from "../components/3d/camera.astro";
 					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
 					<Cassette decoType="a" tapeType="checked" id="printer">
 						<a href="#printer">How to fix your printer</a>
-						<CassetteScreen slot="screen">
-							<p>fake news</p>
-						</CassetteScreen>
+						<p slot="screen">fake news</p>
 					</Cassette>
 					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
 					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
@@ -117,7 +119,7 @@ import Camera from "../components/3d/camera.astro";
 
 <style is:global>
 	@layer defaults {
-		body:has(:popover-open) {
+		:where(body:has(dialog[open]), body:has(:popover-open)) {
 			position: fixed;
 			inset: 0;
 		}

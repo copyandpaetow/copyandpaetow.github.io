@@ -7,18 +7,24 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
+<script>
+	import "./popover-firefox";
+</script>
+
 <div class={`remote ${className}`}>
 	<!--@ts-expect-error attribute is too new -->
 	<button popovertarget="remote-modal" popovertargetaction="show">
 		show tv remote for navigation and settings</button
 	>
-	<div id="remote-modal" popover class="remote-modal scene">
-		<!--@ts-expect-error attribute is too new -->
-		<button popovertarget="remote-modal" popovertargetaction="hide">close</button>
-		<RemoteBody className="remote-position">
-			<slot />
-		</RemoteBody>
-	</div>
+	<popover-firefox>
+		<dialog id="remote-modal" popover class="remote-modal scene">
+			<!--@ts-expect-error attribute is too new -->
+			<button popovertarget="remote-modal" popovertargetaction="hide">close</button>
+			<RemoteBody className="remote-position">
+				<slot />
+			</RemoteBody>
+		</dialog>
+	</popover-firefox>
 </div>
 
 <style is:global>
@@ -37,6 +43,10 @@ const { className = "" } = Astro.props;
 				grid-area: 1/1;
 			}
 
+			& > popover-firefox {
+				transform-style: unset;
+			}
+
 			& > button {
 				position: absolute;
 				bottom: 0;
@@ -48,38 +58,31 @@ const { className = "" } = Astro.props;
 				border: none;
 				transform: translateZ(var(--remote-depth));
 			}
+		}
 
-			.remote-modal {
-				display: grid;
-				height: 100%;
-				width: 100%;
-				overflow: initial;
-				color: transparent;
-				background: transparent;
-				border-color: transparent;
-			}
+		.remote-position {
+			position: absolute;
+			transform-origin: left top;
+			transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
+				translateZ(calc(var(--remote-depth) * -1 + var(--tv-padding))) translateX(-50%)
+				translateY(25%);
 
-			.remote-position {
-				position: absolute;
-				transform-origin: left top;
-				transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
-					translateZ(calc(var(--remote-depth) * -1 + var(--tv-padding))) translateX(-50%)
-					translateY(25%);
+			--block-render-bottom: block;
+		}
 
-				--block-render-bottom: block;
-			}
+		.remote-modal {
+			display: grid;
+			height: 100%;
+			overflow: initial;
+			color: transparent;
+			background: transparent;
+			border-color: transparent;
 
-			.remote-modal:not(:popover-open) {
-				perspective: none;
-				perspective-origin: initial;
-				contain: none;
-			}
-
-			.remote-modal::backdrop {
+			&::backdrop {
 				background: hsla(0, 0%, 0%, 0.5);
 			}
 
-			.remote-modal:popover-open {
+			&:where(:popover-open, [open]) {
 				height: var(--remote-depth);
 				width: var(--tv-width);
 				top: var(--scene-padding);
@@ -89,68 +92,32 @@ const { className = "" } = Astro.props;
 				position: fixed;
 			}
 
-			.remote-modal:popover-open .remote-position {
-				transform: translateX(calc(var(--tv-width) / 4));
+			&:where(:popover-open, [open]) .remote-position {
+				transform: translateZ(1000px) translateX(calc(var(--tv-width) / 4));
 
 				@media (prefers-reduced-motion: no-preference) {
-					transition: transform 2s ease;
+					transition: transform 1s ease;
 				}
 			}
 
-			.remote-modal:not(:popover-open) nav > *:not(.power-button) {
+			&:where(:popover-open, [open]) > button {
+				position: absolute;
+				left: 75%;
+			}
+
+			&:not(:where(:popover-open, [open])) {
+				perspective: none;
+				perspective-origin: initial;
+				contain: none;
+			}
+
+			&:not(:where(:popover-open, [open])) > button {
 				display: none;
 			}
-		}
 
-		.remote-modal:not(:popover-open) > button {
-			display: none;
-		}
-
-		.remote-modal:popover-open > button {
-			position: absolute;
-			left: 75%;
-		}
-
-		:has(#controls-eject:checked):not(:has(:target)) .cassette:first-of-type,
-		:has(#controls-eject:checked) .cassette:target {
-			.screen {
-				scale: 0;
-				transition: scale 200ms ease;
+			&:not(:where(:popover-open, [open])) nav > *:not(.power-button) {
+				display: none;
 			}
-
-			.cassette-body {
-				transform: translateZ(3500px);
-				transition: transform 300ms ease 200ms;
-			}
-		}
-
-		:has(#controls-eject:checked) .vhs-slot::after {
-			transform: translateZ(1px) rotateX(0deg);
-		}
-
-		:has(#controls-eject:checked) .static-background {
-			opacity: 1;
-		}
-
-		:has(#controls-power:not(:checked)) .tv-scene {
-			--tv-light: var(--red);
-		}
-
-		:has(#controls-power:not(:checked)):has(#controls-eject:checked) .static-background {
-			scale: 0;
-			transition: scale 200ms ease;
-		}
-
-		:has(#controls-power:not(:checked)):not(:has(:target)) .cassette:first-of-type,
-		:has(#controls-power:not(:checked)) .cassette:target {
-			.screen {
-				scale: 0;
-				transition: scale 200ms ease;
-			}
-		}
-
-		:has(#controls-animations:checked) .remote-modal:popover-open .remote-position {
-			transition: none;
 		}
 	}
 </style>

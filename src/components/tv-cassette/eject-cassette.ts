@@ -19,7 +19,10 @@ export class EjectCurrentCassette extends HTMLElement {
 		button?.addEventListener(
 			"click",
 			() => {
-				console.log(history);
+				if (!location.hash) {
+					return;
+				}
+
 				history.back();
 				window.scrollTo(0, scrollOffset);
 			},

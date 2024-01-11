@@ -32,21 +32,23 @@ const randomZOffset = randomNumber(10, 100);
 --cassette-offset-z: ${randomZOffset}px;`
 >
 	<Block className="cassette-body vhs-slot">
-		<CassetteTape slot="front" {...tapeProps}>
+		<CassetteTape {...tapeProps}>
 			<slot />
 		</CassetteTape>
 	</Block>
-	<div class="eject-cassette eject-button hidden-when-inactive">
-		<eject-cassette>
-			<button>
-				<Fragment set:html={Eject} />
-			</button>
-		</eject-cassette>
-	</div>
 
-	<div class="screen-content hidden-when-inactive">
+	<eject-cassette class="eject-button hidden-when-inactive">
+		<button class="physical-button">
+			<Block>
+				<span class="visually-hidden">move back to last position</span>
+				<Fragment set:html={Eject} />
+			</Block>
+		</button>
+	</eject-cassette>
+
+	<section class="cassette-content screen-content vcr-lines hidden-when-inactive">
 		<slot name="screen" />
-	</div>
+	</section>
 </article>
 
 <style is:global>
@@ -64,46 +66,85 @@ const randomZOffset = randomNumber(10, 100);
 			--block-depth: calc(var(--cassette-depth));
 			--block-width: calc(var(--vhs-slot-width) - 4 * var(--vhs-slot-padding));
 			--block-aspect-ratio: var(--cassette-aspect-ratio);
+			--block-border-radius: var(--tv-border-radius);
 		}
 
-		.eject-cassette {
+		.eject-button {
+			--block-depth: calc(var(--cassette-depth) / 2);
+
 			display: grid;
 			grid-template-rows: 10% 1fr;
 			grid-template-areas:
 				"tv-light"
 				"eject-button";
 			row-gap: 5px;
+
+			position: relative;
+
+			&::before {
+				content: "";
+				grid-area: tv-light;
+				background-color: var(--tv-light);
+
+				box-shadow:
+					inset 0px 0px 5px 0px var(--tv-light),
+					0px 0px 5px 0px var(--tv-light);
+			}
+
+			& svg {
+				width: 75%;
+				place-self: center;
+			}
 		}
 
-		.eject-cassette::before {
-			content: "";
-			grid-area: tv-light;
-			background-color: var(--tv-light);
-		}
-
-		.eject-cassette button {
-			appearance: none;
-			display: grid;
-			background: inherit;
-			border-color: transparent;
-			outline: 1px solid grey;
-			outline-offset: -1px;
-			height: 100%;
+		.vcr-lines {
+			position: relative;
 
 			&::after {
 				content: "";
 				position: absolute;
-
-				left: 50%;
-				height: 100%;
-				width: 45px;
-				transform: translateX(-50%);
+				inset: 0;
+				background: linear-gradient(
+					to bottom,
+					hsla(207.1, 15.9%, 61.76%, 0.2) 50%,
+					hsla(207.1, 15.9%, 51.76%, 0.1) 50%
+				);
+				background-size: 100% 4px;
+				pointer-events: none;
 			}
 		}
 
-		.eject-cassette svg {
-			width: 100%;
-			place-self: center;
+		.physical-button {
+			--block-background: var(--tv-background);
+			--block-border-radius: var(--tv-border-radius);
+
+			background: black;
+			appearance: none;
+			display: grid;
+			border-color: transparent;
+			border-radius: calc(var(--tv-border-radius) / 2);
+			border-width: 1px;
+
+			&::before {
+				content: "";
+				position: absolute;
+				width: 50px;
+				height: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+
+			& > * {
+				height: 100%;
+				transform: translateZ(5px);
+				transition: transform 200ms ease;
+				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+			}
+
+			&:active > * {
+				transform: translateZ(1px);
+				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
+			}
 		}
 	}
 </style>

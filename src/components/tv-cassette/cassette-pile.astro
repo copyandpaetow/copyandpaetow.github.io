@@ -27,6 +27,16 @@ const { className = "" } = Astro.props;
 			}
 		}
 
+		@keyframes on {
+			0%,
+			75% {
+				scale: 0;
+			}
+			100% {
+				scale: 1;
+			}
+		}
+
 		.cassette-pile {
 			display: grid;
 			grid-auto-flow: row;
@@ -50,11 +60,16 @@ const { className = "" } = Astro.props;
 					transform: translateZ(
 							calc(var(--cassette-pile-offset-z) + var(--cassette-active-offset-z))
 						)
-						translateY(calc(var(--vhs-slot-padding) * 1.5));
+						translateY(calc(var(--vhs-slot-padding) * 1.5))
+						translateX(calc(var(--vhs-slot-padding) * 2));
 				}
 				.hidden-when-inactive {
 					display: grid;
 					transform: translateZ(var(--cassette-pile-offset-z));
+				}
+
+				.cassette-content {
+					animation: on 1000ms ease;
 				}
 			}
 
@@ -63,6 +78,7 @@ const { className = "" } = Astro.props;
 			}
 
 			& > :target {
+				scroll-behavior: smooth;
 				scroll-margin-block-start: var(--tv-height);
 				order: -1;
 			}
@@ -74,6 +90,12 @@ const { className = "" } = Astro.props;
 
 			&:has(.tv-layout:not(:first-of-type):target) > .cassette:nth-of-type(1) {
 				transform: none;
+			}
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			:has(:target) {
+				scroll-behavior: smooth;
 			}
 		}
 	}

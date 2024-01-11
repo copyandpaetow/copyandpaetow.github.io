@@ -8,7 +8,7 @@ const { className = "" } = Astro.props;
 
 <div class=`block ${className}`>
 	<div>
-		<slot name="front" />
+		<slot />
 	</div>
 	<div>
 		<slot name="top" />
@@ -44,6 +44,8 @@ const { className = "" } = Astro.props;
 			--_block-render-bottom: var(--block-render-bottom, none);
 			--_block-render-left: var(--block-render-left, none);
 
+			--_block-border-radius: var(--block-border-radius, 0);
+
 			position: relative;
 			width: var(--_block-width);
 			height: var(--_block-height);
@@ -58,6 +60,7 @@ const { className = "" } = Astro.props;
 				background: var(--block-background);
 				display: none;
 				height: 100%;
+				border-radius: var(--_block-border-radius);
 			}
 
 			& > div:nth-child(n + 4) {
