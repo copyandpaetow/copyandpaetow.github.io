@@ -1,5 +1,7 @@
 ---
+import ContentSettings from "./content-settings.astro";
 import RemoteBody from "./remote-body.astro";
+import ContentProgram from "./content-program.astro";
 export interface Props {
 	className?: string;
 }
@@ -8,7 +10,7 @@ const { className = "" } = Astro.props;
 ---
 
 <script>
-	import "./popover-firefox";
+	import "./popover-helper";
 </script>
 
 <div class={`remote ${className}`}>
@@ -16,108 +18,179 @@ const { className = "" } = Astro.props;
 	<button popovertarget="remote-modal" popovertargetaction="show">
 		show tv remote for navigation and settings</button
 	>
-	<popover-firefox>
-		<dialog id="remote-modal" popover class="remote-modal scene">
-			<!--@ts-expect-error attribute is too new -->
-			<button popovertarget="remote-modal" popovertargetaction="hide">close</button>
-			<RemoteBody className="remote-position">
-				<slot />
-			</RemoteBody>
+	<popover-helper type="modal">
+		<dialog id="remote-modal" popover class="scene remote-modal remote-tv-position">
+			<popover-helper>
+				<dialog id="tv-program" popover="manual" class="remote-tv-position secondary-menu">
+					<div class="tv-layout">
+						<section class="screen-content vcr-lines">
+							<!--@ts-expect-error attribute is too new -->
+							<button popovertarget="tv-program" popovertargetaction="hide">back</button>
+							<ContentProgram />
+						</section>
+					</div>
+				</dialog>
+			</popover-helper>
+
+			<popover-helper>
+				<dialog id="settings" popover="manual" class="remote-tv-position secondary-menu">
+					<div class="tv-layout">
+						<section class="screen-content vcr-lines">
+							<!--@ts-expect-error attribute is too new -->
+							<button popovertarget="settings" popovertargetaction="hide">back</button>
+							<ContentSettings />
+						</section>
+					</div>
+				</dialog>
+			</popover-helper>
+
+			<dialog open class="teletext tv-layout">
+				<div class="screen-content vcr-lines">
+					<!--@ts-expect-error attribute is too new -->
+					<button popovertarget="remote-modal" popovertargetaction="hide">exit</button>
+					<ol>
+						<li>
+							<!--@ts-expect-error attribute is too new -->
+							<button popovertarget="tv-program" popovertargetaction="show">program</button>
+						</li>
+						<li>
+							<!--@ts-expect-error attribute is too new -->
+							<button popovertarget="settings" popovertargetaction="show">settings</button>
+						</li>
+					</ol>
+				</div>
+			</dialog>
+			<RemoteBody className="remote-position" />
 		</dialog>
-	</popover-firefox>
-</div>
+	</popover-helper>
 
-<style is:global>
-	@layer components {
-		.scene {
-			--remote-depth: 50px;
-			--remote-height: clamp(300px, 75svh, 500px);
-		}
-
-		.remote {
-			position: relative;
-			height: var(--remote-depth);
-			display: grid;
-
-			& > * {
-				grid-area: 1/1;
+	<style is:global>
+		@layer components {
+			.scene {
+				--remote-depth: 50px;
+				--remote-height: clamp(300px, 75svh, 500px);
+				--remote-active-offset: calc(
+					var(--vhs-slot-height) * -1 - var(--tv-bottom-padding) - var(--tv-padding)
+				);
 			}
 
-			& > popover-firefox {
-				transform-style: unset;
-			}
-
-			& > button {
-				position: absolute;
-				bottom: 0;
-				height: calc(var(--remote-depth) * 1.5);
-				width: 100%;
-				appearance: none;
-				color: transparent;
-				background-color: transparent;
-				border: none;
-				transform: translateZ(var(--remote-depth));
-			}
-		}
-
-		.remote-position {
-			position: absolute;
-			transform-origin: left top;
-			transform: rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5)
-				translateZ(calc(var(--remote-depth) * -1 + var(--tv-padding))) translateX(-50%)
-				translateY(25%);
-
-			--block-render-bottom: block;
-		}
-
-		.remote-modal {
-			display: grid;
-			height: 100%;
-			overflow: initial;
-			color: transparent;
-			background: transparent;
-			border-color: transparent;
-
-			&::backdrop {
-				background: hsla(0, 0%, 0%, 0.5);
-			}
-
-			&:where(:popover-open, [open]) {
+			.remote {
+				position: relative;
 				height: var(--remote-depth);
-				width: var(--tv-width);
-				top: var(--scene-padding);
-				left: 50%;
-				transform: translateX(-50%);
-				overflow: visible;
-				position: fixed;
-			}
+				display: grid;
 
-			&:where(:popover-open, [open]) .remote-position {
-				transform: translateZ(1000px) translateX(calc(var(--tv-width) / 4));
+				& dialog {
+					padding: 0;
+				}
 
-				@media (prefers-reduced-motion: no-preference) {
-					transition: transform 1s ease;
+				& > * {
+					grid-area: 1/1;
+				}
+
+				& popover-helper {
+					transform-style: unset;
+				}
+
+				& > button {
+					position: absolute;
+					bottom: 0;
+					height: calc(var(--remote-depth) * 1.5);
+					width: 100%;
+					appearance: none;
+					color: transparent;
+					background-color: transparent;
+					border: none;
+					transform: translateZ(var(--remote-depth));
 				}
 			}
 
-			&:where(:popover-open, [open]) > button {
-				position: absolute;
-				left: 75%;
-			}
-
-			&:not(:where(:popover-open, [open])) {
-				perspective: none;
-				perspective-origin: initial;
-				contain: none;
-			}
-
-			&:not(:where(:popover-open, [open])) > button {
+			:where(.remote) :where(dialog) {
 				display: none;
+				overflow: initial;
+				color: transparent;
+				background: transparent;
+				border: none;
+				padding: 0;
 			}
 
-			&:not(:where(:popover-open, [open])) nav > *:not(.power-button) {
-				display: none;
+			.remote-tv-position:where(:popover-open, [open]),
+			.remote-modal {
+				display: grid;
+				grid-template-columns: 1fr var(--tv-width) 1fr;
+				grid-template-rows: calc(var(--scene-padding) + var(--remote-depth)) var(--tv-height) 1fr;
+				width: 100vw;
+				height: 100vh;
+				overflow: visible;
+				position: fixed;
+				inset: 0;
+
+				& > * {
+					grid-column: 2/3;
+				}
+
+				& > .tv-layout {
+					grid-row: 2/3;
+				}
+
+				& > .remote-position {
+					grid-row: 3/4;
+				}
+			}
+
+			.remote-modal {
+				&:not(:where(:popover-open, [open])) {
+					display: grid;
+
+					top: calc(var(--scene-padding) * -1);
+					left: calc((100vw - var(--tv-width)) / -2);
+				}
+
+				&::backdrop {
+					background: hsla(0, 0%, 0%, 0.5);
+				}
+
+				&:where(:popover-open, [open]) .remote-position {
+					transform: translateY(var(--remote-active-offset));
+					height: calc((100vh - var(--tv-height)) - var(--remote-active-offset));
+					overflow-y: scroll;
+
+					@media (prefers-reduced-motion: no-preference) {
+						transition: transform 1s ease;
+					}
+				}
+
+				&:not(:where(:popover-open, [open])) .teletext {
+					display: none;
+				}
+
+				&[open] {
+					max-width: 100vw;
+					max-height: 100vh;
+				}
+
+				& .secondary-menu[open]::backdrop {
+					display: none;
+				}
+
+				& .secondary-menu[open] {
+					top: 0;
+					z-index: 4;
+				}
+			}
+
+			:has(.secondary-menu:where(:popover-open, [open])) .teletext .screen-content {
+				box-shadow: none;
+			}
+
+			.remote-position {
+				position: relative;
+				justify-self: center;
+				transform-origin: left top;
+				transform: translateY(calc(var(--tv-height) * -1 - var(--remote-depth) / 2 - 2px))
+					translateX(20%) rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5);
+				z-index: 5;
+				--block-render-bottom: block;
 			}
 		}
-	}
-</style>
+	</style>
+</div>

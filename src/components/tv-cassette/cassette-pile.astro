@@ -17,6 +17,7 @@ const { className = "" } = Astro.props;
 			--cassette-aspect-ratio: 4;
 			--cassette-active-offset-z: calc(var(--cassette-depth) / 4);
 			--cassette-pile-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
+			--cassette-gap: 2px;
 
 			@media (min-width: 22rem) {
 				--cassette-aspect-ratio: 5;
@@ -30,10 +31,10 @@ const { className = "" } = Astro.props;
 		@keyframes on {
 			0%,
 			75% {
-				scale: 0;
+				scale: 1 0;
 			}
 			100% {
-				scale: 1;
+				scale: 1 1;
 			}
 		}
 
@@ -41,7 +42,7 @@ const { className = "" } = Astro.props;
 			display: grid;
 			grid-auto-flow: row;
 			grid-auto-rows: max-content;
-			row-gap: 2px;
+			row-gap: var(--cassette-gap);
 
 			&:not(:has(:target)) .tv-layout:nth-of-type(n + 2),
 			&:has(:target) .tv-layout:not(:target) {

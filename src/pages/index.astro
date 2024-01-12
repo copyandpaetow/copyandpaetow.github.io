@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import TV from "../components/tv/tv.astro";
-import TVRemoteLink from "../components/tv-remote/remote-links.astro";
 import Cassette from "../components/tv-cassette/cassette.astro";
 import CassettePile from "../components/tv-cassette/cassette-pile.astro";
 import Remote from "../components/tv-remote/remote.astro";
@@ -14,16 +13,26 @@ import Camera from "../components/3d/camera.astro";
 
 ## today
 
-- improve the remote animation (initial location is only valid if we are not scrolled down)
+- add Settings label
+=> can the checkboxes be pressed when they are not displayed?
+
+
+- add channel buttons
 - enable channel functionality (up, down, select, scroll snap, arrow keys)
+
+- mute and other settings should have their own icon on the screen
+- inputting numbers should also wait a little before going to that number
+- the remote as settings as well as the eject button are difficult to understand => they need a label
+
 
 
 ## bugs
 
 - tape variants show whitespace in smaller viewports
-- the remote hovers very visibly 
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
+
+- performance is not great, yet it is still unclear why
 
 ## refactorings
 
@@ -34,23 +43,32 @@ import Camera from "../components/3d/camera.astro";
 - 3d elements should all be blocks
 - unify 3d button components
 - make the realistic inset a class that can be adjusted with custom properties
+- disable js only functionality with @media (scripting: none)
 
+
+## content
+
+- dinkelberg with a meme
+- the 3d episode
+- about me
+- jokes / css database / fix printer
 
 ## future features
 - real inset of the displays
 - shadows
-- add a preview button, that rolls the camera a little (and zooms out)
 - add more sounds
 - add more realistic VCR effects
 => https://aleclownes.com/2017/02/01/crt-display.html
 => https://blog.webguy.pw/blog/simulating-a-crt-monitor-in-css/
+=> https://crt.no/
 
 - add more realistic buttons
 => https://codepen.io/nicolasjesenberger/pen/gOqzJed
 
 - rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
 - animate putting in a new tape
-- add scenery that change with the content of the selected tape and maybe even a parallax effect
+- add scenery that changes with the content of the selected tape (background stuff, colors etc) and maybe even a parallax effect
+- add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
 
 */
 </script>
@@ -58,23 +76,13 @@ import Camera from "../components/3d/camera.astro";
 <Layout title="Copy and Paetow">
 	<main>
 		<Camera>
-			<div class="scene z-layer-interactivity">
+			<div class="tv-scene scene z-layer-interactivity">
 				<span class="visually-hidden"
 					>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview
 					the content</span
 				>
 
-				<Remote className="interactive">
-					<TVRemoteLink>
-						<a href="about">about</a>
-					</TVRemoteLink>
-					<TVRemoteLink>
-						<a href="dinkelberg">dinkelberg</a>
-					</TVRemoteLink>
-					<TVRemoteLink>
-						<a href="css-printer">css-printer</a>
-					</TVRemoteLink>
-				</Remote>
+				<Remote className="interactive" />
 
 				<TV className="interactive" />
 
@@ -119,9 +127,15 @@ import Camera from "../components/3d/camera.astro";
 
 <style is:global>
 	@layer defaults {
-		:where(body:has(dialog[open]), body:has(:popover-open)) {
-			position: fixed;
-			inset: 0;
+		:where(body:has(dialog[open]:not(.teletext)), body:has(:popover-open)) {
+			overflow: hidden;
+			width: 100vw;
+			height: 100vh;
+
+			.scene {
+				--scene-padding: 0px;
+				--remote-depth: 0px;
+			}
 		}
 
 		main {
@@ -145,12 +159,14 @@ import Camera from "../components/3d/camera.astro";
 			}
 		}
 
+		.tv-scene {
+			width: var(--scene-width);
+			padding-block: var(--scene-padding);
+		}
+
 		.scene {
 			--scene-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
 			--scene-padding: 10svh;
-
-			width: var(--scene-width);
-			padding-block: var(--scene-padding);
 		}
 	}
 </style>
