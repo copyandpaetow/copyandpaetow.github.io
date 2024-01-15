@@ -1,135 +1,173 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TV from "../components/TV.astro";
-import Cassette from "../components/Cassette.astro";
-import CassetteScreen from "../components/CassetteScreen.astro";
+import TV from "../components/tv/tv.astro";
+import Cassette from "../components/tv-cassette/cassette.astro";
+import CassettePile from "../components/tv-cassette/cassette-pile.astro";
+import Remote from "../components/tv-remote/remote.astro";
+import Room from "../components/tv/room.astro";
+import Camera from "../components/3d/camera.astro";
 ---
 
 <script>
 	/*
 
-- add navbar with home, overview (see all routes) and settings
-=> 3D rotate
-=> enable sticky
-=> straighten covers
+## today
 
-=> we currently only render the visible block elements, if we would rotate the scene, we could check which faces should be visible and only render those?
+- enable channel functionality
+- mute and other settings should have their own icon on the screen
+- inputting numbers should also wait a little before going to that number
+  
 
-  ##improvements
+## bugs
 
-- use IO to change the tapes on scroll. Needs to be deactivatable via a toggle though
-- scroll snapping for the tapes would be nice
-- reset buttons if power is clicked
-- the screen alignment is currently fragile
 - tape variants show whitespace in smaller viewports
-- unify media queries but try to reduce as much as possible
+- all blocks have an outline but the tv
+- the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
+- alt-tabbing while the remote is open can shift the layout => should be inert
+- remote buttons can be alt-tabbed to even if it is not open
 
+- performance is not great, yet it is still unclear why
+
+## refactorings
+
+- unify css values
+- update custom property names
+- extract similar functionality into classes
+- improve remote color and borders
+- 3d elements should all be blocks
+- unify 3d button components
+- make the realistic inset a class that can be adjusted with custom properties
+- disable js only functionality with @media (scripting: none)
+
+
+## content
+
+- dinkelberg with a meme
+- the 3d episode
+- about me
+- jokes / css database / fix printer
+
+## future features
+- real inset of the displays
+- shadows
+- add more sounds
+- add more realistic VCR effects
+=> https://aleclownes.com/2017/02/01/crt-display.html
+=> https://blog.webguy.pw/blog/simulating-a-crt-monitor-in-css/
+=> https://crt.no/
+
+- add more realistic buttons
+=> https://codepen.io/nicolasjesenberger/pen/gOqzJed
+
+- rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
+- animate putting in a new tape
+- add scenery that changes with the content of the selected tape (background stuff, colors etc) and maybe even a parallax effect
+- add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
 
 */
 </script>
 
 <Layout title="Copy and Paetow">
-	<nav></nav>
+	<main>
+		<Camera>
+			<div class="tv-scene scene z-layer-interactivity">
+				<span class="visually-hidden"
+					>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview
+					the content</span
+				>
 
-	<header></header>
+				<Remote className="interactive" />
 
-	<main class="scene">
-		<TV>
-			<Cassette decoType="c" id="1">
-				<a href="#1">the intro nobody asked for</a>
-				<CassetteScreen slot="screen" overlay="lines">
-					<h1>Hi, Lucas here</h1>
-					<p>
-						I am looking for a opportunities to create delight and performant movements on the web.
-					</p>
-					<button>hello</button>
-				</CassetteScreen>
-			</Cassette>
-			<Cassette decoType="b" tapeType="checked" id="od">
-				<a href="#od">Connect your database with CSS</a>
-				<CassetteScreen slot="screen">
-					<p>fake news</p>
-				</CassetteScreen>
-			</Cassette>
-			<Cassette decoType="c" tapeType="stripes" disabled><p>Your joke here</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-			<Cassette decoType="a" tapeType="checked" id="printer">
-				<a href="#printer">How to fix your printer</a>
-				<section class="cassette-content screen" slot="screen">
-					<p>fake news</p>
-				</section>
-			</Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-			<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-		</TV>
+				<TV className="interactive" />
+
+				<CassettePile className="interactive-offsetable">
+					<Cassette decoType="c" id="1">
+						<a href="#1" aria-label="jumps to the tv and previews this page"
+							>the intro nobody asked for</a
+						>
+						<Fragment slot="screen">
+							<h1>Hi, Lucas here</h1>
+							<p>
+								I am looking for a opportunities to create delight and performant movements on the
+								web.
+							</p>
+							<button>hello</button>
+						</Fragment>
+					</Cassette>
+					<Cassette decoType="b" tapeType="checked" id="od">
+						<a href="#od">Connect your database with CSS</a>
+						<p slot="screen">fake news</p>
+					</Cassette>
+					<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+					<Cassette decoType="a" tapeType="checked" id="printer">
+						<a href="#printer">How to fix your printer</a>
+						<p slot="screen">fake news</p>
+					</Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
+					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
+				</CassettePile>
+
+				<Room />
+			</div>
+		</Camera>
 	</main>
 </Layout>
-<footer>Its 2023 and I am still putting books on the floor - Lucas Paetow</footer>
 
 <style is:global>
 	@layer defaults {
-		body {
-			--padding: minmax(1rem, 1fr);
-			--footer-main-intersection: 20svh;
-			--header-spacing: var(--space-5);
-			--nav-size: 2rem;
-			--header-size: 10svh;
-			--above-scene: calc((var(--nav-size) + var(--header-size)));
+		:where(body:has(dialog[open]:not(.teletext)), body:has(:popover-open)) {
+			overflow: hidden;
+			width: 100vw;
+			height: 100vh;
 
-			display: grid;
-			grid-template-columns:
-				[full-start] var(--padding)
-				[main-start] minmax(calc(320px - 2 * 1rem), 60rem)
-				[main-end] var(--padding)
-				[full-end];
-
-			grid-template-rows:
-				[nav-start] var(--nav-size)
-				[nav-end header-start] var(--header-size)
-				[header-end main-start] 1fr
-				[footer-start] var(--footer-main-intersection)
-				[main-end] minmax(calc(var(--above-scene) + var(--header-size)), max-content)
-				[footer-end];
-		}
-
-		@media (min-width: 30rem) {
-			body {
-				--header-size: 15svh;
+			.scene {
+				--scene-padding: 0px;
+				--remote-depth: 0px;
 			}
-		}
-
-		@media (min-width: 40rem) {
-			body {
-				--header-size: 20svh;
-			}
-		}
-
-		nav {
-			grid-area: nav / full;
-		}
-
-		header {
-			grid-area: header / full;
 		}
 
 		main {
-			grid-area: main;
 			display: grid;
 			place-content: center;
 		}
+	}
 
-		footer {
-			grid-area: footer / full;
+	@layer components {
+		.z-layer-interactivity {
+			/* this are required for safari and firefox interactivity */
+			transform: translateZ(calc(var(--tv-depth) * -1)) rotateX(var(--scene-rotate-x, 0))
+				rotateY(var(--scene-rotate-y, 0));
 
-			display: grid;
-			place-content: end center;
-			color: var(--grey-10);
-			background-color: var(--grey-70);
+			.interactive-offsetable {
+				transform: translateZ(calc(var(--tv-depth) - var(--cassette-pile-offset-z)));
+			}
+
+			.interactive {
+				transform: translateZ(calc(var(--tv-depth)));
+			}
+		}
+
+		.tv-scene {
+			width: var(--scene-width);
+			padding-block: var(--scene-padding);
+		}
+
+		.scene {
+			--min-width: 320px;
+			--min-padding: 4px;
+
+			--scene-width: clamp(
+				calc(var(--min-width) - 2 * var(--min-padding)),
+				calc(100vw - 2 * var(--min-padding)),
+				500px
+			);
+			--scene-padding: 10svh;
 		}
 	}
 </style>

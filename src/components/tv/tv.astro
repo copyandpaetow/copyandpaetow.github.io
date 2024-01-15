@@ -1,0 +1,192 @@
+---
+import Block from "../3d/block.astro";
+import StaticBackground from "./static-background.astro";
+import VHSPlayer from "./vhs-player.astro";
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<Block className={`tv ${className}`}>
+	<div class="tv-layout">
+		<aside class="tv-screen screen-inset"></aside>
+		<StaticBackground className="static-background screen-content" />
+		<VHSPlayer className="vhs-slot" />
+	</div>
+	<div slot="right" class="speaker"></div>
+	<div slot="left" class="speaker"></div>
+</Block>
+
+<style is:global>
+	@layer components {
+		.scene {
+			--tv-width: var(--scene-width);
+			--tv-depth: 300px;
+			--tv-background: hsl(255, 2%, 67%);
+			--tv-padding: 8px;
+			--tv-border-color: hsl(255, 2%, 67%);
+			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
+			--tv-height: calc(
+				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + 1 *
+					var(--tv-bottom-padding) + var(--module-gap)
+			);
+			--tv-outline-color: var(--blue);
+			--tv-outline-width: 2px;
+			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
+			--tv-light: var(--green);
+			--tv-bottom-padding: 0.5rem;
+			--tv-border-radius: 2px;
+
+			--module-border-radius: 0.25rem;
+			--module-gap: 8px;
+			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
+				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
+
+			--screen-border-radius: 1.5rem;
+			--screen-padding: 0.8rem;
+			--screen-border-color: var(--grey-85);
+			--screen-border-color-offset: var(--grey-90);
+			--screen-module-ratio: 1.2;
+			--screen-height: calc(
+				((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio))
+			);
+
+			--speaker-grill-color: var(--grey-85);
+
+			@media (min-width: 22rem) {
+				--tv-padding: 12px;
+				--screen-padding: 1rem;
+				--tv-bottom-padding: 1rem;
+				--module-gap: 10px;
+			}
+		}
+
+		.tv {
+			--block-depth: var(--tv-depth);
+			--block-background: var(--tv-background);
+			--block-border: var(--tv-border);
+			--block-border-radius: var(--tv-border-radius);
+		}
+
+		.tv-layout {
+			height: var(--tv-height);
+			width: 100%;
+			display: grid;
+			grid-template-columns:
+				var(--tv-padding)
+				[vhs-slot-start screen-frame-start] var(--screen-padding)
+				[screen-content-start] 1fr
+				[vhs-slot-end] var(--vhs-gap)
+				[eject-button-start] calc(
+					var(--vhs-eject-button-width) - var(--screen-padding) - var(--vhs-gap)
+				)
+				[screen-content-end] var(--screen-padding)
+				[screen-frame-end eject-button-end] var(--tv-padding);
+
+			grid-template-rows:
+				var(--tv-padding)
+				[screen-frame-start] var(--screen-padding)
+				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
+				[screen-content-end] var(--screen-padding)
+				[screen-frame-end]
+				var(--module-gap)
+				[vhs-slot-start] var(--vhs-slot-height)
+				[vhs-slot-end] var(--tv-bottom-padding)
+				var(--tv-padding);
+
+			.tv-screen {
+				grid-area: screen-frame;
+			}
+
+			.screen-content {
+				grid-area: screen-content;
+			}
+
+			.vhs-slot {
+				grid-area: vhs-slot;
+			}
+
+			.eject-button {
+				grid-area: vhs-slot / eject-button;
+			}
+		}
+
+		.static-background {
+			--save-screen-padding: 0;
+		}
+
+		.screen-content {
+			--_save-screen-padding: var(--save-screen-padding, var(--space--1));
+			--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+
+			border-radius: var(--screen-border-radius);
+			overflow: hidden;
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+
+			padding: var(--_save-screen-padding);
+			background-color: var(--_screen-background);
+			box-shadow:
+				inset 0px 0px 15px 0px var(--_screen-background),
+				0px 0px 15px 0px var(--_screen-background);
+
+			width: 100%;
+			height: 100%;
+
+			& * {
+				font-size: var(--font--1);
+			}
+			& h1 {
+				font-size: var(--font-1);
+			}
+
+			& button {
+				appearance: none;
+				background: transparent;
+				border-color: transparent;
+				color: white;
+			}
+		}
+
+		.screen-inset {
+			background: black;
+			border-radius: var(--module-border-radius);
+			border-inline: var(--screen-border-radius) solid var(--screen-border-color);
+			border-block: var(--screen-border-radius) solid var(--screen-border-color-offset);
+		}
+
+		.speaker {
+			display: grid;
+			place-content: start center;
+			height: 100%;
+			width: 100%;
+			padding: var(--tv-bottom-padding);
+
+			&::before {
+				content: "";
+				aspect-ratio: 2.5;
+				width: calc(var(--tv-depth) * 0.8);
+				display: block;
+				border-radius: 50%;
+
+				background: linear-gradient(
+						90deg,
+						transparent 48.5%,
+						var(--tv-background) 48.5%,
+						var(--tv-background) 51.5%,
+						transparent 51.5%
+					),
+					linear-gradient(
+						var(--speaker-grill-color) 0%,
+						var(--tv-background) 10%,
+						var(--tv-background) 40%,
+						var(--speaker-grill-color) 50%,
+						var(--tv-border-color) 50%
+					);
+				background-size: 100% 0.25rem;
+			}
+		}
+	}
+</style>

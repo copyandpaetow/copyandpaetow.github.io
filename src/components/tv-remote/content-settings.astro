@@ -1,0 +1,59 @@
+---
+
+---
+
+<ol class="content-settings">
+	<li>
+		<label for="settings-animation"> Animations</label>
+		<hr />
+		<input type="checkbox" name="settings-animation" id="settings-animation" checked />
+	</li>
+	<li>
+		<label for="settings-sound"> Sound</label>
+		<hr />
+		<input type="checkbox" name="settings-sound" id="settings-sound" />
+	</li>
+	<li>
+		<label for="settings-three-dimensional"> 3D effects</label>
+		<hr />
+		<input type="checkbox" name="settings-three-dimensional" id="settings-three-dimensional" />
+	</li>
+</ol>
+
+<style is:global>
+	@layer components {
+		.content-settings {
+			color: white;
+
+			& input {
+				appearance: none;
+				background-color: var(--block-background);
+				position: absolute;
+				width: 0;
+				height: 0;
+				z-index: -1;
+			}
+
+			& li {
+				display: grid;
+				grid-template-columns: max-content max-content 1fr max-content;
+				grid-template-areas: "number title line state";
+				gap: 8px;
+			}
+
+			& hr {
+				border-bottom: 4px dotted white;
+				transform: translateY(2px);
+				align-self: center;
+			}
+
+			& li::after {
+				content: "off";
+			}
+
+			& li:has(input:checked)::after {
+				content: "on";
+			}
+		}
+	}
+</style>

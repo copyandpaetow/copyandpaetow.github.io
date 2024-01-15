@@ -1,63 +1,20 @@
 ---
-import Block from "./block.astro";
-
 export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
-	id?: string;
 }
 
-const { decoType = "a", tapeType = "blank", id } = Astro.props;
-
-const randomNumber = (min: number, max: number) => {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const randomXOffset = randomNumber(-3, 3);
-const randomZOffset = randomNumber(10, 100);
+const { decoType = "a", tapeType = "blank" } = Astro.props;
 ---
 
-<article
-	class="cassette-scene"
-	{...id && { id }}
-	style=`
-	--cassette-offset-x: ${randomXOffset}%;
-	--cassette-offset-z: ${randomZOffset}px;`
->
-	<Block className="cassette">
-		<div slot="front" class="cassette-front">
-			<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
-				<slot />
-			</div>
-		</div>
-	</Block>
-	<slot name="screen" />
-</article>
+<div class="cassette-front">
+	<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
+		<slot />
+	</div>
+</div>
 
 <style is:global>
 	@layer components {
-		.cassette-scene {
-			display: grid;
-			justify-items: center;
-			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
-			font-size: var(--font--1);
-		}
-
-		.cassette {
-			--cassette-background: hsla(0, 0%, 10%, 1);
-
-			--block-border: var(--border-width) solid var(--black);
-			--block-background: var(--cassette-background);
-			--block-aspect-ratio: var(--cassette-aspect-ratio);
-			--block-depth: calc(var(--cassette-depth));
-
-			grid-area: 1 / 1;
-
-			& > [data-block-side="front"] {
-				height: 100%;
-			}
-		}
-
 		.cassette-front {
 			height: 100%;
 
@@ -100,6 +57,10 @@ const randomZOffset = randomNumber(10, 100);
 			padding-inline: var(--space-2);
 			position: relative;
 			overflow: hidden;
+
+			&:has(:focus-visible) {
+				outline: var(--tv-outline);
+			}
 
 			&[data-tape-type="stripes"] {
 				--stripe-color: var(--grey-40);
