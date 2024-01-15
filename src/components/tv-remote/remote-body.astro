@@ -5,6 +5,9 @@ export interface Props {
 	className?: string;
 }
 
+import Power from "../icons/power.svg?raw";
+import Up from "../icons/up.svg?raw";
+
 const { className = "" } = Astro.props;
 ---
 
@@ -20,37 +23,47 @@ const { className = "" } = Astro.props;
 </script>
 
 <Block className={`remote-body ${className}`}>
-	<nav class="remote-front">
-		<label for="controls-power" class="power-button">
-			<Block className="force-full-scene">
-				<span>power</span>
-			</Block>
-			<input type="checkbox" name="power" id="controls-power" checked />
-		</label>
-		<noscript> enable javascript for full functionality</noscript>
+	<section class="remote-front">
+		<button class="power" popovertarget="remote-modal" popovertargetaction="hide"
+			><span>exit</span><Block><Fragment set:html={Power} /></Block></button
+		>
+		<button class="channel row1"
+			><span class="visually-hidden">channel up</span><Fragment set:html={Up} /></button
+		>
+		<button class="channel row2"
+			><span>channel</span><span class="visually-hidden">channel down</span><Fragment
+				set:html={Up}
+			/></button
+		>
+		<button class="volumne row3"
+			><span class="visually-hidden">volume up</span><Fragment set:html={Up} /></button
+		>
+		<button class="volumne row4">
+			<span>vol</span>
+			<span class="visually-hidden">volume down</span>
+			<Fragment set:html={Up} />
+		</button>
+		<button class="row1"><span>1</span></button>
+		<button class="row1"><span>2</span></button>
+		<button class="row1"><span>3</span></button>
+		<button class="row2"><span>4</span></button>
+		<button class="row2"><span>5</span></button>
+		<button class="row2"><span>6</span></button>
+		<button class="row3"><span>7</span></button>
+		<button class="row3"><span>8</span></button>
+		<button class="row3"><span>9</span></button>
+		<button class="row4"><span>0</span></button>
+		<button class="row5"><span>home</span></button>
+		<button class="row5"><span>back</span></button>
+		<button class="row5"><span>select</span></button>
 
-		<fieldset id="channels">
-			<legend>Channels</legend>
-			<a href="/"><span>home</span></a>
-			<button class="select"><span>select</span></button>
-			<button class="up"><span>up</span></button>
-			<button class="down"><span>down</span></button>
+		<fieldset class="remote-settings">
+			<legend>settings</legend>
+			<label for="settings-animation"><span>Anim</span></label>
+			<label for="settings-sound"><span>Sound</span></label>
+			<label for="settings-three-dimensional"><span>3D</span></label>
 		</fieldset>
-
-		<fieldset>
-			<legend>Settings</legend>
-
-			<label for="controls-mute">
-				<span>mute</span>
-				<input type="checkbox" name="mute" id="controls-mute" />
-			</label>
-
-			<label for="controls-animation">
-				<span>pause animations</span>
-				<input type="checkbox" name="animations" id="controls-animation" />
-			</label>
-		</fieldset>
-	</nav>
+	</section>
 </Block>
 
 <style is:global>
@@ -67,94 +80,141 @@ const { className = "" } = Astro.props;
 			--block-render-back: none;
 			--block-render-bottom: none;
 			--block-render-left: block;
-
-			width: max-content;
-			color: black;
 		}
 
 		.remote-front {
+			--remote-button-gap: 8px;
+			--remote-button-width: 44px;
+			--remote-button-height: 24px;
+			--offset-direction: -1;
+
 			display: grid;
-			grid-auto-rows: max-content;
-			height: var(--remote-height);
-			padding: 1rem;
-			row-gap: 0.5rem;
+			grid-template-columns:
+				var(--remote-button-width) var(--remote-button-width) var(--remote-button-width)
+				calc(var(--remote-button-width) * 1.25);
+			grid-auto-rows: var(--remote-button-height);
+			row-gap: calc(var(--remote-button-height) + var(--remote-button-gap));
+			column-gap: var(--remote-button-gap);
 
-			&:focus-within {
-				outline: var(--tv-outline);
+			padding: var(--remote-button-height) calc(var(--remote-button-height) / 2);
+			padding-bottom: 5rem;
+
+			.channel,
+			.volumne,
+			.power {
+				grid-column: 4/5;
+				width: var(--remote-button-width);
+				height: var(--remote-button-height);
+				place-self: center;
 			}
 
-			& label:has(:focus-visible),
-			& button:focus-visible {
-				outline: var(--tv-outline);
+			&::before {
+				content: "";
+				grid-area: 2 / 4 / 8 / 5;
+				background: grey;
 			}
 
-			& input {
-				appearance: none;
-				background-color: var(--block-background);
-				position: absolute;
-				width: 0;
-				height: 0;
-				z-index: -1;
+			& :where(.channel, .volumne):nth-of-type(2n + 1) svg {
+				transform: rotate(180deg);
+			}
+
+			.row1 {
+				grid-row-start: 3;
+			}
+			.row2 {
+				grid-row-start: 4;
+			}
+			.row3 {
+				grid-row-start: 5;
+			}
+			.row4 {
+				grid-row-start: 6;
+			}
+
+			.row5 {
+				grid-row-start: 7;
+			}
+
+			.remote-settings {
+				grid-row: 8/10;
+				grid-column: 1/5;
 			}
 		}
 
-		.power-button {
+		.power {
 			--block-background: rgb(255, 0, 0);
 			--block-depth: 10px;
 			--block-border: 2px solid rgb(130, 0, 0);
+			--block-width: var(--remote-button-width);
+			--block-height: var(--remote-button-height);
 
-			width: max-content;
-			justify-self: end;
+			transform: translateZ(var(--block-depth));
 
-			& > * {
-				transform: translateZ(5px);
-				transition: transform 200ms ease;
-			}
+			padding: 0;
 
-			&:active > * {
-				transform: translateZ(1px);
+			& span {
+				--offset-direction: 1;
 			}
 		}
 
-		.remote-front fieldset {
-			--light-shadow-color: #f7f7f7;
-			--dark-shadow-color: #646464;
-			--background-color: #cfcbca;
+		.remote-settings {
+			color: black;
+			font-size: var(--font--2);
+			display: grid;
+			grid-template-columns:
+				var(--remote-button-width) var(--remote-button-width) var(--remote-button-width)
+				calc(var(--remote-button-width) * 1.25);
+			grid-auto-rows: var(--remote-button-height);
+			column-gap: var(--remote-button-gap);
+			position: relative;
+			margin-inline: -4px;
+			padding: 4px;
 
-			border: 2px solid black;
-			padding: 0.5rem;
-			display: flex;
-			gap: 4px;
+			& span {
+				--offset-direction: 1;
+			}
+		}
 
-			& :where(button, label, a) {
-				flex-basis: 100%;
-				appearance: none;
-				position: relative;
-				border: 2px solid transparent;
-				color: black;
-				background: black;
-				border-radius: 2px;
-				box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
-				height: 40px;
-				transform-style: unset;
+		:where(.remote-front) :where(button, label) {
+			border: none;
+			appearance: none;
+			background: var(--tv-background);
+			position: relative;
+			display: grid;
+			padding: 2px;
+			background: black;
+
+			& * {
+				grid-area: 1 / 1 / 2 / 2;
 			}
 
-			& :where(button, label, a) > span {
-				border-radius: 0.45rem;
-				background-color: var(--background-color);
-				height: 100%;
-				display: grid;
-				place-content: center;
+			& span {
 				font-size: var(--font--2);
-
-				box-shadow:
-					inset 1px 1px 1px var(--light-shadow-color),
-					inset -1px -1px 1px var(--dark-shadow-color),
-					2px 2px 2px #000;
+				position: absolute;
+				justify-self: center;
+				height: var(--remote-button-height);
+				top: calc(
+					(var(--remote-button-height) + var(--remote-button-gap) / 2) * var(--offset-direction)
+				);
 			}
 
-			& :where(button, label, a):active > span {
-				transform: scale(0.98);
+			& svg {
+				height: 100%;
+				aspect-ratio: 1;
+				place-self: center;
+			}
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: 1px;
+				background: var(--tv-background);
+				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+				border-radius: 4px;
+			}
+
+			&:active::before {
+				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
 			}
 		}
 	}

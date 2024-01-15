@@ -19,33 +19,9 @@ const { className = "" } = Astro.props;
 		show tv remote for navigation and settings</button
 	>
 	<popover-helper type="modal">
-		<dialog id="remote-modal" popover class="scene remote-modal remote-tv-position">
-			<popover-helper>
-				<dialog id="tv-program" popover="manual" class="remote-tv-position secondary-menu">
-					<div class="tv-layout">
-						<section class="screen-content vcr-lines">
-							<!--@ts-expect-error attribute is too new -->
-							<button popovertarget="tv-program" popovertargetaction="hide">back</button>
-							<ContentProgram />
-						</section>
-					</div>
-				</dialog>
-			</popover-helper>
-
-			<popover-helper>
-				<dialog id="settings" popover="manual" class="remote-tv-position secondary-menu">
-					<div class="tv-layout">
-						<section class="screen-content vcr-lines">
-							<!--@ts-expect-error attribute is too new -->
-							<button popovertarget="settings" popovertargetaction="hide">back</button>
-							<ContentSettings />
-						</section>
-					</div>
-				</dialog>
-			</popover-helper>
-
-			<dialog open class="teletext tv-layout">
-				<div class="screen-content vcr-lines">
+		<dialog id="remote-modal" popover class="scene remote-modal">
+			<dialog open class="teletext">
+				<section class="screen-content vcr-lines">
 					<!--@ts-expect-error attribute is too new -->
 					<button popovertarget="remote-modal" popovertargetaction="hide">exit</button>
 					<ol>
@@ -58,9 +34,32 @@ const { className = "" } = Astro.props;
 							<button popovertarget="settings" popovertargetaction="show">settings</button>
 						</li>
 					</ol>
-				</div>
+				</section>
 			</dialog>
-			<RemoteBody className="remote-position" />
+
+			<popover-helper>
+				<dialog id="tv-program" popover="manual" class="secondary-menu">
+					<nav class="screen-content vcr-lines">
+						<!--@ts-expect-error attribute is too new -->
+						<button popovertarget="tv-program" popovertargetaction="hide">back</button>
+						<ContentProgram />
+					</nav>
+				</dialog>
+			</popover-helper>
+
+			<popover-helper>
+				<dialog id="settings" popover="manual" class="secondary-menu">
+					<section class="screen-content vcr-lines">
+						<!--@ts-expect-error attribute is too new -->
+						<button popovertarget="settings" popovertargetaction="hide">back</button>
+						<ContentSettings />
+					</section>
+				</dialog>
+			</popover-helper>
+
+			<div class="remote-position">
+				<RemoteBody />
+			</div>
 		</dialog>
 	</popover-helper>
 
@@ -68,16 +67,24 @@ const { className = "" } = Astro.props;
 		@layer components {
 			.scene {
 				--remote-depth: 50px;
-				--remote-height: clamp(300px, 75svh, 500px);
 				--remote-active-offset: calc(
 					var(--vhs-slot-height) * -1 - var(--tv-bottom-padding) - var(--tv-padding)
 				);
+				--remote-scale: 0.4;
+				--remote-transform: translateY(calc(var(--tv-height) * -1 - var(--remote-active-offset)))
+					translateX(10%) rotateY(115deg) rotateX(90deg)
+					scale3d(var(--remote-scale), var(--remote-scale), var(--remote-scale));
+
+				@media (min-width: 22rem) {
+					--remote-scale: 0.5;
+				}
 			}
 
 			.remote {
 				position: relative;
 				height: var(--remote-depth);
 				display: grid;
+				color: white;
 
 				& dialog {
 					padding: 0;
@@ -87,7 +94,7 @@ const { className = "" } = Astro.props;
 					grid-area: 1/1;
 				}
 
-				& popover-helper {
+				& popover-helper:has(> dialog:where(:popover-open, [open])) {
 					transform-style: unset;
 				}
 
@@ -102,22 +109,40 @@ const { className = "" } = Astro.props;
 					border: none;
 					transform: translateZ(var(--remote-depth));
 				}
+
+				& ol {
+					color: white;
+					counter-reset: orderedlist;
+				}
+
+				& ol li::before {
+					counter-increment: orderedlist;
+					content: counter(orderedlist) ". ";
+					align-self: end;
+				}
 			}
 
 			:where(.remote) :where(dialog) {
-				display: none;
 				overflow: initial;
 				color: transparent;
 				background: transparent;
 				border: none;
 				padding: 0;
+				width: 100%;
+				height: 100%;
 			}
 
-			.remote-tv-position:where(:popover-open, [open]),
 			.remote-modal {
 				display: grid;
-				grid-template-columns: 1fr var(--tv-width) 1fr;
-				grid-template-rows: calc(var(--scene-padding) + var(--remote-depth)) var(--tv-height) 1fr;
+				grid-template-columns:
+					1fr calc(var(--tv-width) - 2 * var(--tv-padding) - 2 * var(--screen-padding))
+					1fr;
+				grid-template-rows:
+					calc(var(--scene-padding) + var(--remote-depth)) calc(
+						var(--tv-padding) + var(--screen-padding)
+					)
+					calc(var(--screen-height) - 2 * var(--screen-padding))
+					1fr;
 				width: 100vw;
 				height: 100vh;
 				overflow: visible;
@@ -128,12 +153,56 @@ const { className = "" } = Astro.props;
 					grid-column: 2/3;
 				}
 
-				& > .tv-layout {
-					grid-row: 2/3;
+				.teletext {
+					grid-row: 3/4;
 				}
 
-				& > .remote-position {
-					grid-row: 3/4;
+				.remote-position {
+					grid-row: 4/5;
+				}
+
+				& popover-helper:has(dialog:not(:where(:popover-open, [open]))) {
+					display: none;
+				}
+			}
+
+			.secondary-menu {
+				height: calc(var(--screen-height) - 2 * var(--screen-padding));
+				width: calc(var(--tv-width) - 2 * var(--tv-padding) - 2 * var(--screen-padding));
+				top: calc(var(--scene-padding) + var(--tv-padding) + var(--screen-padding));
+				left: calc((100vw - var(--tv-width)) / 2 + var(--tv-padding) + var(--screen-padding));
+
+				&:not(:where(:popover-open, [open])) {
+					display: none;
+				}
+			}
+
+			.remote .screen-content {
+				display: grid;
+				grid-template-rows: 20%;
+				grid-auto-rows: max-content;
+				grid-auto-flow: row;
+
+				& :where(button) {
+					height: max-content;
+					width: max-content;
+				}
+			}
+
+			@keyframes fromBottom {
+				0% {
+					transform: var(--remote-transform);
+				}
+
+				40% {
+					transform: translateY(-100vh) translateX(20%) rotateY(115deg) rotateX(90deg)
+						scale3d(0.5, 0.5, 0.5);
+				}
+				41% {
+					transform: translateY(100vh);
+				}
+				100% {
+					transform: translateY(var(--module-gap));
 				}
 			}
 
@@ -150,12 +219,15 @@ const { className = "" } = Astro.props;
 				}
 
 				&:where(:popover-open, [open]) .remote-position {
-					transform: translateY(var(--remote-active-offset));
-					height: calc((100vh - var(--tv-height)) - var(--remote-active-offset));
-					overflow-y: scroll;
+					transform: translateY(var(--module-gap));
+					height: calc(
+						(100vh - var(--tv-height)) - var(--remote-active-offset) + var(--module-gap) +
+							var(--tv-padding)
+					);
+					overflow-y: auto;
 
 					@media (prefers-reduced-motion: no-preference) {
-						transition: transform 1s ease;
+						animation: fromBottom 1s ease;
 					}
 				}
 
@@ -171,11 +243,6 @@ const { className = "" } = Astro.props;
 				& .secondary-menu[open]::backdrop {
 					display: none;
 				}
-
-				& .secondary-menu[open] {
-					top: 0;
-					z-index: 4;
-				}
 			}
 
 			:has(.secondary-menu:where(:popover-open, [open])) .teletext .screen-content {
@@ -183,13 +250,9 @@ const { className = "" } = Astro.props;
 			}
 
 			.remote-position {
-				position: relative;
 				justify-self: center;
 				transform-origin: left top;
-				transform: translateY(calc(var(--tv-height) * -1 - var(--remote-depth) / 2 - 2px))
-					translateX(20%) rotateY(115deg) rotateX(90deg) scale3d(0.5, 0.5, 0.5);
-				z-index: 5;
-				--block-render-bottom: block;
+				transform: var(--remote-transform);
 			}
 		}
 	</style>

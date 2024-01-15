@@ -31,6 +31,9 @@ const { className = "" } = Astro.props;
 
 			& :where(*) {
 				transform-style: preserve-3d;
+			}
+
+			& :where(*:not(button, label, a, input)) {
 				outline: 1px solid transparent;
 			}
 		}

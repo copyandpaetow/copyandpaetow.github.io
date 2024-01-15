@@ -18,3 +18,10 @@
 	clip: rect(0, 0, 0, 0);
 	border: 0;
 }
+
+:where([data-appearance="none"]) {
+	appearance: none;
+	color: transparent;
+	background-color: transparent;
+	border: none;
+}

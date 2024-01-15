@@ -13,24 +13,18 @@ import Camera from "../components/3d/camera.astro";
 
 ## today
 
-- add Settings label
-=> can the checkboxes be pressed when they are not displayed?
-
-
-- add channel buttons
-- enable channel functionality (up, down, select, scroll snap, arrow keys)
-
+- enable channel functionality
 - mute and other settings should have their own icon on the screen
 - inputting numbers should also wait a little before going to that number
-- the remote as settings as well as the eject button are difficult to understand => they need a label
-
-
+  
 
 ## bugs
 
 - tape variants show whitespace in smaller viewports
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
+- alt-tabbing while the remote is open can shift the layout => should be inert
+- remote buttons can be alt-tabbed to even if it is not open
 
 - performance is not great, yet it is still unclear why
 
@@ -165,7 +159,14 @@ import Camera from "../components/3d/camera.astro";
 		}
 
 		.scene {
-			--scene-width: clamp(300px, calc(100vw - 2 * 1rem), 500px);
+			--min-width: 320px;
+			--min-padding: 4px;
+
+			--scene-width: clamp(
+				calc(var(--min-width) - 2 * var(--min-padding)),
+				calc(100vw - 2 * var(--min-padding)),
+				500px
+			);
 			--scene-padding: 10svh;
 		}
 	}
