@@ -15,8 +15,8 @@ const { className = "" } = Astro.props;
 		.scene {
 			--cassette-depth: 220px;
 			--cassette-aspect-ratio: 4;
-			--cassette-active-offset-z: calc(var(--cassette-depth) / 4);
-			--cassette-pile-offset-z: calc((var(--tv-depth) - var(--cassette-depth)) / 2);
+			--cassette-active-offset-z: 20px;
+			--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
 			--cassette-gap: 2px;
 
 			@media (min-width: 22rem) {
@@ -56,17 +56,15 @@ const { className = "" } = Astro.props;
 			& :target {
 				transform: none;
 				margin-top: calc(var(--tv-height) * -1);
+				transform: translateZ(var(--tv-offset-z));
 
 				.cassette-body {
-					transform: translateZ(
-							calc(var(--cassette-pile-offset-z) + var(--cassette-active-offset-z))
-						)
+					transform: translateZ(var(--cassette-active-offset-z))
 						translateY(calc(var(--vhs-slot-padding) * 1.5))
 						translateX(calc(var(--vhs-slot-padding) * 2));
 				}
 				.hidden-when-inactive {
 					display: grid;
-					transform: translateZ(var(--cassette-pile-offset-z));
 				}
 
 				.cassette-content {
@@ -84,12 +82,12 @@ const { className = "" } = Astro.props;
 				order: -1;
 			}
 
-			&:not(:has(:target)) > .cassette:nth-of-type(2),
-			&:has(.tv-layout:first-of-type:target) > .cassette:nth-of-type(2) {
+			&:not(:has(:target)) > .cassette:nth-of-type(2) .cassette-body,
+			&:has(.tv-layout:first-of-type:target) > .cassette:nth-of-type(2) .cassette-body {
 				transform: none;
 			}
 
-			&:has(.tv-layout:not(:first-of-type):target) > .cassette:nth-of-type(1) {
+			&:has(.tv-layout:not(:first-of-type):target) > .cassette:nth-of-type(1) .cassette-body {
 				transform: none;
 			}
 		}

@@ -26,7 +26,7 @@ const { className = "" } = Astro.props;
 			--tv-depth: 300px;
 			--tv-background: hsl(255, 2%, 67%);
 			--tv-padding: 8px;
-			--tv-border-color: hsl(255, 2%, 67%);
+			--tv-border-color: hsl(255, 2%, 27%);
 			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
 			--tv-height: calc(
 				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + 1 *
@@ -38,6 +38,7 @@ const { className = "" } = Astro.props;
 			--tv-light: var(--green);
 			--tv-bottom-padding: 0.5rem;
 			--tv-border-radius: 2px;
+			--tv-offset-z: 25px;
 
 			--module-border-radius: 0.25rem;
 			--module-gap: 8px;
@@ -115,39 +116,6 @@ const { className = "" } = Astro.props;
 
 		.static-background {
 			--save-screen-padding: 0;
-		}
-
-		.screen-content {
-			--_save-screen-padding: var(--save-screen-padding, var(--space--1));
-			--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
-
-			border-radius: var(--screen-border-radius);
-			overflow: hidden;
-			font-family: "Press Start 2P";
-			font-size: var(--font--2);
-
-			padding: var(--_save-screen-padding);
-			background-color: var(--_screen-background);
-			box-shadow:
-				inset 0px 0px 15px 0px var(--_screen-background),
-				0px 0px 15px 0px var(--_screen-background);
-
-			width: 100%;
-			height: 100%;
-
-			& * {
-				font-size: var(--font--1);
-			}
-			& h1 {
-				font-size: var(--font-1);
-			}
-
-			& button {
-				appearance: none;
-				background: transparent;
-				border-color: transparent;
-				color: white;
-			}
 		}
 
 		.screen-inset {

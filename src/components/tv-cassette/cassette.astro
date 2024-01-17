@@ -8,6 +8,7 @@ export interface Props {
 }
 
 import Eject from "../icons/eject.svg?raw";
+import Screen from "../tv/screen.astro";
 import CassetteTape from "./cassette-tape.astro";
 
 const { id, ...tapeProps } = Astro.props;
@@ -16,8 +17,8 @@ const randomNumber = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const randomXOffset = randomNumber(-3, 3);
-const randomZOffset = randomNumber(10, 100);
+const randomXOffset = randomNumber(-10, 10);
+const randomZOffset = randomNumber(1, 30);
 ---
 
 <script>
@@ -28,8 +29,8 @@ const randomZOffset = randomNumber(10, 100);
 	class="cassette tv-layout"
 	{...id && { id }}
 	style=`
---cassette-offset-x: ${randomXOffset}%;
---cassette-offset-z: ${randomZOffset}px;`
+	--cassette-offset-x: ${randomXOffset}%;
+	--cassette-offset-z: ${randomZOffset}px;`
 >
 	<Block className="cassette-body vhs-slot">
 		<CassetteTape {...tapeProps}>
@@ -46,15 +47,16 @@ const randomZOffset = randomNumber(10, 100);
 		</button>
 	</eject-cassette>
 
-	<section class="cassette-content screen-content vcr-lines hidden-when-inactive">
-		<slot name="screen" />
-	</section>
+	<Screen className="cassette-content hidden-when-inactive">
+		<div>
+			<slot name="screen" />
+		</div>
+	</Screen>
 </article>
 
 <style is:global>
 	@layer components {
 		.cassette {
-			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
 			font-size: var(--font--1);
 		}
 
@@ -67,6 +69,8 @@ const randomZOffset = randomNumber(10, 100);
 			--block-width: calc(var(--vhs-slot-width) - 4 * var(--vhs-slot-padding));
 			--block-aspect-ratio: var(--cassette-aspect-ratio);
 			--block-border-radius: var(--tv-border-radius);
+
+			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
 		}
 
 		.eject-button {
@@ -94,23 +98,6 @@ const randomZOffset = randomNumber(10, 100);
 			& svg {
 				width: 75%;
 				place-self: center;
-			}
-		}
-
-		.vcr-lines {
-			position: relative;
-
-			&::after {
-				content: "";
-				position: absolute;
-				inset: 0;
-				background: linear-gradient(
-					to bottom,
-					hsla(207.1, 15.9%, 61.76%, 0.2) 50%,
-					hsla(207.1, 15.9%, 51.76%, 0.1) 50%
-				);
-				background-size: 100% 4px;
-				pointer-events: none;
 			}
 		}
 

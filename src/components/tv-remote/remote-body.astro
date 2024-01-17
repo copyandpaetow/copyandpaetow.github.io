@@ -12,14 +12,7 @@ const { className = "" } = Astro.props;
 ---
 
 <script>
-	const screen = document.querySelector(".channel-screen");
-	const up = document.querySelector(".up");
-	const down = document.querySelector(".down");
-	const select = document.querySelector(".select");
-
-	//up and down need to get the current active item, toggle the active class, move to the prev or next item (Or start from the other side)
-
-	down?.addEventListener("click", () => {});
+	//
 </script>
 
 <Block className={`remote-body ${className}`}>
@@ -70,15 +63,15 @@ const { className = "" } = Astro.props;
 	@layer components {
 		.remote-body {
 			--block-background: var(--tv-background);
-			--block-depth: 50px;
+			--block-depth: var(--remote-depth);
 			--block-border: 4px solid var(--tv-border-color);
 			--block-border-radius: var(--tv-border-radius);
 
 			--block-render-front: block;
 			--block-render-top: block;
-			--block-render-right: none;
-			--block-render-back: none;
-			--block-render-bottom: none;
+			--block-render-right: block;
+			--block-render-back: block;
+			--block-render-bottom: block;
 			--block-render-left: block;
 		}
 
@@ -98,6 +91,8 @@ const { className = "" } = Astro.props;
 
 			padding: var(--remote-button-height) calc(var(--remote-button-height) / 2);
 			padding-bottom: 5rem;
+
+			transform: translateZ(1px);
 
 			.channel,
 			.volumne,
@@ -143,7 +138,7 @@ const { className = "" } = Astro.props;
 
 		.power {
 			--block-background: rgb(255, 0, 0);
-			--block-depth: 10px;
+			--block-depth: 5px;
 			--block-border: 2px solid rgb(130, 0, 0);
 			--block-width: var(--remote-button-width);
 			--block-height: var(--remote-button-height);
