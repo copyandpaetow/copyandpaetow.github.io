@@ -1,0 +1,128 @@
+---
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<section class={`screen-content vcr-lines ${className}`}>
+	<slot />
+</section>
+
+<style is:global>
+	@layer components {
+		.screen-content {
+			--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+			--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+
+			display: grid;
+			grid-template-columns:
+				[full-screen-start] var(--_save-screen-padding)
+				[save-screen-start] 1fr
+				[save-screen-end] var(--_save-screen-padding)
+				[full-screen-end];
+			grid-template-rows:
+				[full-screen-start] var(--_save-screen-padding)
+				[save-screen-start] 1fr
+				[save-screen-end] var(--_save-screen-padding)
+				[full-screen-end];
+
+			clip-path: url(#crtPath);
+			overflow: hidden;
+			font-family: "Press Start 2P";
+			font-size: var(--font--2);
+
+			background-color: var(--_screen-background);
+			width: 100%;
+			height: 100%;
+
+			& > :where(*) {
+				grid-area: save-screen;
+			}
+
+			&:has(.full-screen) > :where(*) {
+				grid-area: full-screen;
+			}
+
+			& * {
+				font-size: var(--font--1);
+				text-shadow:
+					0 0 0.08em white,
+					-0.08em 0 0.08em aqua,
+					0.08em 0 0.08em fuchsia;
+				color: white;
+			}
+			& h1 {
+				font-size: var(--font-1);
+			}
+
+			& button {
+				appearance: none;
+				background: transparent;
+				border-color: transparent;
+				color: white;
+			}
+
+			& ol {
+				color: white;
+				counter-reset: orderedlist;
+			}
+
+			& ol li::before {
+				counter-increment: orderedlist;
+				content: counter(orderedlist) ". ";
+				align-self: end;
+			}
+
+			& a {
+				color: white;
+			}
+		}
+		@keyframes flicker {
+			from {
+				opacity: 0.5;
+			}
+			to {
+				opacity: 0.55;
+			}
+		}
+
+		@keyframes scanlines {
+			0% {
+				transform: translateY(3px);
+			}
+		}
+
+		.vcr-lines {
+			position: relative;
+
+			&::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
+				background-size: 100% 3px;
+				pointer-events: none;
+				z-index: 2;
+				animation: scanlines 200ms steps(60) infinite;
+			}
+
+			@media (prefers-reduced-motion: no-preference) {
+				&::after {
+					content: " ";
+					position: absolute;
+					inset: 0;
+					background: radial-gradient(
+						ellipse at center,
+						hsla(0, 100%, 100%, 1) 0%,
+						hsla(0, 100%, 100%, 0) 100%
+					);
+					z-index: 2;
+					pointer-events: none;
+					animation: flicker 50ms infinite;
+				}
+			}
+		}
+	}
+</style>

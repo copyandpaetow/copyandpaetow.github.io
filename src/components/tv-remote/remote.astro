@@ -1,7 +1,7 @@
 ---
-import ContentSettings from "./content-settings.astro";
 import RemoteBody from "./remote-body.astro";
-import ContentProgram from "./content-program.astro";
+import RemotePopup from "./remote-popup.astro";
+
 export interface Props {
 	className?: string;
 }
@@ -13,247 +13,53 @@ const { className = "" } = Astro.props;
 	import "./popover-helper";
 </script>
 
-<div class={`remote ${className}`}>
-	<!--@ts-expect-error attribute is too new -->
-	<button popovertarget="remote-modal" popovertargetaction="show">
-		show tv remote for navigation and settings</button
-	>
-	<popover-helper type="modal">
-		<dialog id="remote-modal" popover class="scene remote-modal">
-			<dialog open class="teletext">
-				<section class="screen-content vcr-lines">
-					<!--@ts-expect-error attribute is too new -->
-					<button popovertarget="remote-modal" popovertargetaction="hide">exit</button>
-					<ol>
-						<li>
-							<!--@ts-expect-error attribute is too new -->
-							<button popovertarget="tv-program" popovertargetaction="show">program</button>
-						</li>
-						<li>
-							<!--@ts-expect-error attribute is too new -->
-							<button popovertarget="settings" popovertargetaction="show">settings</button>
-						</li>
-					</ol>
-				</section>
-			</dialog>
+<Fragment>
+	<div class={`remote ${className}`}>
+		<button popovertarget="remote-modal" popovertargetaction="show"></button>
+		<RemoteBody className="inactive-remote" inert />
+	</div>
+	<RemotePopup />
+</Fragment>
 
-			<popover-helper>
-				<dialog id="tv-program" popover="manual" class="secondary-menu">
-					<nav class="screen-content vcr-lines">
-						<!--@ts-expect-error attribute is too new -->
-						<button popovertarget="tv-program" popovertargetaction="hide">back</button>
-						<ContentProgram />
-					</nav>
-				</dialog>
-			</popover-helper>
+<style is:global>
+	@layer components {
+		.scene {
+			--remote-depth: 30px;
+			--remote-scale: 0.4;
 
-			<popover-helper>
-				<dialog id="settings" popover="manual" class="secondary-menu">
-					<section class="screen-content vcr-lines">
-						<!--@ts-expect-error attribute is too new -->
-						<button popovertarget="settings" popovertargetaction="hide">back</button>
-						<ContentSettings />
-					</section>
-				</dialog>
-			</popover-helper>
-
-			<div class="remote-position">
-				<RemoteBody />
-			</div>
-		</dialog>
-	</popover-helper>
-
-	<style is:global>
-		@layer components {
-			.scene {
-				--remote-depth: 50px;
-				--remote-active-offset: calc(
-					var(--vhs-slot-height) * -1 - var(--tv-bottom-padding) - var(--tv-padding)
-				);
-				--remote-scale: 0.4;
-				--remote-transform: translateY(calc(var(--tv-height) * -1 - var(--remote-active-offset)))
-					translateX(10%) rotateY(115deg) rotateX(90deg)
-					scale3d(var(--remote-scale), var(--remote-scale), var(--remote-scale));
-
-				@media (min-width: 22rem) {
-					--remote-scale: 0.5;
-				}
-			}
-
-			.remote {
-				position: relative;
-				height: var(--remote-depth);
-				display: grid;
-				color: white;
-
-				& dialog {
-					padding: 0;
-				}
-
-				& > * {
-					grid-area: 1/1;
-				}
-
-				& popover-helper:has(> dialog:where(:popover-open, [open])) {
-					transform-style: unset;
-				}
-
-				& > button {
-					position: absolute;
-					bottom: 0;
-					height: calc(var(--remote-depth) * 1.5);
-					width: 100%;
-					appearance: none;
-					color: transparent;
-					background-color: transparent;
-					border: none;
-					transform: translateZ(var(--remote-depth));
-				}
-
-				& ol {
-					color: white;
-					counter-reset: orderedlist;
-				}
-
-				& ol li::before {
-					counter-increment: orderedlist;
-					content: counter(orderedlist) ". ";
-					align-self: end;
-				}
-			}
-
-			:where(.remote) :where(dialog) {
-				overflow: initial;
-				color: transparent;
-				background: transparent;
-				border: none;
-				padding: 0;
-				width: 100%;
-				height: 100%;
-			}
-
-			.remote-modal {
-				display: grid;
-				grid-template-columns:
-					1fr calc(var(--tv-width) - 2 * var(--tv-padding) - 2 * var(--screen-padding))
-					1fr;
-				grid-template-rows:
-					calc(var(--scene-padding) + var(--remote-depth)) calc(
-						var(--tv-padding) + var(--screen-padding)
-					)
-					calc(var(--screen-height) - 2 * var(--screen-padding))
-					1fr;
-				width: 100vw;
-				height: 100vh;
-				overflow: visible;
-				position: fixed;
-				inset: 0;
-
-				& > * {
-					grid-column: 2/3;
-				}
-
-				.teletext {
-					grid-row: 3/4;
-				}
-
-				.remote-position {
-					grid-row: 4/5;
-				}
-
-				& popover-helper:has(dialog:not(:where(:popover-open, [open]))) {
-					display: none;
-				}
-			}
-
-			.secondary-menu {
-				height: calc(var(--screen-height) - 2 * var(--screen-padding));
-				width: calc(var(--tv-width) - 2 * var(--tv-padding) - 2 * var(--screen-padding));
-				top: calc(var(--scene-padding) + var(--tv-padding) + var(--screen-padding));
-				left: calc((100vw - var(--tv-width)) / 2 + var(--tv-padding) + var(--screen-padding));
-
-				&:not(:where(:popover-open, [open])) {
-					display: none;
-				}
-			}
-
-			.remote .screen-content {
-				display: grid;
-				grid-template-rows: 20%;
-				grid-auto-rows: max-content;
-				grid-auto-flow: row;
-
-				& :where(button) {
-					height: max-content;
-					width: max-content;
-				}
-			}
-
-			@keyframes fromBottom {
-				0% {
-					transform: var(--remote-transform);
-				}
-
-				40% {
-					transform: translateY(-100vh) translateX(20%) rotateY(115deg) rotateX(90deg)
-						scale3d(0.5, 0.5, 0.5);
-				}
-				41% {
-					transform: translateY(100vh);
-				}
-				100% {
-					transform: translateY(var(--module-gap));
-				}
-			}
-
-			.remote-modal {
-				&:not(:where(:popover-open, [open])) {
-					display: grid;
-
-					top: calc(var(--scene-padding) * -1);
-					left: calc((100vw - var(--tv-width)) / -2);
-				}
-
-				&::backdrop {
-					background: hsla(0, 0%, 0%, 0.5);
-				}
-
-				&:where(:popover-open, [open]) .remote-position {
-					transform: translateY(var(--module-gap));
-					height: calc(
-						(100vh - var(--tv-height)) - var(--remote-active-offset) + var(--module-gap) +
-							var(--tv-padding)
-					);
-					overflow-y: auto;
-
-					@media (prefers-reduced-motion: no-preference) {
-						animation: fromBottom 1s ease;
-					}
-				}
-
-				&:not(:where(:popover-open, [open])) .teletext {
-					display: none;
-				}
-
-				&[open] {
-					max-width: 100vw;
-					max-height: 100vh;
-				}
-
-				& .secondary-menu[open]::backdrop {
-					display: none;
-				}
-			}
-
-			:has(.secondary-menu:where(:popover-open, [open])) .teletext .screen-content {
-				box-shadow: none;
-			}
-
-			.remote-position {
-				justify-self: center;
-				transform-origin: left top;
-				transform: var(--remote-transform);
+			@media (min-width: 22rem) {
+				--remote-scale: 0.5;
 			}
 		}
-	</style>
-</div>
+
+		.remote {
+			position: relative;
+			height: var(--remote-depth);
+			display: grid;
+			color: white;
+
+			& > * {
+				grid-area: 1/1;
+			}
+
+			& > button {
+				position: absolute;
+				bottom: 0;
+				height: calc(var(--remote-depth) * 1.5);
+				width: 100%;
+				appearance: none;
+				color: transparent;
+				background-color: transparent;
+				border: none;
+				transform: translateZ(var(--remote-depth));
+			}
+
+			.inactive-remote {
+				transform-origin: top left;
+				transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
+					scale3d(var(--remote-scale), var(--remote-scale), 1);
+				width: max-content;
+			}
+		}
+	}
+</style>

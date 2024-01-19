@@ -22,9 +22,10 @@ const { className = "" } = Astro.props;
 			--_camera-pan: var(--camera-pan, 0deg);
 			--_camera-tilt: var(--camera-tilt, 0deg);
 
-			transform: translateZ(var(--_perspective)) translateX(calc(var(--_camera-truck) * -1))
-				translateY(var(--_camera-pedestal)) translateZ(calc(var(--_camera-dolly) * -1))
-				rotateX(var(--_camera-roll)) rotateY(var(--_camera-pan)) rotateZ(var(--_camera-tilt))
+			transform: perspective(var(--_perspective)) translateZ(var(--_perspective))
+				translateX(calc(var(--_camera-truck) * -1)) translateY(var(--_camera-pedestal))
+				translateZ(calc(var(--_camera-dolly) * -1)) rotateX(var(--_camera-roll))
+				rotateY(var(--_camera-pan)) rotateZ(var(--_camera-tilt))
 				translateZ(calc(var(--_perspective) * -1));
 
 			transform-style: preserve-3d;
@@ -35,6 +36,22 @@ const { className = "" } = Astro.props;
 
 			& :where(*:not(button, label, a, input)) {
 				outline: 1px solid transparent;
+			}
+
+			&.debug1 {
+				--perspective: 2000px;
+				--camera-truck: 1200px;
+				--camera-pan: -40deg;
+				--block-render-top: block;
+				--block-render-right: block;
+			}
+
+			&.debug2 {
+				--perspective: 2000px;
+				--camera-truck: 2000px;
+				--camera-pan: -90deg;
+				--block-render-top: block;
+				--block-render-right: block;
 			}
 		}
 	}

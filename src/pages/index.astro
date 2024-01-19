@@ -6,6 +6,8 @@ import CassettePile from "../components/tv-cassette/cassette-pile.astro";
 import Remote from "../components/tv-remote/remote.astro";
 import Room from "../components/tv/room.astro";
 import Camera from "../components/3d/camera.astro";
+import RickRoll from "../components/jokes/rickroll.astro";
+import DinkelBerg from "../components/jokes/dinkelberg.astro";
 ---
 
 <script>
@@ -13,48 +15,40 @@ import Camera from "../components/3d/camera.astro";
 
 ## today
 
-- enable channel functionality
-- mute and other settings should have their own icon on the screen
-- inputting numbers should also wait a little before going to that number
-  
+## tasks
+
+- minimal about page
+- minimal now page
+- enable settings in other pages besides the main page
+- add dedicated options for flickering/lines or a general "screen realism"
+- settings label buttons on the remote need some kind of grouping
 
 ## bugs
 
-- tape variants show whitespace in smaller viewports
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
-- alt-tabbing while the remote is open can shift the layout => should be inert
-- remote buttons can be alt-tabbed to even if it is not open
-
-- performance is not great, yet it is still unclear why
 
 ## refactorings
 
-- unify css values
+- unify css values and calculations
 - update custom property names
 - extract similar functionality into classes
 - improve remote color and borders
 - 3d elements should all be blocks
 - unify 3d button components
-- make the realistic inset a class that can be adjusted with custom properties
+=> make the realistic inset a class that can be adjusted with custom properties
 - disable js only functionality with @media (scripting: none)
-
-
-## content
-
-- dinkelberg with a meme
-- the 3d episode
-- about me
-- jokes / css database / fix printer
 
 ## future features
 - real inset of the displays
 - shadows
 - add more sounds
-- add more realistic VCR effects
-=> https://aleclownes.com/2017/02/01/crt-display.html
-=> https://blog.webguy.pw/blog/simulating-a-crt-monitor-in-css/
-=> https://crt.no/
+
+improve remote
+=> enable channel functionality
+=> mute and other settings should have their own icon on the screen
+=> inputting numbers should also wait a little before going to that number
+  
 
 - add more realistic buttons
 => https://codepen.io/nicolasjesenberger/pen/gOqzJed
@@ -78,11 +72,11 @@ import Camera from "../components/3d/camera.astro";
 
 				<Remote className="interactive" />
 
-				<TV className="interactive" />
+				<TV className="tv-interactive" />
 
-				<CassettePile className="interactive-offsetable">
-					<Cassette decoType="c" id="1">
-						<a href="#1" aria-label="jumps to the tv and previews this page"
+				<CassettePile className="interactive">
+					<Cassette decoType="c" id="intro">
+						<a href="#intro" aria-label="jumps to the tv and previews this page"
 							>the intro nobody asked for</a
 						>
 						<Fragment slot="screen">
@@ -94,23 +88,26 @@ import Camera from "../components/3d/camera.astro";
 							<button>hello</button>
 						</Fragment>
 					</Cassette>
-					<Cassette decoType="b" tapeType="checked" id="od">
-						<a href="#od">Connect your database with CSS</a>
-						<p slot="screen">fake news</p>
+					<Cassette decoType="c" tapeType="stripes" id="now"><a href="#now">now</a></Cassette>
+					<Cassette decoType="a" tapeType="stripes" id="bewegung">
+						<a href="#bewegung">how to make an animation library</a>
 					</Cassette>
-					<Cassette decoType="c" tapeType="stripes"><p>Your joke here</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 2</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
-					<Cassette decoType="a" tapeType="checked" id="printer">
+					<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
+						<a href="#that-3d-episode">That 3D episode</a>
+					</Cassette>
+					<Cassette decoType="b" tapeType="checked" id="css-database">
+						<a href="#css-database">Connect your database with CSS</a>
+						<RickRoll slot="screen" />
+					</Cassette>
+					<Cassette decoType="b" tapeType="checked" id="dinkelberg">
+						<a href="#dinkelberg">DINKELBERG</a>
+						<DinkelBerg slot="screen" />
+					</Cassette>
+					<Cassette decoType="c" tapeType="stripes" id="about"><a href="#about">about</a></Cassette>
+					<Cassette decoType="b" tapeType="checked" id="printer">
 						<a href="#printer">How to fix your printer</a>
-						<p slot="screen">fake news</p>
+						<RickRoll slot="screen" />
 					</Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 3</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 4</p></Cassette>
-					<Cassette decoType="a" tapeType="checked"><p>DINKELBERG 5</p></Cassette>
 				</CassettePile>
 
 				<Room />
@@ -121,10 +118,10 @@ import Camera from "../components/3d/camera.astro";
 
 <style is:global>
 	@layer defaults {
-		:where(body:has(dialog[open]:not(.teletext)), body:has(:popover-open)) {
-			overflow: hidden;
-			width: 100vw;
-			height: 100vh;
+		:where(body:has(#remote-modal[open]), body:has(#remote-modal:popover-open)) {
+			position: fixed;
+			width: 100%;
+			height: 100%;
 
 			.scene {
 				--scene-padding: 0px;
@@ -141,15 +138,14 @@ import Camera from "../components/3d/camera.astro";
 	@layer components {
 		.z-layer-interactivity {
 			/* this are required for safari and firefox interactivity */
-			transform: translateZ(calc(var(--tv-depth) * -1)) rotateX(var(--scene-rotate-x, 0))
-				rotateY(var(--scene-rotate-y, 0));
-
-			.interactive-offsetable {
-				transform: translateZ(calc(var(--tv-depth) - var(--cassette-pile-offset-z)));
-			}
+			transform: translateZ(calc(var(--tv-depth) * -1));
 
 			.interactive {
-				transform: translateZ(calc(var(--tv-depth)));
+				transform: translateZ(var(--tv-depth));
+			}
+
+			.tv-interactive {
+				transform: translateZ(calc(var(--tv-depth) + var(--tv-offset-z)));
 			}
 		}
 
@@ -168,6 +164,11 @@ import Camera from "../components/3d/camera.astro";
 				500px
 			);
 			--scene-padding: 10svh;
+		}
+
+		.joke {
+			width: 100%;
+			object-fit: cover;
 		}
 	}
 </style>

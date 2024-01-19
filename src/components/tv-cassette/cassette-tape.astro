@@ -10,6 +10,7 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 <div class="cassette-front">
 	<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
 		<slot />
+		<button class="cassette-back hidden-when-inactive">go back</button>
 	</div>
 </div>
 
@@ -53,8 +54,7 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			background-color: white;
 			border-radius: 0.25rem;
 			display: grid;
-			place-content: center;
-			padding-inline: var(--space-2);
+			grid-template-columns: max-content 1fr max-content max-content;
 			position: relative;
 			overflow: hidden;
 
@@ -86,12 +86,29 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			}
 
 			& > * {
-				height: 100%;
-				overflow: hidden;
-
+				width: 100%;
+				height: max-content;
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
+				grid-column: 2/3;
+				place-self: center;
+				text-align: center;
+			}
+
+			.cassette-back {
+				width: 50px;
+				grid-column: 3/4;
+				appearance: none;
+				border-color: transparent;
+				display: none;
+			}
+
+			&::before {
+				grid-column: 1/2;
+			}
+			&::after {
+				grid-column: 4/5;
 			}
 		}
 
@@ -103,9 +120,6 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			&::after {
 				white-space: pre;
 				display: grid;
-				position: absolute;
-				right: 0;
-				top: 0;
 				aspect-ratio: 1;
 				height: 100%;
 				place-content: center;
@@ -113,7 +127,7 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 				content: "Video \A Cassette";
 				font-size: 1px;
 				line-height: 1;
-				transform: rotateZ(-90deg) translateY(20%);
+				transform: rotateZ(-90deg);
 				background: linear-gradient(
 					to bottom,
 					var(--yellow) 0%,
@@ -130,10 +144,8 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			&::after,
 			&::before {
 				content: "";
-				position: absolute;
 				height: var(--front-height);
 				width: var(--space-1);
-				inset: 0;
 				background-color: var(--blue);
 			}
 
@@ -155,15 +167,13 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			&::before {
 				white-space: pre;
 				display: grid;
-				position: absolute;
-				inset: 0;
 				height: 100%;
 				aspect-ratio: 1;
 				font-size: 1px;
 				place-content: start center;
 				text-align: center;
 				content: "Video \A Cassette";
-				transform: rotateZ(-90deg) translateY(-5%);
+				transform: rotateZ(-90deg);
 				background: linear-gradient(
 					to bottom,
 					var(--red) 0%,
@@ -176,8 +186,6 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 
 			&::after {
 				content: "";
-				position: absolute;
-				inset: 0;
 				height: var(--front-height);
 				width: var(--space--1);
 				left: calc(100% - var(--space--1));
