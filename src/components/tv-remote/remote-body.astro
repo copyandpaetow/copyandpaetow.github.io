@@ -3,12 +3,13 @@ import Block from "../3d/block.astro";
 
 export interface Props {
 	className?: string;
+	inert?: boolean;
 }
 
 import Power from "../icons/power.svg?raw";
 import Up from "../icons/up.svg?raw";
 
-const { className = "" } = Astro.props;
+const { className = "", inert } = Astro.props;
 ---
 
 <script>
@@ -16,7 +17,7 @@ const { className = "" } = Astro.props;
 </script>
 
 <Block className={`remote-body ${className}`}>
-	<section class="remote-front">
+	<section class="remote-front" {...inert && { inert: "" }}>
 		<button class="power" popovertarget="remote-modal" popovertargetaction="hide"
 			><span>exit</span><Block><Fragment set:html={Power} /></Block></button
 		>
@@ -50,21 +51,25 @@ const { className = "" } = Astro.props;
 		<button class="row5"><span>back</span></button>
 		<button class="row5"><span>select</span></button>
 
-		<fieldset class="remote-settings">
-			<legend>settings</legend>
-			<label for="settings-animation"><span>Anim</span></label>
-			<label for="settings-sound"><span>Sound</span></label>
-			<label for="settings-three-dimensional"><span>3D</span></label>
-		</fieldset>
+		<label for="settings-animation" class="row6"><span>Anim</span></label>
+		<label for="settings-sound" class="row6"><span>Sound</span></label>
+		<label for="settings-three-dimensional" class="row6"><span>3D</span></label>
 	</section>
+	<p slot="left" class="remote-label">settings</p>
 </Block>
 
 <style is:global>
 	@layer components {
+		.scene {
+			--remote-button-gap: 8px;
+			--remote-button-width: 44px;
+			--remote-button-height: 24px;
+		}
+
 		.remote-body {
 			--block-background: var(--tv-background);
 			--block-depth: var(--remote-depth);
-			--block-border: 4px solid var(--tv-border-color);
+			--block-border: 2px solid var(--tv-border-color);
 			--block-border-radius: var(--tv-border-radius);
 
 			--block-render-front: block;
@@ -76,9 +81,6 @@ const { className = "" } = Astro.props;
 		}
 
 		.remote-front {
-			--remote-button-gap: 8px;
-			--remote-button-width: 44px;
-			--remote-button-height: 24px;
 			--offset-direction: -1;
 
 			display: grid;
@@ -129,17 +131,15 @@ const { className = "" } = Astro.props;
 			.row5 {
 				grid-row-start: 7;
 			}
-
-			.remote-settings {
-				grid-row: 8/10;
-				grid-column: 1/5;
+			.row6 {
+				grid-row-start: 9;
 			}
 		}
 
 		.power {
-			--block-background: rgb(255, 0, 0);
+			--block-background: var(--power-active, rgb(255, 0, 0));
 			--block-depth: 5px;
-			--block-border: 2px solid rgb(130, 0, 0);
+			--block-border: 2px solid var(--power-active-border, rgb(130, 0, 0));
 			--block-width: var(--remote-button-width);
 			--block-height: var(--remote-button-height);
 
@@ -149,6 +149,10 @@ const { className = "" } = Astro.props;
 
 			& span {
 				--offset-direction: 1;
+			}
+
+			&:active {
+				transform: translateZ(calc(var(--block-depth) / 2));
 			}
 		}
 
@@ -184,6 +188,7 @@ const { className = "" } = Astro.props;
 			}
 
 			& span {
+				color: var(--black);
 				font-size: var(--font--2);
 				position: absolute;
 				justify-self: center;
@@ -211,6 +216,10 @@ const { className = "" } = Astro.props;
 			&:active::before {
 				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
 			}
+		}
+
+		.remote-label {
+			transform: rotate(90deg) translateX(100%) scaleX(calc(1 / var(--remote-scale)));
 		}
 	}
 </style>

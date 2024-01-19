@@ -30,11 +30,7 @@ const { className = "" } = Astro.props;
 
 			transform-style: preserve-3d;
 
-			/* & :where(*:not(.no-perspective, dialog[open])) {
-				transform-style: preserve-3d;
-			} */
-
-			& :where(*:not(.no-perspective, .no-perspective *)) {
+			& :where(*) {
 				transform-style: preserve-3d;
 			}
 

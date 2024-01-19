@@ -14,13 +14,10 @@ const { className = "" } = Astro.props;
 	@layer components {
 		.scene {
 			--vhs-slot-padding: 0.1rem;
-			--vhs-slot-width: calc(
-				var(--tv-width) - var(--vhs-eject-button-width) - 2 * var(--tv-padding)
-			);
+			--vhs-slot-width: calc(var(--tv-width) - 2 * var(--tv-padding));
 			--vhs-slot-height: calc(
 				var(--vhs-slot-width) / var(--cassette-aspect-ratio) + 2 * var(--vhs-slot-padding)
 			);
-			--vhs-eject-button-width: 30px;
 			--vhs-gap: 8px;
 		}
 

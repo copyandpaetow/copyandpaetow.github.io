@@ -63,9 +63,7 @@ const { className = "" } = Astro.props;
 <style is:global>
 	@layer components {
 		.scene {
-			--remote-active-offset: calc(
-				var(--vhs-slot-height) * -1 - var(--tv-bottom-padding) - var(--tv-padding)
-			);
+			--remote-active-offset: calc(var(--vhs-slot-height) * -1 - var(--tv-padding));
 		}
 
 		& popover-helper {

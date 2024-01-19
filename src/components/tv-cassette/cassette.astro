@@ -4,11 +4,12 @@ import Block from "../3d/block.astro";
 export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
-	id?: string;
+	id: string;
 }
 
 import Eject from "../icons/eject.svg?raw";
 import Screen from "../tv/screen.astro";
+import TvToggle from "../tv/tv-toggle.astro";
 import CassetteTape from "./cassette-tape.astro";
 
 const { id, ...tapeProps } = Astro.props;
@@ -21,13 +22,9 @@ const randomXOffset = randomNumber(-10, 10);
 const randomZOffset = randomNumber(1, 30);
 ---
 
-<script>
-	import "./eject-cassette";
-</script>
-
 <article
 	class="cassette tv-layout"
-	{...id && { id }}
+	id={id}
 	style=`
 	--cassette-offset-x: ${randomXOffset}%;
 	--cassette-offset-z: ${randomZOffset}px;`
@@ -37,15 +34,6 @@ const randomZOffset = randomNumber(1, 30);
 			<slot />
 		</CassetteTape>
 	</Block>
-
-	<eject-cassette class="eject-button hidden-when-inactive">
-		<button class="physical-button">
-			<Block>
-				<span class="visually-hidden">move back to last position</span>
-				<Fragment set:html={Eject} />
-			</Block>
-		</button>
-	</eject-cassette>
 
 	<Screen className="cassette-content hidden-when-inactive">
 		<div>
@@ -58,6 +46,11 @@ const randomZOffset = randomNumber(1, 30);
 	@layer components {
 		.cassette {
 			font-size: var(--font--1);
+			pointer-events: none;
+
+			& > * {
+				pointer-events: initial;
+			}
 		}
 
 		.cassette-body {
@@ -71,67 +64,6 @@ const randomZOffset = randomNumber(1, 30);
 			--block-border-radius: var(--tv-border-radius);
 
 			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
-		}
-
-		.eject-button {
-			--block-depth: calc(var(--cassette-depth) / 2);
-
-			display: grid;
-			grid-template-rows: 10% 1fr;
-			grid-template-areas:
-				"tv-light"
-				"eject-button";
-			row-gap: 5px;
-
-			position: relative;
-
-			&::before {
-				content: "";
-				grid-area: tv-light;
-				background-color: var(--tv-light);
-
-				box-shadow:
-					inset 0px 0px 5px 0px var(--tv-light),
-					0px 0px 5px 0px var(--tv-light);
-			}
-
-			& svg {
-				width: 75%;
-				place-self: center;
-			}
-		}
-
-		.physical-button {
-			--block-background: var(--tv-background);
-			--block-border-radius: var(--tv-border-radius);
-
-			background: black;
-			appearance: none;
-			display: grid;
-			border-color: transparent;
-			border-radius: calc(var(--tv-border-radius) / 2);
-			border-width: 1px;
-
-			&::before {
-				content: "";
-				position: absolute;
-				width: 50px;
-				height: 100%;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-
-			& > * {
-				height: 100%;
-				transform: translateZ(5px);
-				transition: transform 200ms ease;
-				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
-			}
-
-			&:active > * {
-				transform: translateZ(1px);
-				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
-			}
 		}
 	}
 </style>

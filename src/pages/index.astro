@@ -15,53 +15,40 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 
 ## today
 
-- enable channel functionality
-- mute and other settings should have their own icon on the screen
-- inputting numbers should also wait a little before going to that number
-  
+## tasks
 
-
+- minimal about page
+- minimal now page
+- enable settings in other pages besides the main page
+- add dedicated options for flickering/lines or a general "screen realism"
+- settings label buttons on the remote need some kind of grouping
 
 ## bugs
 
-- on iOS the default button color is blue, so all remote buttons are blue
-- on iOS/firefox the remote fieldset is not spacing right, better to just not use it and find another solution
-
-- tape variants show whitespace in smaller viewports
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
-- alt-tabbing while the remote is open can shift the layout => should be inert
-- remote buttons can be alt-tabbed to even if it is not open
-
-- performance is not great, yet it is still unclear why
 
 ## refactorings
 
-- unify css values
+- unify css values and calculations
 - update custom property names
 - extract similar functionality into classes
 - improve remote color and borders
 - 3d elements should all be blocks
 - unify 3d button components
-- make the realistic inset a class that can be adjusted with custom properties
+=> make the realistic inset a class that can be adjusted with custom properties
 - disable js only functionality with @media (scripting: none)
-
-
-## content
-
-- dinkelberg with a meme
-- the 3d episode
-- about me
-- jokes / css datbase / fix printer
 
 ## future features
 - real inset of the displays
 - shadows
 - add more sounds
-- add more realistic VCR effects
-=> https://aleclownes.com/2017/02/01/crt-display.html
-=> https://blog.webguy.pw/blog/simulating-a-crt-monitor-in-css/
-=> https://crt.no/
+
+improve remote
+=> enable channel functionality
+=> mute and other settings should have their own icon on the screen
+=> inputting numbers should also wait a little before going to that number
+  
 
 - add more realistic buttons
 => https://codepen.io/nicolasjesenberger/pen/gOqzJed
@@ -101,12 +88,12 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 							<button>hello</button>
 						</Fragment>
 					</Cassette>
-					<Cassette decoType="c" tapeType="stripes"><a href="#now">now</a></Cassette>
-					<Cassette decoType="a" tapeType="stripes">
+					<Cassette decoType="c" tapeType="stripes" id="now"><a href="#now">now</a></Cassette>
+					<Cassette decoType="a" tapeType="stripes" id="bewegung">
 						<a href="#bewegung">how to make an animation library</a>
 					</Cassette>
 					<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
-						<a href="that-3d-episode">That 3D episode</a>
+						<a href="#that-3d-episode">That 3D episode</a>
 					</Cassette>
 					<Cassette decoType="b" tapeType="checked" id="css-database">
 						<a href="#css-database">Connect your database with CSS</a>
@@ -116,7 +103,7 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 						<a href="#dinkelberg">DINKELBERG</a>
 						<DinkelBerg slot="screen" />
 					</Cassette>
-					<Cassette decoType="c" tapeType="stripes"><a href="#about">about</a></Cassette>
+					<Cassette decoType="c" tapeType="stripes" id="about"><a href="#about">about</a></Cassette>
 					<Cassette decoType="b" tapeType="checked" id="printer">
 						<a href="#printer">How to fix your printer</a>
 						<RickRoll slot="screen" />

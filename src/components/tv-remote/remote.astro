@@ -16,7 +16,7 @@ const { className = "" } = Astro.props;
 <Fragment>
 	<div class={`remote ${className}`}>
 		<button popovertarget="remote-modal" popovertargetaction="show"></button>
-		<RemoteBody className="inactive-remote" />
+		<RemoteBody className="inactive-remote" inert />
 	</div>
 	<RemotePopup />
 </Fragment>

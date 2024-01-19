@@ -6,32 +6,44 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class=`cassette-pile ${className}`>
+<script>
+	import "./eject-cassette";
+</script>
+
+<eject-cassette class=`cassette-pile ${className}`>
 	<slot />
-</div>
+</eject-cassette>
 
 <style is:global>
 	@layer components {
 		.scene {
 			--cassette-depth: 220px;
-			--cassette-aspect-ratio: 4;
+			--cassette-aspect-ratio: 4.5;
 			--cassette-active-offset-z: 20px;
 			--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
 			--cassette-gap: 2px;
 
 			@media (min-width: 22rem) {
-				--cassette-aspect-ratio: 5;
+				--cassette-aspect-ratio: 5.5;
 			}
 
 			@media (min-width: 28rem) {
-				--cassette-aspect-ratio: 6;
+				--cassette-aspect-ratio: 6.5;
 			}
 		}
 
 		@keyframes on {
 			0%,
-			75% {
-				scale: 1 0;
+			33% {
+				scale: 0 0;
+				filter: brightness(100);
+			}
+			66% {
+				scale: 1 0.01;
+				filter: brightness(100);
+			}
+			67% {
+				filter: brightness(1);
 			}
 			100% {
 				scale: 1 1;
@@ -54,7 +66,6 @@ const { className = "" } = Astro.props;
 
 			&:not(:has(:target)) > .cassette:first-of-type,
 			& :target {
-				transform: none;
 				margin-top: calc(var(--tv-height) * -1);
 				transform: translateZ(var(--tv-offset-z));
 
@@ -68,7 +79,7 @@ const { className = "" } = Astro.props;
 				}
 
 				.cassette-content {
-					animation: on 1000ms ease;
+					animation: on 500ms ease;
 				}
 			}
 
