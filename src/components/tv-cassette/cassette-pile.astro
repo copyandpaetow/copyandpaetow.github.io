@@ -95,11 +95,11 @@ const { className = "" } = Astro.props;
 
 			&:not(:has(:target)) > .cassette:nth-of-type(2) .cassette-body,
 			&:has(.tv-layout:first-of-type:target) > .cassette:nth-of-type(2) .cassette-body {
-				transform: none;
+				transform: translateZ(var(--cassette-offset-z));
 			}
 
 			&:has(.tv-layout:not(:first-of-type):target) > .cassette:nth-of-type(1) .cassette-body {
-				transform: none;
+				transform: translateZ(var(--cassette-offset-z));
 			}
 		}
 

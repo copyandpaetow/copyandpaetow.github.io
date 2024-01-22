@@ -17,7 +17,9 @@ const { className = "" } = Astro.props;
 <Block className={`tv ${className}`}>
 	<div class="tv-layout">
 		<aside class="tv-screen screen-inset"></aside>
-		<StaticBackground className="static-background screen-content" />
+		<aside class="screen-content">
+			<StaticBackground className="full-screen" />
+		</aside>
 		<ScreenCurvature />
 		<VHSPlayer className="vhs-slot" />
 		<TvToggle id="tv-power-button" className="tv-power-button">
@@ -129,10 +131,6 @@ const { className = "" } = Astro.props;
 			--tv-button-background-border: rgb(130, 0, 0);
 			--tv-button-active-background: limegreen;
 			--tv-button-active-background-border: green;
-		}
-
-		.static-background {
-			--save-screen-padding: 0;
 		}
 
 		.screen-inset {
