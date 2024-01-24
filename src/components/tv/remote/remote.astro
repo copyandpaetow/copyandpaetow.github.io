@@ -1,6 +1,6 @@
 ---
-import RemoteBody from "./remote-body.astro";
-import RemotePopup from "./remote-popup.astro";
+import RemoteBody from "../remote/remote-body.astro";
+import RemotePopup from "../remote/remote-popup.astro";
 
 export interface Props {
 	className?: string;
@@ -15,7 +15,9 @@ const { className = "" } = Astro.props;
 
 <Fragment>
 	<div class={`remote ${className}`}>
-		<button popovertarget="remote-modal" popovertargetaction="show"></button>
+		<button popovertarget="remote-modal" popovertargetaction="show"
+			>open settings in the style of a remote</button
+		>
 		<RemoteBody className="inactive-remote" inert />
 	</div>
 	<RemotePopup />
@@ -23,29 +25,14 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.scene {
-			--remote-depth: 30px;
-			--remote-scale: 0.4;
-
-			@media (min-width: 22rem) {
-				--remote-scale: 0.5;
-			}
-		}
-
 		.remote {
 			position: relative;
 			height: var(--remote-depth);
-			display: grid;
-			color: white;
-
-			& > * {
-				grid-area: 1/1;
-			}
 
 			& > button {
 				position: absolute;
 				bottom: 0;
-				height: calc(var(--remote-depth) * 1.5);
+				height: var(--min-button-height);
 				width: 100%;
 				appearance: none;
 				color: transparent;

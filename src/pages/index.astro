@@ -1,9 +1,9 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/layout.astro";
 import TV from "../components/tv/tv.astro";
-import Cassette from "../components/tv-cassette/cassette.astro";
-import CassettePile from "../components/tv-cassette/cassette-pile.astro";
-import Remote from "../components/tv-remote/remote.astro";
+import Cassette from "../components/tv/cassettes/cassette.astro";
+import CassettePile from "../components/tv/cassettes/cassete-pile.astro";
+import Remote from "../components/tv/remote/remote.astro";
 import Room from "../components/tv/room.astro";
 import Camera from "../components/3d/camera.astro";
 import RickRoll from "../components/jokes/rickroll.astro";
@@ -13,7 +13,10 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 <script>
 	/*
 
-## today
+## todo: next steps
+
+=> program could feature the preview screens that you get when you put in a tape or just the names
+==> does this make sense conceptionally?
 
 ## tasks
 
@@ -28,9 +31,11 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
 
+
 ## refactorings
 
 - unify css values and calculations
+=> check vh/svh etc
 - update custom property names
 - extract similar functionality into classes
 - improve remote color and borders

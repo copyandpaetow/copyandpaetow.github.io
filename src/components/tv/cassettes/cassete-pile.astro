@@ -16,40 +16,6 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.scene {
-			--cassette-depth: 220px;
-			--cassette-aspect-ratio: 4.5;
-			--cassette-active-offset-z: 20px;
-			--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
-			--cassette-gap: 2px;
-
-			@media (min-width: 22rem) {
-				--cassette-aspect-ratio: 5.5;
-			}
-
-			@media (min-width: 28rem) {
-				--cassette-aspect-ratio: 6.5;
-			}
-		}
-
-		@keyframes on {
-			0%,
-			33% {
-				scale: 0 0;
-				filter: brightness(100);
-			}
-			66% {
-				scale: 1 0.01;
-				filter: brightness(100);
-			}
-			67% {
-				filter: brightness(1);
-			}
-			100% {
-				scale: 1 1;
-			}
-		}
-
 		.cassette-pile {
 			display: grid;
 			grid-auto-flow: row;

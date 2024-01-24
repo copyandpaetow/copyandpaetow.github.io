@@ -1,0 +1,246 @@
+.scene {
+	--tv-width: var(--scene-width);
+	--tv-depth: 300px;
+	--tv-background: hsl(255, 2%, 67%);
+	--tv-padding: 8px;
+	--tv-border-color: hsl(255, 2%, 27%);
+	--tv-border: var(--tv-border-width) solid var(--tv-border-color);
+	--tv-height: calc(
+		var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + var(--module-gap)
+	);
+	--tv-outline-color: var(--blue);
+	--tv-outline-width: 2px;
+	--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
+	--tv-light: var(--green);
+
+	--tv-border-radius: 2px;
+	--tv-offset-z: 25px;
+
+	--module-border-radius: 0.25rem;
+	--module-gap: 32px;
+
+	--screen-padding: 0.5rem;
+	--screen-border-color: var(--grey-85);
+	--screen-border-color-offset: var(--grey-90);
+	--screen-module-ratio: 1.1;
+	--screen-height: calc(((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio)));
+
+	--speaker-grill-color: var(--grey-85);
+
+	--screen-text-color: var(--black);
+	--tv-button-depth: 5px;
+	--tv-button-gap: 8px;
+	--tv-button-width: 44px;
+	--tv-button-height: 24px;
+
+	--vhs-slot-padding: 0.1rem;
+	--vhs-slot-width: calc(var(--tv-width) - 2 * var(--tv-padding));
+	--vhs-slot-height: calc(
+		var(--vhs-slot-width) / var(--cassette-aspect-ratio) + 2 * var(--vhs-slot-padding)
+	);
+	--vhs-gap: 8px;
+
+	--cassette-depth: 220px;
+	--cassette-aspect-ratio: 4.5;
+	--cassette-active-offset-z: 20px;
+	--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
+	--cassette-gap: 2px;
+
+	--remote-depth: 30px;
+	--remote-scale: 0.4;
+
+	--remote-button-gap: 8px;
+	--remote-button-width: var(--min-button-width);
+	--remote-button-height: 24px;
+
+	--remote-active-offset: calc(var(--vhs-slot-height) * -1 - var(--tv-padding));
+	--inner-screen-width: calc(var(--tv-width) - 2 * var(--tv-screen-inset));
+	--inner-screen-height: calc(var(--screen-height) - 2 * var(--screen-padding));
+	--tv-offset-top: calc(var(--scene-padding) + var(--remote-depth));
+	--tv-screen-inset: calc(var(--tv-padding) + var(--screen-padding));
+
+	@media (min-width: 22rem) {
+		--tv-padding: 12px;
+		--cassette-aspect-ratio: 5.5;
+		--remote-scale: 0.5;
+	}
+
+	@media (min-width: 28rem) {
+		--cassette-aspect-ratio: 6.5;
+		--tv-padding: 20px;
+		--screen-module-ratio: 1.2;
+	}
+}
+
+@keyframes on {
+	0%,
+	33% {
+		scale: 0 0;
+		filter: brightness(100);
+	}
+	66% {
+		scale: 1 0.01;
+		filter: brightness(100);
+	}
+	67% {
+		filter: brightness(1);
+	}
+	100% {
+		scale: 1 1;
+	}
+}
+
+.screen-text {
+	--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+	--screen-text-color: var(--black);
+
+	font-family: "Press Start 2P";
+	font-size: var(--font--2);
+
+	background-color: var(--_screen-background);
+
+	& * {
+		font-size: var(--font--1);
+		text-shadow:
+			0 0 0.08em var(--screen-text-color),
+			-0.08em 0 0.08em aqua,
+			0.08em 0 0.08em fuchsia;
+		color: var(--screen-text-color);
+	}
+
+	& h1 {
+		font-size: var(--font-1);
+	}
+
+	& button {
+		background: transparent;
+		appearance: none;
+		border-color: transparent;
+	}
+
+	& ol {
+		counter-reset: orderedlist;
+	}
+
+	& ol li::before {
+		counter-increment: orderedlist;
+		content: counter(orderedlist) ". ";
+		align-self: end;
+	}
+}
+
+@keyframes flicker {
+	from {
+		opacity: 0.5;
+	}
+	to {
+		opacity: 0.55;
+	}
+}
+
+@keyframes scanlines {
+	0% {
+		transform: translateY(var(--_scanline-width));
+	}
+}
+
+.vcr-lines {
+	--_scanline-width: 3px;
+	position: relative;
+
+	&::before {
+		content: "";
+		grid-area: full-screen;
+		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
+		background-size: 100% var(--_scanline-width);
+		pointer-events: none;
+		z-index: 2;
+		animation: scanlines 200ms steps(60) infinite;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		&::after {
+			content: "";
+			grid-area: full-screen;
+			background: radial-gradient(ellipse at center, white 0%, transparent 100%);
+			z-index: 2;
+			pointer-events: none;
+			animation: flicker 50ms infinite;
+		}
+	}
+}
+
+.screen-content-layout {
+	--_save-screen-padding: var(--save-screen-padding, var(--space--1));
+
+	display: grid;
+	grid-template-columns:
+		[full-screen-start] var(--_save-screen-padding)
+		[save-screen-start] 1fr
+		[save-screen-end] var(--_save-screen-padding)
+		[full-screen-end];
+	grid-template-rows:
+		[full-screen-start] var(--_save-screen-padding)
+		[save-screen-start] 1fr
+		[save-screen-end] var(--_save-screen-padding)
+		[full-screen-end];
+
+	@media (min-width: 22rem) {
+		--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+	}
+
+	:where(&) > :where(*) {
+		grid-area: save-screen;
+	}
+
+	&:has(.full-screen) > :where(*) {
+		grid-area: full-screen;
+	}
+}
+
+.screen-clipped-border {
+	clip-path: url(#crtPath);
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+.tv-layout {
+	height: var(--tv-height);
+	width: 100%;
+
+	display: grid;
+	grid-template-columns:
+		var(--tv-padding)
+		[vhs-slot-start screen-frame-start] var(--screen-padding)
+		[screen-content-start] 1fr
+		[screen-content-end] var(--screen-padding)
+		[vhs-slot-end screen-frame-end] var(--tv-padding);
+
+	grid-template-rows:
+		var(--tv-padding)
+		[screen-frame-start] var(--screen-padding)
+		[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
+		[screen-content-end] var(--screen-padding)
+		[screen-frame-end button-row-start]
+		var(--module-gap)
+		[button-row-end vhs-slot-start] var(--vhs-slot-height)
+		[vhs-slot-end]
+		var(--tv-padding);
+
+	.tv-screen {
+		grid-area: screen-frame;
+	}
+
+	.screen-content-layout {
+		grid-area: screen-content;
+	}
+
+	.tv-power-button {
+		grid-area: button-row / screen-content;
+	}
+
+	.vhs-slot {
+		grid-area: vhs-slot;
+	}
+}

@@ -12,15 +12,6 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.scene {
-			--vhs-slot-padding: 0.1rem;
-			--vhs-slot-width: calc(var(--tv-width) - 2 * var(--tv-padding));
-			--vhs-slot-height: calc(
-				var(--vhs-slot-width) / var(--cassette-aspect-ratio) + 2 * var(--vhs-slot-padding)
-			);
-			--vhs-gap: 8px;
-		}
-
 		.vhs-player {
 			background: black;
 			overflow: hidden;

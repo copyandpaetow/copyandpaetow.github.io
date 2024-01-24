@@ -52,6 +52,9 @@ dialog {
 	--border-color: var(--black);
 	--border: var(--border-width) solid var(--black);
 	--background: var(--grey-85);
+
+	--min-button-height: 3rem;
+	--min-button-width: 3rem;
 }
 
 body {

@@ -1,5 +1,5 @@
 ---
-import Block from "../3d/block.astro";
+import Block from "../../3d/block.astro";
 
 export interface Props {
 	decoType?: "a" | "b" | "c";
@@ -7,9 +7,6 @@ export interface Props {
 	id: string;
 }
 
-import Eject from "../icons/eject.svg?raw";
-import Screen from "../tv/screen.astro";
-import TvToggle from "../tv/tv-toggle.astro";
 import CassetteTape from "./cassette-tape.astro";
 
 const { id, ...tapeProps } = Astro.props;
@@ -35,11 +32,13 @@ const randomZOffset = randomNumber(1, 30);
 		</CassetteTape>
 	</Block>
 
-	<Screen className="cassette-content hidden-when-inactive">
+	<section
+		class="screen-content-layout screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+	>
 		<div>
 			<slot name="screen" />
 		</div>
-	</Screen>
+	</section>
 </article>
 
 <style is:global>

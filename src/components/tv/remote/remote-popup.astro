@@ -1,0 +1,113 @@
+---
+import Menu from "../menu.astro";
+import RemoteBody from "./remote-body.astro";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<script>
+	//
+</script>
+
+<div class={`remote-popup ${className}`}>
+	<popover-helper type="modal">
+		<dialog id="remote-modal" popover class="scene remote-modal">
+			<Menu />
+			<div class="remote-position">
+				<RemoteBody />
+			</div>
+		</dialog>
+	</popover-helper>
+</div>
+
+<style is:global>
+	@layer components {
+		& popover-helper {
+			display: contents;
+		}
+
+		.remote-popup {
+			isolation: isolate;
+
+			/*remove once popovers are supported in FF */
+			&:not(:has(:where(:popover-open, [open]))) {
+				display: none;
+			}
+		}
+
+		.remote-modal {
+			grid-template-columns: 1fr var(--inner-screen-width) 1fr;
+			grid-template-rows: var(--tv-offset-top) var(--tv-screen-inset) var(--inner-screen-height) 1fr;
+
+			&:where(:popover-open, [open]) {
+				display: grid;
+			}
+
+			&::backdrop {
+				background: hsla(0, 0%, 0%, 0.5);
+			}
+
+			& > * {
+				grid-column: 2/3;
+			}
+
+			.teletext {
+				grid-row: 3/4;
+			}
+
+			.remote-position {
+				grid-row: 4/5;
+				justify-self: center;
+			}
+
+			&::where(:popover-open, [open]) .inactive-remote {
+				display: none;
+			}
+
+			&:has(.secondary-menu:where(:popover-open, [open])) .teletext {
+				display: none;
+			}
+		}
+		.secondary-menu {
+			height: var(--inner-screen-height);
+			width: var(--inner-screen-width);
+			top: calc(var(--scene-padding) + var(--tv-screen-inset));
+			left: calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+
+			/*remove once popovers are supported in FF */
+			&:not(:where(:popover-open, [open])) {
+				display: none;
+			}
+
+			&::backdrop {
+				display: none;
+			}
+		}
+
+		@keyframes fromBottom {
+			0% {
+				transform: translateY(100vh);
+			}
+			100% {
+				transform: translateY(var(--module-gap));
+			}
+		}
+
+		.remote-modal:where(:popover-open, [open]) .remote-position {
+			transform: translateY(var(--module-gap));
+			height: calc(
+				(100vh - var(--tv-height)) - var(--remote-active-offset) + var(--module-gap) +
+					var(--tv-padding)
+			);
+			overflow-y: auto;
+
+			@media (prefers-reduced-motion: no-preference) {
+				animation: fromBottom 1s ease;
+			}
+		}
+	}
+</style>

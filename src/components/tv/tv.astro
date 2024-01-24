@@ -17,7 +17,7 @@ const { className = "" } = Astro.props;
 <Block className={`tv ${className}`}>
 	<div class="tv-layout">
 		<aside class="tv-screen screen-inset"></aside>
-		<aside class="screen-content">
+		<aside class="screen-content-layout screen-clipped-border">
 			<StaticBackground className="full-screen" />
 		</aside>
 		<ScreenCurvature />
@@ -33,48 +33,6 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.scene {
-			--tv-width: var(--scene-width);
-			--tv-depth: 300px;
-			--tv-background: hsl(255, 2%, 67%);
-			--tv-padding: 8px;
-			--tv-border-color: hsl(255, 2%, 27%);
-			--tv-border: var(--tv-border-width) solid var(--tv-border-color);
-			--tv-height: calc(
-				var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + var(--module-gap)
-			);
-			--tv-outline-color: var(--blue);
-			--tv-outline-width: 2px;
-			--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
-			--tv-light: var(--green);
-
-			--tv-border-radius: 2px;
-			--tv-offset-z: 25px;
-
-			--module-border-radius: 0.25rem;
-			--module-gap: 32px;
-			--module-realism-effect: 0px 0px 1px 1px hsla(0, 0%, 0%, 0.33),
-				inset 0px 0px 5px 1px hsla(0, 0%, 100%, 0.5);
-
-			--screen-padding: 0.5rem;
-			--screen-border-color: var(--grey-85);
-			--screen-border-color-offset: var(--grey-90);
-			--screen-module-ratio: 1.2;
-			--screen-height: calc(
-				((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio))
-			);
-
-			--speaker-grill-color: var(--grey-85);
-
-			@media (min-width: 22rem) {
-				--tv-padding: 12px;
-			}
-
-			@media (min-width: 30rem) {
-				--tv-padding: 20px;
-			}
-		}
-
 		.tv {
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
@@ -84,45 +42,9 @@ const { className = "" } = Astro.props;
 			.tv-layout {
 				box-shadow: inset 0 0 7px 3px hsla(0, 100%, 100%, 0.25);
 			}
-		}
 
-		.tv-layout {
-			height: var(--tv-height);
-			width: 100%;
-
-			display: grid;
-			grid-template-columns:
-				var(--tv-padding)
-				[vhs-slot-start screen-frame-start] var(--screen-padding)
-				[screen-content-start] 1fr
-				[screen-content-end] var(--screen-padding)
-				[vhs-slot-end screen-frame-end] var(--tv-padding);
-
-			grid-template-rows:
-				var(--tv-padding)
-				[screen-frame-start] var(--screen-padding)
-				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
-				[screen-content-end] var(--screen-padding)
-				[screen-frame-end button-row-start]
-				var(--module-gap)
-				[button-row-end vhs-slot-start] var(--vhs-slot-height)
-				[vhs-slot-end]
-				var(--tv-padding);
-
-			.tv-screen {
-				grid-area: screen-frame;
-			}
-
-			.screen-content {
-				grid-area: screen-content;
-			}
-
-			.tv-power-button {
-				grid-area: button-row / screen-content;
-			}
-
-			.vhs-slot {
-				grid-area: vhs-slot;
+			.screen-content-layout svg {
+				background-color: var(--tv-background);
 			}
 		}
 
