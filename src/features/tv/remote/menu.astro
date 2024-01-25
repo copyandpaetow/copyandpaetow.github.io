@@ -1,4 +1,6 @@
 ---
+import AboutPreview from "../content/about-preview.astro";
+
 export interface Props {
 	className?: string;
 }
@@ -29,7 +31,13 @@ const { className = "" } = Astro.props;
 				<button popovertarget="tv-program" popovertargetaction="hide">back</button>
 				<ol class="content-program">
 					<li>
-						<a href="about">about</a>
+						<button popovertarget="about-preview" popovertargetaction="show">about</button>
+						<dialog id="about-preview" popover="manual" class="camera secondary-menu">
+							<section class="screen-content-layout screen-clipped-border screen-text vcr-lines">
+								<button popovertarget="about-preview" popovertargetaction="hide">back</button>
+								<AboutPreview />
+							</section>
+						</dialog>
 					</li>
 					<li>
 						<a href="dinkelberg">dinkelberg</a>

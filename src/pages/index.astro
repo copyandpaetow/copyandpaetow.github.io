@@ -2,18 +2,20 @@
 import Layout from "../layouts/layout.astro";
 import TV from "../features/tv/tv.astro";
 import CassettePile from "../features/tv/cassettes/cassete-pile.astro";
+import Cassette from "../features/tv/cassettes/cassette.astro";
 import Remote from "../features/tv/remote/remote.astro";
 import Room from "../features/tv/room.astro";
 import Camera from "../features/tv/camera.astro";
 
-import AboutCassette from "../features/tv/content/about-cassette.astro";
-import IndexCassette from "../features/tv/content/index-cassette.astro";
-import NowCassette from "../features/tv/content/now-cassette.astro";
-import BewegungCassette from "../features/tv/content/bewegung-cassette.astro";
-import CssDatabaseCassette from "../features/tv/content/css-database-cassette.astro";
-import FixPrinterCassette from "../features/tv/content/fix-printer-cassette.astro";
-import ThirdDimensionCassette from "../features/tv/content/third-dimension-cassette.astro";
-import DinkelBergCassette from "../features/tv/content/dinkelberg-cassette.astro";
+import AboutPreview from "../features/tv/content/about-preview.astro";
+import BewegungPreview from "../features/tv/content/bewegung-preview.astro";
+import CssDatabasePreview from "../features/tv/content/css-database-preview.astro";
+import IndexPreview from "../features/tv/content/index-preview.astro";
+import NowPreview from "../features/tv/content/now-preview.astro";
+import FixPrinterPreview from "../features/tv/content/fix-printer-preview.astro";
+import ThirdDimensionPreview from "../features/tv/content/third-dimension-preview.astro";
+import DinkelBergPreview from "../features/tv/content/dinkelberg-preview.astro";
+import ScreenBackButton from "../features/tv/screen/screen-back-button.astro";
 ---
 
 <script>
@@ -21,27 +23,22 @@ import DinkelBergCassette from "../features/tv/content/dinkelberg-cassette.astro
 
 ## todo: next steps
 
-- program could feature the preview screens that you get when you put in a tape or just the links to the sub pages
-=> on the home screen this makes only sense if the tapes also update
+
+- add the back button to the previews
+- create a component for the screens 
 
 ## tasks
 
 - add dedicated options for flickering/lines or a general "screen realism"
 => this could also be a radio group with "none"/"mild"/"full"
 - settings label buttons on the remote need some kind of grouping
-- every tape should have a dedicated component for the preview screen
-
 - everything is currently very ridgid, maybe container queries can improve this?
-
 - vhs cassettes should have different colors weights and not color change when they were visited
-
 
 ## bugs
 
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
-
-
 
 ## refactorings
 
@@ -91,14 +88,63 @@ improve remote
 				<TV className="tv-interactive" />
 
 				<CassettePile className="interactive">
-					<IndexCassette />
-					<NowCassette />
-					<BewegungCassette />
-					<ThirdDimensionCassette />
-					<DinkelBergCassette />
-					<AboutCassette />
-					<FixPrinterCassette />
-					<CssDatabaseCassette />
+					<Cassette decoType="c" id="intro">
+						<a href="#intro" aria-label="jumps to the tv and previews this page"
+							>the intro nobody asked for</a
+						>
+						<IndexPreview slot="screen">
+							<ScreenBackButton />
+						</IndexPreview>
+					</Cassette>
+
+					<Cassette decoType="c" tapeType="stripes" id="now">
+						<a href="#now">now</a>
+						<NowPreview slot="screen">
+							<ScreenBackButton />
+						</NowPreview>
+					</Cassette>
+
+					<Cassette decoType="a" tapeType="stripes" id="bewegung">
+						<a href="#bewegung">how to make an animation library</a>
+						<BewegungPreview slot="screen">
+							<ScreenBackButton />
+						</BewegungPreview>
+					</Cassette>
+
+					<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
+						<a href="#that-3d-episode">That 3D episode</a>
+						<ThirdDimensionPreview slot="screen">
+							<ScreenBackButton />
+						</ThirdDimensionPreview>
+					</Cassette>
+
+					<Cassette decoType="b" tapeType="checked" id="dinkelberg">
+						<a href="#dinkelberg">DINKELBERG</a>
+						<DinkelBergPreview slot="screen">
+							<ScreenBackButton />
+						</DinkelBergPreview>
+					</Cassette>
+
+					<Cassette decoType="c" tapeType="stripes" id="about">
+						<a href="#about">about</a>
+						<AboutPreview slot="screen">
+							<ScreenBackButton />
+						</AboutPreview>
+					</Cassette>
+
+					<Cassette decoType="b" tapeType="checked" id="printer">
+						<a href="#printer">How to fix your printer</a>
+						<FixPrinterPreview slot="screen">
+							<ScreenBackButton />
+						</FixPrinterPreview>
+					</Cassette>
+
+					<Cassette decoType="b" tapeType="checked" id="css-database">
+						<a href="#css-database">Connect your database with CSS</a>
+						<CssDatabasePreview slot="screen">
+							<ScreenBackButton />
+						</CssDatabasePreview>
+					</Cassette>
 				</CassettePile>
 
 				<Room />

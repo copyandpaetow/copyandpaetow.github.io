@@ -204,6 +204,30 @@
 	}
 }
 
+.media-screen-with-overlay {
+	display: grid;
+	grid-template-columns:
+		[full-screen-start] var(--_save-screen-padding)
+		[save-screen-start] 1fr
+		[save-screen-end] var(--_save-screen-padding)
+		[full-screen-end];
+
+	grid-template-rows:
+		[full-screen-start] var(--_save-screen-padding)
+		[slot-start] max-content
+		[slot-end] 1fr
+		[full-screen-end];
+
+	& > :where(*) {
+		grid-area: slot/save-screen;
+		z-index: 1;
+	}
+
+	& > :where(picture, video) {
+		grid-area: full-screen;
+	}
+}
+
 .screen-clipped-border {
 	clip-path: url(#crtPath);
 	overflow: hidden;

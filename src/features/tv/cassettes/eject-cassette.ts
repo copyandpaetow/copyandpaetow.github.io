@@ -26,6 +26,7 @@ export class EjectCurrentCassette extends HTMLElement {
 				}
 
 				if (scrollOffsetHistory.length === 0) {
+					location.href = location.origin;
 					return;
 				}
 
