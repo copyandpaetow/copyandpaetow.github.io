@@ -1,28 +1,21 @@
 ---
-
+import Cassette from "../cassettes/cassette.astro";
 ---
 
-<picture class="dinkelberg full-screen">
-	<img
+<Cassette decoType="b" tapeType="checked" id="dinkelberg">
+	<a href="#dinkelberg">DINKELBERG</a>
+	<picture class="dinkelberg full-screen" slot="screen">
+		<img
 			loading="lazy"
 			src="/images/dinkelberg.jpg"
 			alt="A man furiously yelling dinkelberg. A meme from the Fairly OddParents tv series."
 			width="300"
 			height="225"
 		/>
-</picture>
-
+	</picture>
+</Cassette>
 
 <style is:global>
 	@layer components {
-		.dinkelberg {
-			height: 100%;
-			object-fit: contain;
-
-			& img {
-				height: 100%;
-				width: 100%;
-			}
-		}
 	}
 </style>

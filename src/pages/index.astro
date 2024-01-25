@@ -1,13 +1,19 @@
 ---
 import Layout from "../layouts/layout.astro";
-import TV from "../components/tv/tv.astro";
-import Cassette from "../components/tv/cassettes/cassette.astro";
-import CassettePile from "../components/tv/cassettes/cassete-pile.astro";
-import Remote from "../components/tv/remote/remote.astro";
-import Room from "../components/tv/room.astro";
-import Camera from "../components/3d/camera.astro";
-import RickRoll from "../components/jokes/rickroll.astro";
-import DinkelBerg from "../components/jokes/dinkelberg.astro";
+import TV from "../features/tv/tv.astro";
+import CassettePile from "../features/tv/cassettes/cassete-pile.astro";
+import Remote from "../features/tv/remote/remote.astro";
+import Room from "../features/tv/room.astro";
+import Camera from "../features/tv/camera.astro";
+
+import AboutCassette from "../features/tv/content/about-cassette.astro";
+import IndexCassette from "../features/tv/content/index-cassette.astro";
+import NowCassette from "../features/tv/content/now-cassette.astro";
+import BewegungCassette from "../features/tv/content/bewegung-cassette.astro";
+import CssDatabaseCassette from "../features/tv/content/css-database-cassette.astro";
+import FixPrinterCassette from "../features/tv/content/fix-printer-cassette.astro";
+import ThirdDimensionCassette from "../features/tv/content/third-dimension-cassette.astro";
+import DinkelBergCassette from "../features/tv/content/dinkelberg-cassette.astro";
 ---
 
 <script>
@@ -15,21 +21,26 @@ import DinkelBerg from "../components/jokes/dinkelberg.astro";
 
 ## todo: next steps
 
-=> program could feature the preview screens that you get when you put in a tape or just the names
-==> does this make sense conceptionally?
+- program could feature the preview screens that you get when you put in a tape or just the links to the sub pages
+=> on the home screen this makes only sense if the tapes also update
 
 ## tasks
 
-- minimal about page
-- minimal now page
-- enable settings in other pages besides the main page
 - add dedicated options for flickering/lines or a general "screen realism"
+=> this could also be a radio group with "none"/"mild"/"full"
 - settings label buttons on the remote need some kind of grouping
+- every tape should have a dedicated component for the preview screen
+
+- everything is currently very ridgid, maybe container queries can improve this?
+
+- vhs cassettes should have different colors weights and not color change when they were visited
+
 
 ## bugs
 
 - all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
+
 
 
 ## refactorings
@@ -80,39 +91,14 @@ improve remote
 				<TV className="tv-interactive" />
 
 				<CassettePile className="interactive">
-					<Cassette decoType="c" id="intro">
-						<a href="#intro" aria-label="jumps to the tv and previews this page"
-							>the intro nobody asked for</a
-						>
-						<Fragment slot="screen">
-							<h1>Hi, Lucas here</h1>
-							<p>
-								I am looking for opportunities to create delight and performant movements on the
-								web.
-							</p>
-							<button>hello</button>
-						</Fragment>
-					</Cassette>
-					<Cassette decoType="c" tapeType="stripes" id="now"><a href="#now">now</a></Cassette>
-					<Cassette decoType="a" tapeType="stripes" id="bewegung">
-						<a href="#bewegung">how to make an animation library</a>
-					</Cassette>
-					<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
-						<a href="#that-3d-episode">That 3D episode</a>
-					</Cassette>
-					<Cassette decoType="b" tapeType="checked" id="css-database">
-						<a href="#css-database">Connect your database with CSS</a>
-						<RickRoll slot="screen" />
-					</Cassette>
-					<Cassette decoType="b" tapeType="checked" id="dinkelberg">
-						<a href="#dinkelberg">DINKELBERG</a>
-						<DinkelBerg slot="screen" />
-					</Cassette>
-					<Cassette decoType="c" tapeType="stripes" id="about"><a href="#about">about</a></Cassette>
-					<Cassette decoType="b" tapeType="checked" id="printer">
-						<a href="#printer">How to fix your printer</a>
-						<RickRoll slot="screen" />
-					</Cassette>
+					<IndexCassette />
+					<NowCassette />
+					<BewegungCassette />
+					<ThirdDimensionCassette />
+					<DinkelBergCassette />
+					<AboutCassette />
+					<FixPrinterCassette />
+					<CssDatabaseCassette />
 				</CassettePile>
 
 				<Room />
@@ -157,23 +143,6 @@ improve remote
 		.tv-scene {
 			width: var(--scene-width);
 			padding-block: var(--scene-padding);
-		}
-
-		.scene {
-			--min-width: 320px;
-			--min-padding: 4px;
-
-			--scene-width: clamp(
-				calc(var(--min-width) - 2 * var(--min-padding)),
-				calc(100vw - 2 * var(--min-padding)),
-				500px
-			);
-			--scene-padding: 10svh;
-		}
-
-		.joke {
-			width: 100%;
-			object-fit: cover;
 		}
 	}
 </style>

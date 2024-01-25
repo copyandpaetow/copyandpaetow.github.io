@@ -1,4 +1,14 @@
 .scene {
+	--min-width: 320px;
+	--min-padding: 4px;
+
+	--scene-width: clamp(
+		calc(var(--min-width) - 2 * var(--min-padding)),
+		calc(100vw - 2 * var(--min-padding)),
+		500px
+	);
+	--scene-padding: 10svh;
+
 	--tv-width: var(--scene-width);
 	--tv-depth: 300px;
 	--tv-background: hsl(255, 2%, 67%);
@@ -100,7 +110,7 @@
 	background-color: var(--_screen-background);
 
 	& * {
-		font-size: var(--font--1);
+		font-size: var(--font--2);
 		text-shadow:
 			0 0 0.08em var(--screen-text-color),
 			-0.08em 0 0.08em aqua,
@@ -109,7 +119,7 @@
 	}
 
 	& h1 {
-		font-size: var(--font-1);
+		font-size: var(--font--1);
 	}
 
 	& button {
@@ -171,7 +181,7 @@
 }
 
 .screen-content-layout {
-	--_save-screen-padding: var(--save-screen-padding, var(--space--1));
+	--_save-screen-padding: var(--save-screen-padding, var(--space-1));
 
 	display: grid;
 	grid-template-columns:
@@ -184,10 +194,6 @@
 		[save-screen-start] 1fr
 		[save-screen-end] var(--_save-screen-padding)
 		[full-screen-end];
-
-	@media (min-width: 22rem) {
-		--_save-screen-padding: var(--save-screen-padding, var(--space-1));
-	}
 
 	:where(&) > :where(*) {
 		grid-area: save-screen;
