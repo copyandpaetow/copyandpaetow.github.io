@@ -1,5 +1,5 @@
 ---
-import Block from "../3d/block.astro";
+import Block from "../block.astro";
 
 export interface Props {
 	className?: string;
@@ -60,12 +60,6 @@ const { className = "", inert } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.scene {
-			--remote-button-gap: 8px;
-			--remote-button-width: 44px;
-			--remote-button-height: 24px;
-		}
-
 		.remote-body {
 			--block-background: var(--tv-background);
 			--block-depth: var(--remote-depth);
@@ -219,7 +213,7 @@ const { className = "", inert } = Astro.props;
 		}
 
 		.remote-label {
-			transform: rotate(90deg) translateX(100%) scaleX(calc(1 / var(--remote-scale)));
+			transform: rotate(90.01deg) translateX(100%) scaleX(calc(1 / var(--remote-scale)));
 		}
 	}
 </style>

@@ -1,0 +1,190 @@
+---
+import Up from "../icons/up.svg?raw";
+import AboutPreview from "../content/about-preview.astro";
+import BewegungPreview from "../content/bewegung-preview.astro";
+import CssDatabasePreview from "../content/css-database-preview.astro";
+import DinkelbergPreview from "../content/dinkelberg-preview.astro";
+import FixPrinterPreview from "../content/fix-printer-preview.astro";
+import IndexPreview from "../content/index-preview.astro";
+import NowPreview from "../content/now-preview.astro";
+---
+
+<script>
+	import "../../../components/helper/popover-helper";
+</script>
+
+<popover-helper>
+	<dialog
+		id="tv-program"
+		popover="manual"
+		class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+	>
+		<section class="screen-content-layout">
+			<!--@ts-expect-error popovertargetaction is to new? -->
+			<button class="screen-back-button" popovertarget="tv-program" popovertargetaction="hide"
+				><Fragment set:html={Up} />back</button
+			>
+			<ol>
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="about-preview" popovertargetaction="show">About</button>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="bewegung-preview" popovertargetaction="show"
+						>Bewegung - an animation library</button
+					>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="css-database-preview" popovertargetaction="show"
+						>How to connect to your database with CSS</button
+					>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="dinkelberg-preview" popovertargetaction="show">DINKELBERG</button>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="fix-printer-preview" popovertargetaction="show"
+						>How to fix your printer in seconds</button
+					>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="intro-preview" popovertargetaction="show"
+						>The intro nobody asked for</button
+					>
+				</li>
+
+				<li>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button popovertarget="now-preview" popovertargetaction="show">Now</button>
+				</li>
+			</ol>
+		</section>
+
+		<!--moving the popover elements after firefox enables popovers makes this cleaner -->
+		<popover-helper>
+			<dialog
+				id="about-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<AboutPreview className="">
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="about-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</AboutPreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="bewegung-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<BewegungPreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="bewegung-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</BewegungPreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="css-database-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<CssDatabasePreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="css-database-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</CssDatabasePreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="dinkelberg-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<DinkelbergPreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="dinkelberg-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</DinkelbergPreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="fix-printer-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<FixPrinterPreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="fix-printer-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</FixPrinterPreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="intro-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<IndexPreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button
+						class="screen-back-button"
+						popovertarget="intro-preview"
+						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+					>
+				</IndexPreview>
+			</dialog>
+		</popover-helper>
+		<popover-helper>
+			<dialog
+				id="now-preview"
+				popover="manual"
+				class="camera secondary-menu screen-clipped-border screen-text vcr-lines"
+			>
+				<NowPreview>
+					<!--@ts-expect-error popovertargetaction is to new? -->
+					<button class="screen-back-button" popovertarget="now-preview" popovertargetaction="hide"
+						><Fragment set:html={Up} />back</button
+					>
+				</NowPreview>
+			</dialog>
+		</popover-helper>
+	</dialog>
+</popover-helper>
+
+<style is:global>
+	@layer components {
+	}
+</style>

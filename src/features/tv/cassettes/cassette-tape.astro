@@ -10,7 +10,6 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 <div class="cassette-front">
 	<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
 		<slot />
-		<button class="cassette-back hidden-when-inactive">go back</button>
 	</div>
 </div>
 
@@ -54,7 +53,7 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 			background-color: white;
 			border-radius: 0.25rem;
 			display: grid;
-			grid-template-columns: max-content 1fr max-content max-content;
+			grid-template-columns: max-content 1fr max-content;
 			position: relative;
 			overflow: hidden;
 
@@ -94,14 +93,6 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 				grid-column: 2/3;
 				place-self: center;
 				text-align: center;
-			}
-
-			.cassette-back {
-				width: 50px;
-				grid-column: 3/4;
-				appearance: none;
-				border-color: transparent;
-				display: none;
 			}
 
 			&::before {

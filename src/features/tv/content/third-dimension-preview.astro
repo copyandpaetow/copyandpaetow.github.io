@@ -1,0 +1,12 @@
+---
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<div class={`screen-content-layout ${className}`}>
+	<slot />
+	<h2>Wow, so many dimensions</h2>
+</div>

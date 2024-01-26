@@ -1,0 +1,46 @@
+---
+import Program from "./program.astro";
+import Settings from "./settings.astro";
+import Up from "../icons/up.svg?raw";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<script>
+	//
+</script>
+
+<section
+	class={`screen-content-layout screen-clipped-border screen-text vcr-lines camera teletext ${className}`}
+>
+	<!--@ts-expect-error popovertargetaction is to new? -->
+	<button class="screen-back-button" popovertarget="remote-modal" popovertargetaction="hide"
+		><Fragment set:html={Up} /> exit
+	</button>
+	<ol>
+		<li>
+			<!--@ts-expect-error popovertargetaction is to new? -->
+			<button popovertarget="tv-program" popovertargetaction="show">program</button>
+		</li>
+		<li>
+			<!--@ts-expect-error popovertargetaction is to new? -->
+			<button popovertarget="settings" popovertargetaction="show">settings</button>
+		</li>
+	</ol>
+</section>
+
+<Settings />
+<Program />
+
+<style is:global>
+	@layer components {
+		.screen-layout {
+			overflow-y: scroll;
+			height: 100%;
+		}
+	}
+</style>

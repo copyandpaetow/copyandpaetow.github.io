@@ -1,0 +1,99 @@
+---
+import Block from "./block.astro";
+import StaticBackground from "./screen/static-background.astro";
+import VHSPlayer from "./vhs-player.astro";
+import ScreenCurvature from "./screen/screen-curvature.astro";
+import TvToggle from "./tv-toggle.astro";
+
+import Power from "./icons/power.svg?raw";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<Block className={`tv ${className}`}>
+	<div class="tv-layout">
+		<aside class="tv-screen screen-inset"></aside>
+		<aside class="screen-content screen-clipped-border">
+			<StaticBackground className="full-screen" />
+		</aside>
+		<ScreenCurvature />
+		<VHSPlayer className="vhs-slot" />
+		<TvToggle id="tv-power-button" className="tv-power-button">
+			<Fragment set:html={Power} slot="icon" />
+			<span>copy and paetow tv</span>
+		</TvToggle>
+	</div>
+	<div slot="right" class="speaker"></div>
+	<div slot="left" class="speaker"></div>
+</Block>
+
+<style is:global>
+	@layer components {
+		.tv {
+			--block-depth: var(--tv-depth);
+			--block-background: var(--tv-background);
+			--block-border: var(--tv-border);
+			--block-border-radius: var(--tv-border-radius);
+
+			.tv-layout {
+				box-shadow: inset 0 0 7px 3px hsla(0, 100%, 100%, 0.25);
+			}
+
+			.screen-content svg {
+				background-color: var(--tv-background);
+				aspect-ratio: 1;
+				transform: scale(1.5);
+			}
+		}
+
+		.tv-power-button {
+			--tv-button-background: rgb(255, 0, 0);
+			--tv-button-background-border: rgb(130, 0, 0);
+			--tv-button-active-background: limegreen;
+			--tv-button-active-background-border: green;
+		}
+
+		.screen-inset {
+			background: black;
+			border-radius: var(--module-border-radius);
+			border-inline: 2.5rem solid var(--screen-border-color);
+			border-block: 3rem solid var(--screen-border-color-offset);
+		}
+
+		.speaker {
+			display: grid;
+			place-content: start center;
+			height: 100%;
+			width: 100%;
+			padding: 1rem;
+
+			&::before {
+				content: "";
+				aspect-ratio: 2.5;
+				width: calc(var(--tv-depth) * 0.8);
+				display: block;
+				border-radius: 50%;
+
+				background: linear-gradient(
+						90deg,
+						transparent 48.5%,
+						var(--tv-background) 48.5%,
+						var(--tv-background) 51.5%,
+						transparent 51.5%
+					),
+					linear-gradient(
+						var(--speaker-grill-color) 0%,
+						var(--tv-background) 10%,
+						var(--tv-background) 40%,
+						var(--speaker-grill-color) 50%,
+						var(--tv-border-color) 50%
+					);
+				background-size: 100% 0.25rem;
+			}
+		}
+	}
+</style>
