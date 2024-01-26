@@ -1,6 +1,6 @@
 ---
+import Menu from "../menu/menu.astro";
 import RemoteBody from "./remote-body.astro";
-import RemotePopup from "./remote-popup.astro";
 
 export interface Props {
 	className?: string;
@@ -10,7 +10,7 @@ const { className = "" } = Astro.props;
 ---
 
 <script>
-	import "./popover-helper";
+	import "../../../components/helper/popover-helper";
 </script>
 
 <Fragment>
@@ -20,7 +20,16 @@ const { className = "" } = Astro.props;
 		>
 		<RemoteBody className="inactive-remote" inert />
 	</div>
-	<RemotePopup />
+	<div class={`remote-popup ${className}`}>
+		<popover-helper type="modal">
+			<dialog id="remote-modal" popover class="scene remote-modal">
+				<Menu />
+				<div class="remote-position">
+					<RemoteBody />
+				</div>
+			</dialog>
+		</popover-helper>
+	</div>
 </Fragment>
 
 <style is:global>
@@ -46,6 +55,70 @@ const { className = "" } = Astro.props;
 				transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
 					scale3d(var(--remote-scale), var(--remote-scale), 1);
 				width: max-content;
+			}
+		}
+
+		.remote-popup {
+			isolation: isolate;
+
+			/*remove once popovers are supported in FF */
+			&:not(:has(:where(:popover-open, [open]))) {
+				display: none;
+			}
+		}
+
+		.remote-modal {
+			--dialog-height: var(--inner-screen-height);
+			--dialog-width: var(--inner-screen-width);
+
+			top: calc(var(--scene-padding) + var(--tv-screen-inset));
+			left: calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+			position: fixed;
+			/* &::where(:popover-open, [open]) .inactive-remote {
+				display: none;
+			}
+
+			&:has(.secondary-menu:where(:popover-open, [open])) .teletext {
+				display: none;
+			} */
+		}
+		.secondary-menu {
+			position: fixed;
+
+			inset: 0;
+
+			&:popover-open {
+				top: calc(var(--scene-padding) + var(--tv-screen-inset));
+				left: calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+			}
+
+			&::backdrop {
+				display: none;
+			}
+		}
+
+		@keyframes fromBottom {
+			0% {
+				transform: translateX(-50%) translateY(100vh);
+			}
+			100% {
+				transform: translateX(-50%) translateY(var(--module-gap));
+			}
+		}
+
+		.remote-modal:where(:popover-open, [open]) .remote-position {
+			position: absolute;
+			left: 50%;
+
+			transform: translateX(-50%) translateY(var(--module-gap));
+			height: calc(
+				(100vh - var(--tv-height)) - var(--remote-active-offset) + var(--module-gap) +
+					var(--tv-padding)
+			);
+			overflow-y: auto;
+
+			@media (prefers-reduced-motion: no-preference) {
+				animation: fromBottom 1s ease;
 			}
 		}
 	}

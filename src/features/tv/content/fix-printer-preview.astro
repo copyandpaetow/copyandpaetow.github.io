@@ -1,8 +1,12 @@
 ---
+export interface Props {
+	className?: string;
+}
 
+const { className = "" } = Astro.props;
 ---
 
-<div class="media-screen-with-overlay">
+<div class={`fullscreen-content-layout ${className}`}>
 	<slot />
 	<video autoplay muted loop playsinline preload="none" width="300" class="full-screen">
 		<source src="/gifs/rickroll.webm" type="video/webm" />

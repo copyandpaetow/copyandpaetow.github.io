@@ -1,8 +1,12 @@
 ---
+export interface Props {
+	className?: string;
+}
 
+const { className = "" } = Astro.props;
 ---
 
-<div class="media-screen-with-overlay">
+<div class={`fullscreen-content-layout ${className}`}>
 	<slot />
 	<picture class="dinkelberg full-screen">
 		<img

@@ -25,3 +25,9 @@
 	background-color: transparent;
 	border: none;
 }
+
+.hidden-without-js {
+	@media (scripting: none) {
+		display: none;
+	}
+}

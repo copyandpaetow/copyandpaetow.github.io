@@ -13,7 +13,7 @@ const { className } = Astro.props;
 	{...className && { class: className }}
 >
 	<filter id="noiseFilter">
-		<feTurbulence baseFrequency=".5" seed="0" type="fractalNoise" result="static">
+		<feTurbulence baseFrequency="0.8" seed="0" type="fractalNoise" result="static">
 			<animate
 				attributeName="seed"
 				values="0;100"

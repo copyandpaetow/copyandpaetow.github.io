@@ -31,11 +31,7 @@ const randomZOffset = randomNumber(1, 30);
 		</CassetteTape>
 	</Block>
 
-	<section
-		class="screen-content-layout screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
-	>
-		<slot name="screen" />
-	</section>
+	<slot name="screen" />
 </article>
 
 <style is:global>

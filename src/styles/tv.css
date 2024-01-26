@@ -126,6 +126,11 @@
 		background: transparent;
 		appearance: none;
 		border-color: transparent;
+		text-align: start;
+	}
+
+	& ul li::before {
+		content: ".";
 	}
 
 	& ol {
@@ -135,7 +140,8 @@
 	& ol li::before {
 		counter-increment: orderedlist;
 		content: counter(orderedlist) ". ";
-		align-self: end;
+		align-self: start;
+		line-height: 1.6;
 	}
 }
 
@@ -158,72 +164,102 @@
 	--_scanline-width: 3px;
 	position: relative;
 
-	&::before {
-		content: "";
-		grid-area: full-screen;
-		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
-		background-size: 100% var(--_scanline-width);
+	&::before,
+	&::after {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
 		pointer-events: none;
 		z-index: 2;
+	}
+
+	&::before {
+		content: "";
+		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
+		background-size: 100% var(--_scanline-width);
 		animation: scanlines 200ms steps(60) infinite;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
 		&::after {
 			content: "";
-			grid-area: full-screen;
 			background: radial-gradient(ellipse at center, white 0%, transparent 100%);
-			z-index: 2;
-			pointer-events: none;
 			animation: flicker 50ms infinite;
 		}
 	}
 }
 
 .screen-content-layout {
-	--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+	--_save-screen-padding: var(--save-screen-padding, 1rem);
+	--_gap: var(--screen-gap, 0.5rem);
 
+	height: var(--dialog-height, 100%);
+	width: var(--dialog-width, 100%);
 	display: grid;
-	grid-template-columns:
-		[full-screen-start] var(--_save-screen-padding)
-		[save-screen-start] 1fr
-		[save-screen-end] var(--_save-screen-padding)
-		[full-screen-end];
-	grid-template-rows:
-		[full-screen-start] var(--_save-screen-padding)
-		[save-screen-start] 1fr
-		[save-screen-end] var(--_save-screen-padding)
-		[full-screen-end];
+	grid-auto-rows: max-content;
+	padding: var(--_save-screen-padding);
+	gap: var(--_gap);
 
-	:where(&) > :where(*) {
-		grid-area: save-screen;
+	overflow-y: auto;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
 	}
 
-	&:has(.full-screen) > :where(*) {
-		grid-area: full-screen;
+	@media (min-width: 22rem) {
+		--_save-screen-padding: var(--save-screen-padding, var(--space-1));
 	}
 }
 
-.media-screen-with-overlay {
+.screen-back-button {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	align-items: center;
+	z-index: 2;
+
+	&::after {
+		content: "";
+		position: absolute;
+		height: var(--min-button-height);
+		inset: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	& svg {
+		transform: rotate(-90deg);
+		height: 20px;
+		width: 20px;
+	}
+}
+
+.fullscreen-content-layout {
+	--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+	--_gap: var(--screen-gap, 0);
+
+	height: 100%;
+
 	display: grid;
 	grid-template-columns:
 		[full-screen-start] var(--_save-screen-padding)
 		[save-screen-start] 1fr
 		[save-screen-end] var(--_save-screen-padding)
 		[full-screen-end];
-
 	grid-template-rows:
 		[full-screen-start] var(--_save-screen-padding)
-		[slot-start] max-content
-		[slot-end] 1fr
+		[save-screen-start] 1fr
+		[save-screen-end] var(--_save-screen-padding)
 		[full-screen-end];
+	gap: var(--_gap);
 
-	& > :where(*) {
-		grid-area: slot/save-screen;
-		z-index: 1;
+	:where(&) > :where(*) {
+		grid-area: save-screen;
+		place-self: start;
 	}
 
-	& > :where(picture, video) {
+	:where(&) > :where(.full-screen) {
 		grid-area: full-screen;
 	}
 }
@@ -262,7 +298,7 @@
 		grid-area: screen-frame;
 	}
 
-	.screen-content-layout {
+	.screen-content {
 		grid-area: screen-content;
 	}
 

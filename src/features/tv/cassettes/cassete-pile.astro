@@ -1,4 +1,15 @@
 ---
+import AboutPreview from "../content/about-preview.astro";
+import BewegungPreview from "../content/bewegung-preview.astro";
+import CssDatabasePreview from "../content/css-database-preview.astro";
+import FixPrinterPreview from "../content/fix-printer-preview.astro";
+import IndexPreview from "../content/index-preview.astro";
+import NowPreview from "../content/now-preview.astro";
+import ThirdDimensionPreview from "../content/third-dimension-preview.astro";
+import DinkelbergPreview from "../content/dinkelberg-preview.astro";
+import Cassette from "./cassette.astro";
+import Up from "../icons/up.svg?raw";
+
 export interface Props {
 	className?: string;
 }
@@ -11,12 +22,127 @@ const { className = "" } = Astro.props;
 </script>
 
 <eject-cassette class=`cassette-pile ${className}`>
-	<slot />
+	<Cassette decoType="c" id="intro">
+		<a href="#intro" aria-label="jumps to the tv and previews this page"
+			>the intro nobody asked for</a
+		>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<IndexPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</IndexPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="c" tapeType="stripes" id="now">
+		<a href="#now">now</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<NowPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</NowPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="a" tapeType="stripes" id="bewegung">
+		<a href="#bewegung">how to make an animation library</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<BewegungPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</BewegungPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
+		<a href="#that-3d-episode">That 3D episode</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<ThirdDimensionPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</ThirdDimensionPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="b" tapeType="checked" id="dinkelberg">
+		<a href="#dinkelberg">DINKELBERG</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<DinkelbergPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</DinkelbergPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="c" tapeType="stripes" id="about">
+		<a href="#about">about</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<AboutPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</AboutPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="b" tapeType="checked" id="printer">
+		<a href="#printer">How to fix your printer</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<FixPrinterPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</FixPrinterPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="b" tapeType="checked" id="css-database">
+		<a href="#css-database">Connect your database with CSS</a>
+		<section
+			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<CssDatabasePreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</CssDatabasePreview>
+		</section>
+	</Cassette>
 </eject-cassette>
 
 <style is:global>
 	@layer components {
 		.cassette-pile {
+			--dialog-height: var(--inner-screen-height);
+			--dialog-width: var(--inner-screen-width);
+
 			display: grid;
 			grid-auto-flow: row;
 			grid-auto-rows: max-content;
@@ -66,6 +192,11 @@ const { className = "" } = Astro.props;
 
 			&:has(.tv-layout:not(:first-of-type):target) > .cassette:nth-of-type(1) .cassette-body {
 				transform: translateZ(var(--cassette-offset-z));
+			}
+
+			& .cassette:not(:target) .screen-back-button:first-of-type {
+				visibility: hidden;
+				pointer-events: none;
 			}
 		}
 
