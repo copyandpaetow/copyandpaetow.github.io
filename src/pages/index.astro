@@ -121,5 +121,14 @@ improve remote
 			width: var(--scene-width);
 			padding-block: var(--scene-padding);
 		}
+
+		:has(#that-3d-episode:target):not(:has(:where(:popover-open, [open]))) .camera {
+			--block-render-top: block;
+			--block-render-right: block;
+			--perspective: 2000px;
+			--camera-truck: 1200px;
+			--camera-pan: -40deg;
+			--camera-dolly: 1000px;
+		}
 	}
 </style>
