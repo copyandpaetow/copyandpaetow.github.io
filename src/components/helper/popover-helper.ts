@@ -1,54 +1,28 @@
 export class PopoverHelper extends HTMLElement {
 	controller: AbortController;
-	target: HTMLDialogElement | null = null;
-	type: string | null = null;
 
 	constructor() {
 		super();
 		this.controller = new AbortController();
 	}
 
-	closeNestedModals() {
-		if (!this.target) {
-			return;
-		}
+	closeAllOpenPopovers(target: HTMLElement, type: string | null) {
+		const supportsPopover = Boolean(target.hidePopover);
+		const modalSelector = supportsPopover ? "[popover]" : "dialog[open]";
 
-		const modalSelector = Boolean(this.target.hidePopover) ? "[popover]" : "dialog[open]";
-
-		console.log({ modalSelector });
-
-		Array.from(this.target.querySelectorAll(modalSelector)).forEach((popover) =>
-			this.closeModal(popover as HTMLElement)
-		);
-	}
-
-	closeModal(target: HTMLElement) {
-		if (Boolean(target.hidePopover)) {
+		if (supportsPopover) {
 			target.hidePopover();
-			return;
+		} else {
+			type === "modal" ? (target as HTMLDialogElement).close() : target.removeAttribute("open");
 		}
 
-		this.type === "modal" ? (target as HTMLDialogElement).close() : target.removeAttribute("open");
+		Array.from(target.querySelectorAll(modalSelector)).forEach((popover) =>
+			this.closeAllOpenPopovers(popover as HTMLElement, type)
+		);
 	}
 
-	togglePopover() {
-		if (!this.target || Boolean(this.target.showPopover)) {
-			return;
-		}
-
-		if (this.target.id.includes("preview")) {
-			this.target?.classList.remove("vcr-lines");
-		}
-
-		this.target.addEventListener(
-			"close",
-			() => {
-				this.closeNestedModals();
-			},
-			{ signal: this.controller.signal }
-		);
-
-		const invoker = Array.from(document.querySelectorAll(`[popovertarget=${this.target.id}]`));
+	openUnsupportedPopover(target: HTMLDialogElement, type: string | null) {
+		const invoker = Array.from(document.querySelectorAll(`[popovertarget=${target.id}]`));
 
 		invoker.forEach((element) => {
 			element.addEventListener(
@@ -57,17 +31,13 @@ export class PopoverHelper extends HTMLElement {
 					const shouldOpen = element.getAttribute("popovertargetaction") === "show";
 
 					if (shouldOpen) {
-						this.type === "modal"
-							? this.target?.showModal()
-							: this.target?.setAttribute("open", "");
-
-						this.target?.focus();
+						type === "modal" ? target.showModal() : target.setAttribute("open", "");
+						target.focus();
 
 						return;
 					}
 
-					this.closeModal(this.target!);
-					this.closeNestedModals();
+					this.closeAllOpenPopovers(target, type);
 				},
 				{ signal: this.controller.signal }
 			);
@@ -75,26 +45,27 @@ export class PopoverHelper extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.target = this.querySelector("[id]") as HTMLDialogElement;
-		this.type = this.getAttribute("type");
-		this.togglePopover();
+		const target = this.querySelector("[id]") as HTMLElement;
+		const type = this.getAttribute("type");
+		const supportsPopover = Boolean(target.hidePopover || target.showPopover);
 
-		this.target.addEventListener(
+		if (!supportsPopover) {
+			this.openUnsupportedPopover(target as HTMLDialogElement, type);
+			target.addEventListener("close", () => this.closeAllOpenPopovers(target, type), {
+				signal: this.controller.signal,
+			});
+		}
+
+		target.addEventListener(
 			"toggle",
 			//@ts-expect-error too new for ts
-			(event: ToggleEvent) => {
-				if (event.newState === "open") {
-					return;
-				}
-				this.closeNestedModals();
-			},
+			(event: ToggleEvent) =>
+				event.newState === "closed" && this.closeAllOpenPopovers(target, type),
 			{ signal: this.controller.signal }
 		);
 	}
 
 	disconnectedCallback() {
-		this.target = null;
-		this.type = null;
 		this.controller.abort();
 	}
 }

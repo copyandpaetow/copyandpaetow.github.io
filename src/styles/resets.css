@@ -89,6 +89,9 @@
 :where(dialog) {
 	--_dialog-height: var(--dialog-height, 100%);
 	--_dialog-width: var(--dialog-width, 100%);
+	--_dialog-position: var(--dialog-position, fixed);
+	--_dialog-inset: var(--dialog-inset, 0);
+	--_dialog-z-index: var(--dialog-z-index, 1);
 
 	overflow: initial;
 	color: transparent;
@@ -99,6 +102,9 @@
 	height: var(--_dialog-height);
 	max-height: var(--_dialog-height);
 	max-width: var(--_dialog-width);
+	position: var(--_dialog-position);
+	inset: var(--_dialog-inset);
+	z-index: var(--_dialog-z-index);
 }
 
 :where(popover-helper) {

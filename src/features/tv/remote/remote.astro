@@ -70,28 +70,15 @@ const { className = "" } = Astro.props;
 		.remote-modal {
 			--dialog-height: var(--inner-screen-height);
 			--dialog-width: var(--inner-screen-width);
-
-			top: calc(var(--scene-padding) + var(--tv-screen-inset));
-			left: calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
-			position: fixed;
-			/* &::where(:popover-open, [open]) .inactive-remote {
-				display: none;
-			}
-
-			&:has(.secondary-menu:where(:popover-open, [open])) .teletext {
-				display: none;
-			} */
+			--dialog-inset: var(--tv-absolute-screen-position);
 		}
-		.secondary-menu {
-			position: fixed;
 
-			inset: 0;
+		.secondary-menu {
+			--dialog-inset: 0;
 
 			&:popover-open {
-				top: calc(var(--scene-padding) + var(--tv-screen-inset));
-				left: calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+				--dialog-inset: var(--tv-absolute-screen-position);
 			}
-
 			&::backdrop {
 				display: none;
 			}

@@ -69,6 +69,9 @@
 	--tv-offset-top: calc(var(--scene-padding) + var(--remote-depth));
 	--tv-screen-inset: calc(var(--tv-padding) + var(--screen-padding));
 
+	--tv-absolute-screen-position: calc(var(--scene-padding) + var(--tv-screen-inset)) 0 0
+		calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+
 	@media (min-width: 22rem) {
 		--tv-padding: 12px;
 		--cassette-aspect-ratio: 5.5;
@@ -162,7 +165,6 @@
 
 .vcr-lines {
 	--_scanline-width: 3px;
-	position: relative;
 
 	&::before,
 	&::after {
@@ -217,7 +219,7 @@
 	display: grid;
 	grid-template-columns: max-content 1fr;
 	align-items: center;
-	z-index: 2;
+	z-index: 1;
 
 	&::after {
 		content: "";
@@ -310,3 +312,4 @@
 		grid-area: vhs-slot;
 	}
 }
+
