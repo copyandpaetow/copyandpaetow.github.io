@@ -20,7 +20,8 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<main class="screen-text vcr-lines">
+		<slot name="header" />
+		<main class="screen-root">
 			<!--@ts-expect-error popovertargetaction is to new? -->
 			<button popovertarget="remote-modal" popovertargetaction="show"
 				>open settings in the style of a remote</button
@@ -32,6 +33,7 @@ const { title } = Astro.props;
 			</popover-helper>
 			<slot />
 		</main>
+		<slot name="footer" />
 	</body>
 </html>
 
@@ -54,8 +56,8 @@ const { title } = Astro.props;
 			}
 		}
 
-		.vcr-lines::after,
-		.vcr-lines::before {
+		.screen-root::after,
+		.screen-root::before {
 			position: fixed;
 			inset: 0;
 			width: 100%;
