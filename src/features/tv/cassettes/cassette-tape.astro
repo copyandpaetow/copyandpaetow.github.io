@@ -2,18 +2,31 @@
 export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
+	color?: string;
 }
 
-const { decoType = "a", tapeType = "blank" } = Astro.props;
+const { decoType = "a", tapeType = "blank", color } = Astro.props;
 ---
 
 <div class="cassette-front">
-	<div class="tape" data-deco-type={decoType} data-tape-type={tapeType}>
+	<div
+		class="tape"
+		data-deco-type={decoType}
+		data-tape-type={tapeType}
+		{...color && { style: `--tape-color: ${color};` }}
+	>
 		<slot />
 	</div>
 </div>
 
 <style is:global>
+	@font-face {
+		font-family: "Permanent Marker";
+		src: url("/fonts/permanentmarker.woff2") format("woff2");
+		font-weight: normal;
+		font-style: normal;
+	}
+
 	@layer components {
 		.cassette-front {
 			height: 100%;
@@ -50,12 +63,25 @@ const { decoType = "a", tapeType = "blank" } = Astro.props;
 
 		.tape {
 			height: 100%;
-			background-color: white;
+			background-color: var(--grey-30);
 			border-radius: 0.25rem;
 			display: grid;
 			grid-template-columns: max-content 1fr max-content;
 			position: relative;
 			overflow: hidden;
+
+			color: var(--tape-color, var(--black));
+
+			& a {
+				font-family: "Permanent Marker", "Segoe Print", "Bradley Hand", Chilanka, TSCu_Comic, casual,
+					cursive;
+				text-transform: uppercase;
+				font-size: 18px;
+			}
+
+			& a:visited {
+				color: currentColor;
+			}
 
 			&:has(:focus-visible) {
 				outline: var(--tv-outline);

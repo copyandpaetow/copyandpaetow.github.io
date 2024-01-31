@@ -14,9 +14,7 @@ const { className = "" } = Astro.props;
 	//
 </script>
 
-<section
-	class={`screen-content-layout screen-clipped-border screen-text vcr-lines camera ${className}`}
->
+<section class={`screen-content-layout screen-clipped-border screen-root camera ${className}`}>
 	<!--@ts-expect-error popovertargetaction is to new? -->
 	<button class="screen-back-button" popovertarget="remote-modal" popovertargetaction="hide"
 		><Fragment set:html={Up} /> exit

@@ -27,7 +27,7 @@ const { className = "" } = Astro.props;
 			>the intro nobody asked for</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<IndexPreview>
@@ -41,7 +41,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="c" tapeType="stripes" id="now">
 		<a href="#now">now</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<NowPreview>
@@ -55,7 +55,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="a" tapeType="stripes" id="bewegung">
 		<a href="#bewegung">how to make an animation library</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<BewegungPreview>
@@ -69,7 +69,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
 		<a href="#that-3d-episode">That 3D episode</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<ThirdDimensionPreview>
@@ -83,7 +83,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="b" tapeType="checked" id="dinkelberg">
 		<a href="#dinkelberg">DINKELBERG</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<DinkelbergPreview>
@@ -97,7 +97,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="c" tapeType="stripes" id="about">
 		<a href="#about">about</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<AboutPreview>
@@ -108,10 +108,10 @@ const { className = "" } = Astro.props;
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="printer">
+	<Cassette decoType="b" tapeType="checked" id="printer" color="var(--blue)">
 		<a href="#printer">How to fix your printer</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<FixPrinterPreview>
@@ -122,10 +122,10 @@ const { className = "" } = Astro.props;
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="css-database">
+	<Cassette decoType="b" tapeType="checked" id="css-database" color="var(--blue)">
 		<a href="#css-database">Connect your database with CSS</a>
 		<section
-			class="screen-content screen-clipped-border screen-text vcr-lines cassette-content hidden-when-inactive"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<CssDatabasePreview>

@@ -12,62 +12,70 @@ import Camera from "../features/tv/camera.astro";
 
 ## todo: next steps
 
+- write about section
+- tapes need their own color which is not tied to the type
+
+
 ## tasks
 
 - add dedicated options for flickering/lines or a general "screen realism"
 => this could also be a radio group with "none"/"mild"/"full"
 - settings label buttons on the remote need some kind of grouping
-- vhs cassettes should have different colors weights and not color change when they were visited
 
 ## bugs
 
-- all blocks have an outline but the tv
 - the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
 - screen modals can scroll but the default tv screen cant
+- on safari modals are focused?
 
 ## refactorings
 
 - unify css values and calculations
-=> check vh/svh etc
 - update custom property names
 - extract similar functionality into classes
-- improve remote color and borders
 - 3d elements should all be blocks
-- unify 3d button components
-=> make the realistic inset a class that can be adjusted with custom properties
-- disable js only functionality with @media (scripting: none)
+- 3d elements need to either have an outline/border or some kind of shadow
+
+## needed improvements
+
+- use aria-current="page" to shot the current page in the settings
+- check active element states (hover, active, focus)
+- check usage of vh/svh etc. We should prefer dvh
+- max content with of text elements
+- many elements like anchor links, images, and videos need alt tags
+- button and links are not distinguishable and not identifyable as clickable elements
+
 
 ## future features
+
 - real inset of the displays
 - shadows
 - add more sounds
-
-improve remote
+=> tv turning on
+=> static noise and animation of the static
+-improve remote
 => enable channel functionality
 => mute and other settings should have their own icon on the screen
 => inputting numbers should also wait a little before going to that number
-  
-
-- add more realistic buttons
-=> https://codepen.io/nicolasjesenberger/pen/gOqzJed
-
 - rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
-- animate putting in a new tape
 - add scenery that changes with the content of the selected tape (background stuff, colors etc) and maybe even a parallax effect
 - add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
+- when firefox releases v123 with DSD, we should refactor all blocks to that
 
 */
 </script>
 
 <Layout title="Copy and Paetow">
+	<header class="visually-hidden">
+		<h1>Hey, it</h1>
+		<span
+			>The scene features a retro tv standing on a pile of vhs tapes. Selecting a tape will preview
+			its content</span
+		>
+	</header>
 	<main>
 		<Camera>
 			<div class="tv-scene scene z-layer-interactivity">
-				<span class="visually-hidden"
-					>the scene shows a retro tv standing on a pile of vhs tapes. Selecting a tape will preview
-					the content</span
-				>
-
 				<Remote className="interactive" />
 
 				<TV className="tv-interactive" />
