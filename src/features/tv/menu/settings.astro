@@ -2,10 +2,10 @@
 import Back from "../icons/back.svg?raw";
 
 export interface Props {
-	disableAnimations?: boolean;
+	animationDefault?: boolean;
 }
 
-const { disableAnimations = false } = Astro.props;
+const { animationDefault = true } = Astro.props;
 ---
 
 <script>
@@ -30,7 +30,12 @@ const { disableAnimations = false } = Astro.props;
 				<li>
 					<label for="settings-animation">Animations</label>
 					<hr />
-					<input type="checkbox" name="settings-animation" id="settings-animation" checked />
+					<input
+						type="checkbox"
+						name="settings-animation"
+						id="settings-animation"
+						checked={animationDefault}
+					/>
 				</li>
 				<li>
 					<label for="settings-sound">Sound</label>

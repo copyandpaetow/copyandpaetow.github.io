@@ -19,16 +19,16 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="screen-root">
-		<slot name="header" />
-		<main>
+	<body class="screen-root screen-content-layout">
+		<nav class="full-screen">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button popovertarget="remote-modal" popovertargetaction="show"
-				>open settings in the style of a remote</button
-			>
+			<button popovertarget="remote-modal" popovertargetaction="show">settings</button>
+		</nav>
+		<slot name="header" />
+		<main class="">
 			<popover-helper type="modal">
 				<dialog id="remote-modal" popover class="scene remote-modal">
-					<Menu />
+					<Menu animationDefault={false} className="full-screen-menu" />
 				</dialog>
 			</popover-helper>
 			<slot />
@@ -39,21 +39,18 @@ const { title } = Astro.props;
 
 <style is:global>
 	@layer components {
-		main {
-			--save-screen-padding: 10%;
+		body {
+			padding: 2rem;
+			--save-screen-padding: 2rem;
 
-			display: grid;
-			grid-template-columns:
-				[full-screen-start] var(--save-screen-padding)
-				[save-screen-start] 1fr
-				[save-screen-end] var(--save-screen-padding)
-				[full-screen-end];
-			grid-template-rows: 3rem;
-			grid-auto-rows: max-content;
-
-			:where(&) > :where(*) {
-				grid-column: save-screen;
+			& nav {
+				justify-self: end;
+				padding-bottom: 5%;
 			}
+		}
+
+		.screen-content-layout > .screen-back-button {
+			margin-bottom: 5%;
 		}
 
 		.screen-root::after,

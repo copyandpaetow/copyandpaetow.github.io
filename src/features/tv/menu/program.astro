@@ -7,6 +7,12 @@ import DinkelbergPreview from "../content/dinkelberg-preview.astro";
 import FixPrinterPreview from "../content/fix-printer-preview.astro";
 import IndexPreview from "../content/index-preview.astro";
 import NowPreview from "../content/now-preview.astro";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
 ---
 
 <script>

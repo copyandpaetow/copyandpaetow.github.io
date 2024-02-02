@@ -115,44 +115,63 @@
 	}
 }
 
-.screen-content-layout {
-	--_save-screen-padding: var(--save-screen-padding, 1rem);
-	--_gap: var(--screen-gap, 0.5rem);
+.small-screen {
+	--screen-content-height: var(--dialog-height, 100%);
+	--screen-content-width: var(--dialog-width, 100%);
+	--screen-save-area: 0;
+	--content-size: 1fr;
+	--save-screen-padding: 5% 2.5%;
 
-	height: var(--dialog-height, 100%);
-	width: var(--dialog-width, 100%);
+	:where(&) > :where(*) {
+		place-self: start;
+	}
+}
+
+.screen-content-layout {
+	--_gap: var(--screen-gap, 0.5rem);
+	--_height: var(--screen-content-height, 100%);
+	--_width: var(--screen-content-width, 100%);
+	--_padding: var(--save-screen-padding, 0);
+	--_content: var(--content-size, minmax(19rem, 40rem));
+	--_save-area: var(--screen-save-area, 1fr);
+	height: var(--_height);
+	width: var(--_width);
+	padding: var(--_padding);
+
 	display: grid;
 	grid-auto-rows: max-content;
-	padding: var(--_save-screen-padding);
+	grid-template-columns:
+		[full-screen-start] var(--_save-area)
+		[save-screen-start] var(--_content)
+		[save-screen-end] var(--_save-area)
+		[full-screen-end];
 	gap: var(--_gap);
 
-	overflow-y: auto;
-	scrollbar-width: none;
-	&::-webkit-scrollbar {
-		display: none;
+	:where(&) > :where(*) {
+		grid-column: save-screen;
 	}
 
-	@media (min-width: 22rem) {
-		--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+	:where(&) > :where(.full-screen) {
+		grid-column: full-screen;
 	}
 }
 
 .fullscreen-content-layout {
-	--_save-screen-padding: var(--save-screen-padding, var(--space-1));
+	--_padding: var(--save-screen-padding, 0);
 	--_gap: var(--screen-gap, 0);
 
 	height: 100%;
 
 	display: grid;
 	grid-template-columns:
-		[full-screen-start] var(--_save-screen-padding)
+		[full-screen-start] var(--_padding)
 		[save-screen-start] 1fr
-		[save-screen-end] var(--_save-screen-padding)
+		[save-screen-end] var(--_padding)
 		[full-screen-end];
 	grid-template-rows:
-		[full-screen-start] var(--_save-screen-padding)
+		[full-screen-start] var(--_padding)
 		[save-screen-start] 1fr
-		[save-screen-end] var(--_save-screen-padding)
+		[save-screen-end] var(--_padding)
 		[full-screen-end];
 	gap: var(--_gap);
 
@@ -163,6 +182,14 @@
 
 	:where(&) > :where(.full-screen) {
 		grid-area: full-screen;
+	}
+}
+
+.no-overflow {
+	overflow-y: auto;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
 	}
 }
 

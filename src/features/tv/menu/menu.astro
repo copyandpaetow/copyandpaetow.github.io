@@ -5,9 +5,10 @@ import Back from "../icons/back.svg?raw";
 
 export interface Props {
 	className?: string;
+	animationDefault?: boolean;
 }
 
-const { className = "" } = Astro.props;
+const { className = "", animationDefault = true } = Astro.props;
 ---
 
 <script>
@@ -34,14 +35,5 @@ const { className = "" } = Astro.props;
 	</ol>
 </section>
 
-<Settings />
+<Settings animationDefault={animationDefault} />
 <Program />
-
-<style is:global>
-	@layer components {
-		.screen-layout {
-			overflow-y: scroll;
-			height: 100%;
-		}
-	}
-</style>
