@@ -1,5 +1,12 @@
 ---
-import Up from "../icons/up.svg?raw";
+import Back from "../icons/back.svg?raw";
+
+export interface Props {
+	className?: string;
+	animationDefault?: boolean;
+}
+
+const { className = "", animationDefault = true } = Astro.props;
 ---
 
 <script>
@@ -10,19 +17,26 @@ import Up from "../icons/up.svg?raw";
 	<dialog
 		id="settings"
 		popover="manual"
-		class="camera secondary-menu screen-clipped-border screen-root"
+		class=`camera secondary-menu screen-clipped-border screen-root ${className}`
 	>
-		<section class="screen-content-layout">
+		<section class="screen-content-layout no-overflow">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button class="screen-back-button" popovertarget="settings" popovertargetaction="hide"
-				><Fragment set:html={Up} />back</button
+			<button
+				class="screen-back-button with-icon-start"
+				popovertarget="settings"
+				popovertargetaction="hide"><Fragment set:html={Back} />back</button
 			>
 
 			<ol class="content-settings">
 				<li>
 					<label for="settings-animation">Animations</label>
 					<hr />
-					<input type="checkbox" name="settings-animation" id="settings-animation" checked />
+					<input
+						type="checkbox"
+						name="settings-animation"
+						id="settings-animation"
+						checked={animationDefault}
+					/>
 				</li>
 				<li>
 					<label for="settings-sound">Sound</label>
@@ -37,6 +51,11 @@ import Up from "../icons/up.svg?raw";
 						name="settings-three-dimensional"
 						id="settings-three-dimensional"
 					/>
+				</li>
+				<li>
+					<label for="settings-tv-realism">TV realism</label>
+					<hr />
+					<input type="checkbox" name="settings-tv-realism" id="settings-tv-realism" checked />
 				</li>
 			</ol>
 		</section>
@@ -60,6 +79,8 @@ import Up from "../icons/up.svg?raw";
 				grid-template-columns: max-content max-content 1fr max-content;
 				grid-template-areas: "number title line state";
 				gap: var(--_screen-content-gap);
+				align-items: center;
+				width: 100%;
 			}
 
 			& hr {

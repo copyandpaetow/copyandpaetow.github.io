@@ -4,63 +4,35 @@ import TV from "../features/tv/tv.astro";
 import CassettePile from "../features/tv/cassettes/cassete-pile.astro";
 import Remote from "../features/tv/remote/remote.astro";
 import Room from "../features/tv/room.astro";
-import Camera from "../features/tv/camera.astro";
 ---
 
 <script>
 	/*
 
-## todo: next steps
-
-- write about section
-- tapes need their own color which is not tied to the type
-
-
-## tasks
-
-- add dedicated options for flickering/lines or a general "screen realism"
-=> this could also be a radio group with "none"/"mild"/"full"
+## todo: remote
+- enable channel functionality
 - settings label buttons on the remote need some kind of grouping
+- real remote buttons
 
-## bugs
+## todo: content
+- rewrite about text
+- include bewegung text
 
-- the vhs slot cover cant move realistically since the background is overlaying it. We would need to create a cutout in the background
-- screen modals can scroll but the default tv screen cant
-- on safari modals are focused?
-
-## refactorings
-
-- unify css values and calculations
-- update custom property names
-- extract similar functionality into classes
-- 3d elements should all be blocks
-- 3d elements need to either have an outline/border or some kind of shadow
-
-## needed improvements
-
-- use aria-current="page" to shot the current page in the settings
-- check active element states (hover, active, focus)
-- check usage of vh/svh etc. We should prefer dvh
-- max content with of text elements
-- many elements like anchor links, images, and videos need alt tags
-- button and links are not distinguishable and not identifyable as clickable elements
-
-
-## future features
-
-- real inset of the displays
-- shadows
+## todo: animation and sounds
 - add more sounds
 => tv turning on
 => static noise and animation of the static
--improve remote
-=> enable channel functionality
-=> mute and other settings should have their own icon on the screen
-=> inputting numbers should also wait a little before going to that number
-- rotate the scene based on mouse position => this might be a little to strong, it would make more sense to do this for the background
-- add scenery that changes with the content of the selected tape (background stuff, colors etc) and maybe even a parallax effect
+- rotate the scene slightly based on mouse position
+
+##todo: 3d
 - add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
-- when firefox releases v123 with DSD, we should refactor all blocks to that
+- turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
+- align remote screen in 3d scene
+
+## bugs
+- on safari modals are focused?
+- 3d effects move the remote screen differently compared to the tapes
+- all 3d elements need to either have an outline/border or some kind of shadow not a mix of both
 
 */
 </script>
@@ -74,7 +46,7 @@ import Camera from "../features/tv/camera.astro";
 		>
 	</header>
 	<main>
-		<Camera>
+		<div class="camera">
 			<div class="tv-scene scene z-layer-interactivity">
 				<Remote className="interactive" />
 
@@ -84,7 +56,7 @@ import Camera from "../features/tv/camera.astro";
 
 				<Room />
 			</div>
-		</Camera>
+		</div>
 	</main>
 </Layout>
 
@@ -92,17 +64,6 @@ import Camera from "../features/tv/camera.astro";
 	@layer defaults {
 		:where(body) {
 			contain: layout;
-		}
-
-		:where(body:has(#remote-modal[open]), body:has(#remote-modal:popover-open)) {
-			position: fixed;
-			width: 100%;
-			height: 100%;
-
-			.scene {
-				--scene-padding: 0px;
-				--remote-depth: 0px;
-			}
 		}
 
 		main {

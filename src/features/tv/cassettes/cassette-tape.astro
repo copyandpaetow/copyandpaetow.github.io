@@ -76,7 +76,11 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				font-family: "Permanent Marker", "Segoe Print", "Bradley Hand", Chilanka, TSCu_Comic, casual,
 					cursive;
 				text-transform: uppercase;
-				font-size: 18px;
+				font-size: var(--font--1);
+
+				@media (min-width: 28rem) {
+					font-size: 1.2rem;
+				}
 			}
 
 			& a:visited {
@@ -135,6 +139,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 			}
 
 			&::after {
+				color: var(--black);
 				white-space: pre;
 				display: grid;
 				aspect-ratio: 1;
@@ -164,6 +169,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				height: var(--front-height);
 				width: var(--space-1);
 				background-color: var(--blue);
+				color: var(--black);
 			}
 
 			&::before {
@@ -190,6 +196,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				place-content: start center;
 				text-align: center;
 				content: "Video \A Cassette";
+				color: var(--black);
 				transform: rotateZ(-90deg);
 				background: linear-gradient(
 					to bottom,

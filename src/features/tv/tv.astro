@@ -16,10 +16,13 @@ const { className = "" } = Astro.props;
 
 <Block className={`tv ${className}`}>
 	<div class="tv-layout">
-		<aside class="tv-screen screen-inset"></aside>
-		<aside class="screen-content screen-clipped-border">
+		<aside class="tv-screen screen-inset screen-inset-inline"></aside>
+		<aside class="tv-screen screen-inset screen-inset-block"></aside>
+
+		<aside class="screen-background screen-content screen-clipped-border">
 			<StaticBackground className="full-screen" />
 		</aside>
+
 		<ScreenCurvature />
 		<VHSPlayer className="vhs-slot" />
 		<TvToggle id="tv-power-button" className="tv-power-button">
@@ -39,8 +42,15 @@ const { className = "" } = Astro.props;
 			--block-border: var(--tv-border);
 			--block-border-radius: var(--tv-border-radius);
 
+			pointer-events: none;
+
 			.tv-layout {
 				box-shadow: inset 0 0 7px 3px hsla(0, 100%, 100%, 0.25);
+				pointer-events: none;
+			}
+
+			.screen-content {
+				transform: translateZ(calc(var(--screen-offset-z) / -2));
 			}
 
 			.screen-content svg {
@@ -49,19 +59,109 @@ const { className = "" } = Astro.props;
 				transform: scale(1.5);
 			}
 		}
+		.tv > div:first-of-type {
+			background: linear-gradient(
+					to left,
+					var(--tv-background),
+					var(--tv-background) var(--tv-padding),
+					transparent var(--tv-padding),
+					transparent calc(100% - var(--tv-padding)),
+					var(--tv-background) calc(100% - var(--tv-padding)),
+					var(--tv-background)
+				),
+				linear-gradient(
+					to bottom,
+					var(--tv-background),
+					var(--tv-background) var(--tv-padding),
+					transparent var(--tv-padding),
+					transparent calc(var(--tv-padding) + var(--screen-height)),
+					var(--tv-background) calc(var(--tv-padding) + var(--screen-height)),
+					var(--tv-background) calc(var(--tv-padding) + var(--screen-height) + var(--module-gap)),
+					transparent calc(var(--tv-padding) + var(--screen-height) + var(--module-gap)),
+					transparent
+						calc(
+							var(--tv-padding) + var(--screen-height) + var(--module-gap) + var(--vhs-slot-height)
+						),
+					var(--tv-background)
+						calc(
+							var(--tv-padding) + var(--screen-height) + var(--module-gap) + var(--vhs-slot-height)
+						),
+					var(--tv-background)
+				);
+		}
 
 		.tv-power-button {
 			--tv-button-background: rgb(255, 0, 0);
 			--tv-button-background-border: rgb(130, 0, 0);
 			--tv-button-active-background: limegreen;
 			--tv-button-active-background-border: green;
+			pointer-events: initial;
+		}
+
+		.screen-background {
+			background: var(--black);
+		}
+
+		:has(#tv-power-button:not(:checked)) .screen-background svg {
+			scale: 0 0;
+			animation: on 500ms ease reverse;
 		}
 
 		.screen-inset {
-			background: black;
-			border-radius: var(--module-border-radius);
-			border-inline: 2.5rem solid var(--screen-border-color);
-			border-block: 3rem solid var(--screen-border-color-offset);
+			--border-length: 7rem;
+			position: relative;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			perspective: 300px;
+		}
+
+		.screen-inset-block {
+			&::after,
+			&::before {
+				content: "";
+				position: absolute;
+				width: 100%;
+				height: var(--border-length);
+			}
+
+			&::before {
+				top: 0;
+				background-color: var(--screen-border-color-offset);
+				transform-origin: top;
+				transform: rotateX(-70deg);
+			}
+
+			&::after {
+				bottom: 0;
+				background-color: var(--screen-border-color-offset);
+				transform-origin: bottom;
+				transform: rotateX(70deg);
+			}
+		}
+
+		.screen-inset-inline {
+			&::after,
+			&::before {
+				content: "";
+				position: absolute;
+				width: var(--border-length);
+				height: 100%;
+			}
+
+			&::before {
+				left: 0;
+				background-color: var(--screen-border-color);
+				transform-origin: left;
+				transform: rotateY(70deg);
+			}
+
+			&::after {
+				right: 0;
+				background-color: var(--screen-border-color);
+				transform-origin: right;
+				transform: rotateY(-70deg);
+			}
 		}
 
 		.speaker {

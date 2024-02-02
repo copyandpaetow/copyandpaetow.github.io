@@ -1,4 +1,6 @@
 ---
+import Mail from "../icons/mail.svg?raw";
+
 export interface Props {
 	className?: string;
 }
@@ -10,5 +12,7 @@ const { className = "" } = Astro.props;
 	<slot />
 	<h2>Hi, Lucas here</h2>
 	<p>I am looking for opportunities to create delight and performant movements on the web.</p>
-	<a href="mailto:career.lucas.paetow@gmail.com">reach out</a>
+	<a class="with-icon-end" href="mailto:career.lucas.paetow@gmail.com"
+		><Fragment set:html={Mail} /> reach out</a
+	>
 </div>

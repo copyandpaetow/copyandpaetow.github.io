@@ -8,7 +8,7 @@ import NowPreview from "../content/now-preview.astro";
 import ThirdDimensionPreview from "../content/third-dimension-preview.astro";
 import DinkelbergPreview from "../content/dinkelberg-preview.astro";
 import Cassette from "./cassette.astro";
-import Up from "../icons/up.svg?raw";
+import Back from "../icons/back.svg?raw";
 
 export interface Props {
 	className?: string;
@@ -21,116 +21,126 @@ const { className = "" } = Astro.props;
 	import "./eject-cassette";
 </script>
 
-<eject-cassette class=`cassette-pile ${className}`>
+<eject-cassette class=`cassette-pile ${className}  small-screen`>
 	<Cassette decoType="c" id="intro">
-		<a href="#intro" aria-label="jumps to the tv and previews this page"
+		<a href="#intro" aria-label="jumps to the tv and previews the intro"
 			>the intro nobody asked for</a
 		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<IndexPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+			<IndexPreview className="no-overflow">
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</IndexPreview>
 		</section>
 	</Cassette>
 
-	<Cassette decoType="c" tapeType="stripes" id="now">
-		<a href="#now">now</a>
+	<Cassette decoType="c" tapeType="stripes" id="now" color="var(--cyan)">
+		<a href="#now" aria-label="jumps to the tv and previews what I am working on at the moment"
+			>now</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<NowPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+			<NowPreview className="no-overflow">
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</NowPreview>
 		</section>
 	</Cassette>
 
 	<Cassette decoType="a" tapeType="stripes" id="bewegung">
-		<a href="#bewegung">how to make an animation library</a>
+		<a href="#bewegung" aria-label="jumps to the tv and previews a github project"
+			>how to make an animation library</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<BewegungPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+			<BewegungPreview className="no-overflow">
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</BewegungPreview>
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
-		<a href="#that-3d-episode">That 3D episode</a>
+	<Cassette decoType="b" tapeType="checked" id="that-3d-episode" color="var(--orange)">
+		<a href="#that-3d-episode" aria-label="jumps to the tv and shows the whole scene in 3D"
+			>That 3D episode</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<ThirdDimensionPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+			<ThirdDimensionPreview className="no-overflow">
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</ThirdDimensionPreview>
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="dinkelberg">
-		<a href="#dinkelberg">DINKELBERG</a>
+	<Cassette decoType="b" tapeType="checked" id="dinkelberg" color="var(--magenta)">
+		<a href="#dinkelberg" aria-label="jumps to the tv and previews a meme">DINKELBERG</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<DinkelbergPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</DinkelbergPreview>
 		</section>
 	</Cassette>
 
-	<Cassette decoType="c" tapeType="stripes" id="about">
-		<a href="#about">about</a>
-		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
-			slot="screen"
-		>
-			<AboutPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
-				</button>
-			</AboutPreview>
-		</section>
-	</Cassette>
-
 	<Cassette decoType="b" tapeType="checked" id="printer" color="var(--blue)">
-		<a href="#printer">How to fix your printer</a>
+		<a href="#printer" aria-label="jumps to the tv and previews a meme video"
+			>How to fix your printer</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<FixPrinterPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</FixPrinterPreview>
 		</section>
 	</Cassette>
 
+	<Cassette decoType="c" tapeType="stripes" id="about">
+		<a href="#about" aria-label="jumps to the tv and previews content about myself">about</a>
+		<section
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<AboutPreview className="no-overflow">
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
+				</button>
+			</AboutPreview>
+		</section>
+	</Cassette>
+
 	<Cassette decoType="b" tapeType="checked" id="css-database" color="var(--blue)">
-		<a href="#css-database">Connect your database with CSS</a>
+		<a href="#css-database" aria-label="jumps to the tv and previews a meme video"
+			>Connect your database with CSS</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<CssDatabasePreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
+				<button class="screen-back-button with-icon-start hidden-without-js">
+					<Fragment set:html={Back} /> back
 				</button>
 			</CssDatabasePreview>
 		</section>
@@ -159,10 +169,10 @@ const { className = "" } = Astro.props;
 			&:not(:has(:target)) > .cassette:first-of-type,
 			& :target {
 				margin-top: calc(var(--tv-height) * -1);
-				transform: translateZ(var(--tv-offset-z));
+				transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
 
 				.cassette-body {
-					transform: translateZ(var(--cassette-active-offset-z))
+					transform: translateZ(calc(var(--cassette-active-offset-z) + var(--screen-offset-z)))
 						translateY(calc(var(--vhs-slot-padding) * 1.5))
 						translateX(calc(var(--vhs-slot-padding) * 2));
 				}
@@ -172,6 +182,12 @@ const { className = "" } = Astro.props;
 
 				.cassette-content {
 					animation: on 500ms ease;
+					transform: translateZ(calc(var(--screen-offset-z) / 2));
+				}
+
+				:has(#tv-power-button:not(:checked)) & .cassette-content {
+					scale: 0 0;
+					animation: on 500ms ease reverse;
 				}
 			}
 

@@ -1,14 +1,3 @@
-.flow > * + * {
-	margin-top: var(--flow-space, 1em);
-}
-
-.list {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: var(--gutter);
-}
-
 .visually-hidden {
 	position: absolute;
 	width: 1px;
@@ -19,15 +8,65 @@
 	border: 0;
 }
 
-:where([data-appearance="none"]) {
-	appearance: none;
-	color: transparent;
-	background-color: transparent;
-	border: none;
-}
-
 .hidden-without-js {
 	@media (scripting: none) {
 		display: none;
+	}
+}
+
+.camera {
+	--_perspective: var(--perspective, 200000px);
+	--_camera-truck: var(--camera-truck, 0px);
+	--_camera-pedestal: var(--camera-pedestal, 0px);
+	--_camera-dolly: var(--camera-dolly, 0px);
+
+	--_camera-roll: var(--camera-roll, 0deg);
+	--_camera-pan: var(--camera-pan, 0deg);
+	--_camera-tilt: var(--camera-tilt, 0deg);
+
+	transform: perspective(var(--_perspective)) translateZ(var(--_perspective))
+		translateX(calc(var(--_camera-truck) * -1)) translateY(var(--_camera-pedestal))
+		translateZ(calc(var(--_camera-dolly) * -1)) rotateX(var(--_camera-roll))
+		rotateY(var(--_camera-pan)) rotateZ(var(--_camera-tilt))
+		translateZ(calc(var(--_perspective) * -1));
+
+	transform-style: preserve-3d;
+
+	& :where(*) {
+		transform-style: preserve-3d;
+	}
+
+	& :where(*:not(button, label, a, input)) {
+		outline: 1px solid transparent;
+	}
+}
+
+.with-icon-start {
+	grid-template-columns: max-content 1fr;
+}
+
+.with-icon-end {
+	grid-template-columns: 1fr max-content;
+}
+
+.with-icon-end,
+.with-icon-start {
+	display: grid;
+	align-items: center;
+	z-index: 1;
+	gap: 0.25rem;
+
+	&::after {
+		content: "";
+		position: absolute;
+		height: var(--min-button-height);
+		inset: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	& svg {
+		height: 20px;
+		width: 20px;
 	}
 }

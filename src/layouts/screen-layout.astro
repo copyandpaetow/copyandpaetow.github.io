@@ -19,16 +19,20 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
-		<slot name="header" />
-		<main class="screen-root">
+	<body class="screen-root screen-content-layout">
+		<nav class="full-screen">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button popovertarget="remote-modal" popovertargetaction="show"
-				>open settings in the style of a remote</button
-			>
+			<button class="settings-button" popovertarget="remote-modal" popovertargetaction="show">
+				settings
+				<span class="no-tv">(no tv realism)</span>
+				<span class="no-anim">(no animations)</span>
+			</button>
+		</nav>
+		<slot name="header" />
+		<main class="">
 			<popover-helper type="modal">
 				<dialog id="remote-modal" popover class="scene remote-modal">
-					<Menu />
+					<Menu animationDefault={false} className="full-screen-menu" />
 				</dialog>
 			</popover-helper>
 			<slot />
@@ -39,21 +43,46 @@ const { title } = Astro.props;
 
 <style is:global>
 	@layer components {
-		main {
-			--save-screen-padding: 10%;
+		body {
+			--save-screen-padding: 0.5rem;
 
-			display: grid;
-			grid-template-columns:
-				[full-screen-start] var(--save-screen-padding)
-				[save-screen-start] 1fr
-				[save-screen-end] var(--save-screen-padding)
-				[full-screen-end];
-			grid-template-rows: 3rem;
-			grid-auto-rows: max-content;
-
-			:where(&) > :where(*) {
-				grid-column: save-screen;
+			& nav {
+				justify-self: end;
+				padding-bottom: 5%;
 			}
+
+			@media (min-width: 22rem) {
+				--save-screen-padding: 1rem;
+			}
+
+			@media (min-width: 28rem) {
+				--save-screen-padding: 2rem;
+			}
+		}
+
+		.full-screen-menu {
+			@media (min-width: 22rem) {
+				--save-screen-padding: 3rem 1rem;
+			}
+
+			@media (min-width: 28rem) {
+				--save-screen-padding: 5rem 2rem;
+			}
+		}
+
+		.settings-button {
+			display: grid;
+			grid-auto-flow: column;
+			gap: 0.25rem;
+		}
+
+		:has(#settings-animation:checked) .no-anim,
+		:has(#settings-tv-realism:checked) .no-tv {
+			display: none;
+		}
+
+		.screen-content-layout > .screen-back-button {
+			margin-bottom: 5%;
 		}
 
 		.screen-root::after,
@@ -61,7 +90,7 @@ const { title } = Astro.props;
 			position: fixed;
 			inset: 0;
 			width: 100%;
-			height: 100dvh;
+			height: 100svh;
 		}
 
 		.tertiary-menu {
