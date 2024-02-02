@@ -1,5 +1,5 @@
 ---
-import Up from "../icons/up.svg?raw";
+import Back from "../icons/back.svg?raw";
 import AboutPreview from "../content/about-preview.astro";
 import BewegungPreview from "../content/bewegung-preview.astro";
 import CssDatabasePreview from "../content/css-database-preview.astro";
@@ -21,8 +21,10 @@ import NowPreview from "../content/now-preview.astro";
 	>
 		<section class="screen-content-layout">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button class="screen-back-button" popovertarget="tv-program" popovertargetaction="hide"
-				><Fragment set:html={Up} />back</button
+			<button
+				class="screen-back-button with-icon-start"
+				popovertarget="tv-program"
+				popovertargetaction="hide"><Fragment set:html={Back} />back</button
 			>
 			<ol>
 				<li>
@@ -80,9 +82,9 @@ import NowPreview from "../content/now-preview.astro";
 				<AboutPreview className="">
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="about-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</AboutPreview>
 			</dialog>
@@ -96,9 +98,9 @@ import NowPreview from "../content/now-preview.astro";
 				<BewegungPreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="bewegung-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</BewegungPreview>
 			</dialog>
@@ -112,9 +114,9 @@ import NowPreview from "../content/now-preview.astro";
 				<CssDatabasePreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="css-database-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</CssDatabasePreview>
 			</dialog>
@@ -128,9 +130,9 @@ import NowPreview from "../content/now-preview.astro";
 				<DinkelbergPreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="dinkelberg-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</DinkelbergPreview>
 			</dialog>
@@ -144,9 +146,9 @@ import NowPreview from "../content/now-preview.astro";
 				<FixPrinterPreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="fix-printer-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</FixPrinterPreview>
 			</dialog>
@@ -160,9 +162,9 @@ import NowPreview from "../content/now-preview.astro";
 				<IndexPreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
 					<button
-						class="screen-back-button"
+						class="screen-back-button with-icon-start"
 						popovertarget="intro-preview"
-						popovertargetaction="hide"><Fragment set:html={Up} />back</button
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</IndexPreview>
 			</dialog>
@@ -175,8 +177,10 @@ import NowPreview from "../content/now-preview.astro";
 			>
 				<NowPreview>
 					<!--@ts-expect-error popovertargetaction is to new? -->
-					<button class="screen-back-button" popovertarget="now-preview" popovertargetaction="hide"
-						><Fragment set:html={Up} />back</button
+					<button
+						class="screen-back-button with-icon-start"
+						popovertarget="now-preview"
+						popovertargetaction="hide"><Fragment set:html={Back} />back</button
 					>
 				</NowPreview>
 			</dialog>

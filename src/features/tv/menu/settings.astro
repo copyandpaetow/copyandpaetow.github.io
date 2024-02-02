@@ -1,5 +1,5 @@
 ---
-import Up from "../icons/up.svg?raw";
+import Back from "../icons/back.svg?raw";
 ---
 
 <script>
@@ -14,8 +14,10 @@ import Up from "../icons/up.svg?raw";
 	>
 		<section class="screen-content-layout">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button class="screen-back-button" popovertarget="settings" popovertargetaction="hide"
-				><Fragment set:html={Up} />back</button
+			<button
+				class="screen-back-button with-icon-start"
+				popovertarget="settings"
+				popovertargetaction="hide"><Fragment set:html={Back} />back</button
 			>
 
 			<ol class="content-settings">
@@ -61,6 +63,7 @@ import Up from "../icons/up.svg?raw";
 				grid-template-areas: "number title line state";
 				gap: var(--_screen-content-gap);
 				align-items: center;
+				width: 100%;
 			}
 
 			& hr {

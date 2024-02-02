@@ -126,28 +126,6 @@
 	}
 }
 
-.screen-back-button {
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	align-items: center;
-	z-index: 1;
-
-	&::after {
-		content: "";
-		position: absolute;
-		height: var(--min-button-height);
-		inset: 0;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-
-	& svg {
-		transform: rotate(-90deg);
-		height: 20px;
-		width: 20px;
-	}
-}
-
 .fullscreen-content-layout {
 	--_save-screen-padding: var(--save-screen-padding, var(--space-1));
 	--_gap: var(--screen-gap, 0);

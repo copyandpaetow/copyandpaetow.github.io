@@ -84,6 +84,15 @@
 		border-color: transparent;
 		appearance: none;
 		text-align: start;
+		width: fit-content;
+	}
+
+	& a {
+		width: fit-content;
+	}
+
+	& li {
+		width: fit-content;
 	}
 
 	& ul li::before {
@@ -99,5 +108,28 @@
 		content: counter(orderedlist) ". ";
 		align-self: start;
 		line-height: 1.6;
+	}
+
+	& :where(button, a, label) {
+		&:focus-visible,
+		&:active,
+		&:hover {
+			background-color: white;
+			color: black;
+			outline: none;
+		}
+	}
+
+	& li:has(button, a, label) {
+		&:focus-within,
+		&:hover {
+			background-color: white;
+			color: black;
+		}
+		& :where(button, a, label):focus-visible {
+			outline: none;
+			background: transparent;
+			color: currentColor;
+		}
 	}
 }

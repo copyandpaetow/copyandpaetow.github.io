@@ -1,7 +1,7 @@
 ---
 import Program from "./program.astro";
 import Settings from "./settings.astro";
-import Up from "../icons/up.svg?raw";
+import Back from "../icons/back.svg?raw";
 
 export interface Props {
 	className?: string;
@@ -16,8 +16,11 @@ const { className = "" } = Astro.props;
 
 <section class={`screen-content-layout screen-clipped-border screen-root camera ${className}`}>
 	<!--@ts-expect-error popovertargetaction is to new? -->
-	<button class="screen-back-button" popovertarget="remote-modal" popovertargetaction="hide"
-		><Fragment set:html={Up} /> exit
+	<button
+		class="screen-back-button with-icon-start"
+		popovertarget="remote-modal"
+		popovertargetaction="hide"
+		><Fragment set:html={Back} /> exit
 	</button>
 	<ol>
 		<li>

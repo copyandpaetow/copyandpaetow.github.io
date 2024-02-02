@@ -58,3 +58,33 @@
 		outline: 1px solid transparent;
 	}
 }
+
+.with-icon-start {
+	grid-template-columns: max-content 1fr;
+}
+
+.with-icon-end {
+	grid-template-columns: 1fr max-content;
+}
+
+.with-icon-end,
+.with-icon-start {
+	display: grid;
+	align-items: center;
+	z-index: 1;
+	gap: 0.25rem;
+
+	&::after {
+		content: "";
+		position: absolute;
+		height: var(--min-button-height);
+		inset: 0;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	& svg {
+		height: 20px;
+		width: 20px;
+	}
+}
