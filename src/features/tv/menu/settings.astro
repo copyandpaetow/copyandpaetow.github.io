@@ -2,10 +2,11 @@
 import Back from "../icons/back.svg?raw";
 
 export interface Props {
+	className?: string;
 	animationDefault?: boolean;
 }
 
-const { animationDefault = true } = Astro.props;
+const { className = "", animationDefault = true } = Astro.props;
 ---
 
 <script>
@@ -16,9 +17,9 @@ const { animationDefault = true } = Astro.props;
 	<dialog
 		id="settings"
 		popover="manual"
-		class="camera secondary-menu screen-clipped-border screen-root"
+		class=`camera secondary-menu screen-clipped-border screen-root ${className}`
 	>
-		<section class="screen-content-layout">
+		<section class="screen-content-layout no-overflow">
 			<!--@ts-expect-error popovertargetaction is to new? -->
 			<button
 				class="screen-back-button with-icon-start"

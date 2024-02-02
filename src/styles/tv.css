@@ -116,8 +116,8 @@
 }
 
 .small-screen {
-	--screen-content-height: var(--dialog-height, 100%);
-	--screen-content-width: var(--dialog-width, 100%);
+	--screen-content-height: var(--inner-screen-height);
+	--screen-content-width: var(--inner-screen-width);
 	--screen-save-area: 0;
 	--content-size: 1fr;
 	--save-screen-padding: 5% 2.5%;
@@ -134,6 +134,7 @@
 	--_padding: var(--save-screen-padding, 0);
 	--_content: var(--content-size, minmax(19rem, 40rem));
 	--_save-area: var(--screen-save-area, 1fr);
+
 	height: var(--_height);
 	width: var(--_width);
 	padding: var(--_padding);

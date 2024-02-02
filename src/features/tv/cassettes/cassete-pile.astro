@@ -27,10 +27,10 @@ const { className = "" } = Astro.props;
 			>the intro nobody asked for</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<IndexPreview>
+			<IndexPreview className="no-overflow">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -43,10 +43,10 @@ const { className = "" } = Astro.props;
 			>now</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<NowPreview>
+			<NowPreview className="no-overflow">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -59,10 +59,10 @@ const { className = "" } = Astro.props;
 			>how to make an animation library</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<BewegungPreview>
+			<BewegungPreview className="no-overflow">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -75,10 +75,10 @@ const { className = "" } = Astro.props;
 			>That 3D episode</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<ThirdDimensionPreview>
+			<ThirdDimensionPreview className="no-overflow">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -89,7 +89,7 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="b" tapeType="checked" id="dinkelberg" color="var(--magenta)">
 		<a href="#dinkelberg" aria-label="jumps to the tv and previews a meme">DINKELBERG</a>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<DinkelbergPreview>
@@ -105,7 +105,7 @@ const { className = "" } = Astro.props;
 			>How to fix your printer</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<FixPrinterPreview>
@@ -119,10 +119,10 @@ const { className = "" } = Astro.props;
 	<Cassette decoType="c" tapeType="stripes" id="about">
 		<a href="#about" aria-label="jumps to the tv and previews content about myself">about</a>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<AboutPreview>
+			<AboutPreview className="no-overflow">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -135,7 +135,7 @@ const { className = "" } = Astro.props;
 			>Connect your database with CSS</a
 		>
 		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive no-overflow"
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
 			<CssDatabasePreview>

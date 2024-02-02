@@ -22,7 +22,11 @@ const { title } = Astro.props;
 	<body class="screen-root screen-content-layout">
 		<nav class="full-screen">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button popovertarget="remote-modal" popovertargetaction="show">settings</button>
+			<button class="settings-button" popovertarget="remote-modal" popovertargetaction="show">
+				settings
+				<span class="no-tv">(no tv realism)</span>
+				<span class="no-anim">(no animations)</span>
+			</button>
 		</nav>
 		<slot name="header" />
 		<main class="">
@@ -40,13 +44,41 @@ const { title } = Astro.props;
 <style is:global>
 	@layer components {
 		body {
-			padding: 2rem;
-			--save-screen-padding: 2rem;
+			--save-screen-padding: 0.5rem;
 
 			& nav {
 				justify-self: end;
 				padding-bottom: 5%;
 			}
+
+			@media (min-width: 22rem) {
+				--save-screen-padding: 1rem;
+			}
+
+			@media (min-width: 28rem) {
+				--save-screen-padding: 2rem;
+			}
+		}
+
+		.full-screen-menu {
+			@media (min-width: 22rem) {
+				--save-screen-padding: 3rem 1rem;
+			}
+
+			@media (min-width: 28rem) {
+				--save-screen-padding: 5rem 2rem;
+			}
+		}
+
+		.settings-button {
+			display: grid;
+			grid-auto-flow: column;
+			gap: 0.25rem;
+		}
+
+		:has(#settings-animation:checked) .no-anim,
+		:has(#settings-tv-realism:checked) .no-tv {
+			display: none;
 		}
 
 		.screen-content-layout > .screen-back-button {

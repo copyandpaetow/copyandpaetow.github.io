@@ -7,7 +7,6 @@ export interface Props {
 }
 
 import Power from "../icons/power.svg?raw";
-import Back from "../icons/back.svg?raw";
 import Up from "../icons/up.svg?raw";
 
 const { className = "", inert } = Astro.props;
@@ -23,7 +22,7 @@ const { className = "", inert } = Astro.props;
 			><span>exit</span><Block><Fragment set:html={Power} /></Block></button
 		>
 		<button class="channel row1"
-			><span class="visually-hidden">channel up</span><Fragment set:html={Back} /></button
+			><span class="visually-hidden">channel up</span><Fragment set:html={Up} /></button
 		>
 		<button class="channel row2"
 			><span>channel</span><span class="visually-hidden">channel down</span><Fragment
@@ -31,12 +30,12 @@ const { className = "", inert } = Astro.props;
 			/></button
 		>
 		<button class="volumne row3"
-			><span class="visually-hidden">volume up</span><Fragment set:html={Back} /></button
+			><span class="visually-hidden">volume up</span><Fragment set:html={Up} /></button
 		>
 		<button class="volumne row4">
 			<span>vol</span>
 			<span class="visually-hidden">volume down</span>
-			<Fragment set:html={Back} />
+			<Fragment set:html={Up} />
 		</button>
 		<button class="row1"><span>1</span></button>
 		<button class="row1"><span>2</span></button>
