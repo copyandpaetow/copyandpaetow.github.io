@@ -19,7 +19,6 @@
 :where(html) {
 	line-height: 1.5;
 	font-family: system-ui, sans-serif;
-	scrollbar-gutter: stable;
 
 	@media (prefers-reduced-motion: no-preference) {
 		& :focus-within {
@@ -29,7 +28,7 @@
 }
 
 :where(body) {
-	min-height: 100svh;
+	min-height: 101dvh;
 }
 
 :where(h1, h2, h3, button, input, label) {

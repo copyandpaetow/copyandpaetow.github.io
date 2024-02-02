@@ -1,5 +1,11 @@
 ---
 import Back from "../icons/back.svg?raw";
+
+export interface Props {
+	disableAnimations?: boolean;
+}
+
+const { disableAnimations = false } = Astro.props;
 ---
 
 <script>
@@ -39,6 +45,11 @@ import Back from "../icons/back.svg?raw";
 						name="settings-three-dimensional"
 						id="settings-three-dimensional"
 					/>
+				</li>
+				<li>
+					<label for="settings-tv-realism">TV realism</label>
+					<hr />
+					<input type="checkbox" name="settings-tv-realism" id="settings-tv-realism" checked />
 				</li>
 			</ol>
 		</section>

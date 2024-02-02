@@ -19,7 +19,7 @@ const { className = "" } = Astro.props;
 		<aside class="tv-screen screen-inset screen-inset-inline"></aside>
 		<aside class="tv-screen screen-inset screen-inset-block"></aside>
 
-		<aside class="screen-content screen-clipped-border">
+		<aside class="screen-background screen-content screen-clipped-border">
 			<StaticBackground className="full-screen" />
 		</aside>
 
@@ -96,6 +96,15 @@ const { className = "" } = Astro.props;
 			--tv-button-active-background: limegreen;
 			--tv-button-active-background-border: green;
 			pointer-events: initial;
+		}
+
+		.screen-background {
+			background: var(--black);
+		}
+
+		:has(#tv-power-button:not(:checked)) .screen-background svg {
+			scale: 0 0;
+			animation: on 500ms ease reverse;
 		}
 
 		.screen-inset {

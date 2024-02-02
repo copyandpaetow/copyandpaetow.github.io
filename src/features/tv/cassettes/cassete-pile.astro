@@ -23,7 +23,7 @@ const { className = "" } = Astro.props;
 
 <eject-cassette class=`cassette-pile ${className}`>
 	<Cassette decoType="c" id="intro">
-		<a href="#intro" aria-label="jumps to the tv and previews this page"
+		<a href="#intro" aria-label="jumps to the tv and previews the intro"
 			>the intro nobody asked for</a
 		>
 		<section
@@ -39,7 +39,9 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="c" tapeType="stripes" id="now" color="var(--cyan)">
-		<a href="#now">now</a>
+		<a href="#now" aria-label="jumps to the tv and previews what I am working on at the moment"
+			>now</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -53,7 +55,9 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="a" tapeType="stripes" id="bewegung">
-		<a href="#bewegung">how to make an animation library</a>
+		<a href="#bewegung" aria-label="jumps to the tv and previews a github project"
+			>how to make an animation library</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -67,7 +71,9 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="b" tapeType="checked" id="that-3d-episode" color="var(--orange)">
-		<a href="#that-3d-episode">That 3D episode</a>
+		<a href="#that-3d-episode" aria-label="jumps to the tv and shows the whole scene in 3D"
+			>That 3D episode</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -81,7 +87,7 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="b" tapeType="checked" id="dinkelberg" color="var(--magenta)">
-		<a href="#dinkelberg">DINKELBERG</a>
+		<a href="#dinkelberg" aria-label="jumps to the tv and previews a meme">DINKELBERG</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -95,7 +101,9 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="b" tapeType="checked" id="printer" color="var(--blue)">
-		<a href="#printer">How to fix your printer</a>
+		<a href="#printer" aria-label="jumps to the tv and previews a meme video"
+			>How to fix your printer</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -109,7 +117,7 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="c" tapeType="stripes" id="about">
-		<a href="#about">about</a>
+		<a href="#about" aria-label="jumps to the tv and previews content about myself">about</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -123,7 +131,9 @@ const { className = "" } = Astro.props;
 	</Cassette>
 
 	<Cassette decoType="b" tapeType="checked" id="css-database" color="var(--blue)">
-		<a href="#css-database">Connect your database with CSS</a>
+		<a href="#css-database" aria-label="jumps to the tv and previews a meme video"
+			>Connect your database with CSS</a
+		>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
@@ -173,6 +183,11 @@ const { className = "" } = Astro.props;
 				.cassette-content {
 					animation: on 500ms ease;
 					transform: translateZ(calc(var(--screen-offset-z) / 2));
+				}
+
+				:has(#tv-power-button:not(:checked)) & .cassette-content {
+					scale: 0 0;
+					animation: on 500ms ease reverse;
 				}
 			}
 
