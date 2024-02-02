@@ -34,6 +34,7 @@
 	--screen-border-color-offset: var(--grey-90);
 	--screen-module-ratio: 1.1;
 	--screen-height: calc(((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio)));
+	--screen-offset-z: 20px;
 
 	--speaker-grill-color: var(--grey-85);
 

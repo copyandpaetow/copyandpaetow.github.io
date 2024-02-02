@@ -17,7 +17,7 @@
 	--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
 	--_screen-text-color: var(--screen-text-color, var(--black));
 	--_scanline-width: 3px;
-
+	--_flicker-color: var(--flicker-color, white);
 	font-family: "Press Start 2P";
 	font-size: var(--font--2);
 
@@ -25,6 +25,7 @@
 
 	&::before,
 	&::after {
+		content: "";
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -35,17 +36,33 @@
 	}
 
 	&::before {
-		content: "";
 		background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
 		background-size: 100% var(--_scanline-width);
 		animation: scanlines 200ms steps(60) infinite;
 	}
 
-	@media (prefers-reduced-motion: no-preference) {
+	&::after {
+		background: radial-gradient(ellipse at center, var(--_flicker-color) 0%, transparent 100%);
+		animation: flicker 50ms infinite;
+	}
+
+	:has(#settings-animation:not(:checked)) & {
+		--flicker-color: hsla(0, 100%, 100%, 0.5);
+	}
+
+	:has(#settings-animation:not(:checked)) &::before,
+	:has(#settings-animation:not(:checked)) &::after {
+		animation: none;
+	}
+
+	@media (prefers-reduced-motion) {
+		--flicker-color: hsla(0, 100%, 100%, 0.5);
+
+		&::before {
+			animation: none;
+		}
 		&::after {
-			content: "";
-			background: radial-gradient(ellipse at center, white 0%, transparent 100%);
-			animation: flicker 50ms infinite;
+			animation: none;
 		}
 	}
 

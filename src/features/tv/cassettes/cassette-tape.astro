@@ -135,6 +135,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 			}
 
 			&::after {
+				color: var(--black);
 				white-space: pre;
 				display: grid;
 				aspect-ratio: 1;
@@ -164,6 +165,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				height: var(--front-height);
 				width: var(--space-1);
 				background-color: var(--blue);
+				color: var(--black);
 			}
 
 			&::before {
@@ -190,6 +192,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				place-content: start center;
 				text-align: center;
 				content: "Video \A Cassette";
+				color: var(--black);
 				transform: rotateZ(-90deg);
 				background: linear-gradient(
 					to bottom,

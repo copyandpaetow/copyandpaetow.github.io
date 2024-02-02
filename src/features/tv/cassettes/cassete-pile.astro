@@ -38,7 +38,7 @@ const { className = "" } = Astro.props;
 		</section>
 	</Cassette>
 
-	<Cassette decoType="c" tapeType="stripes" id="now">
+	<Cassette decoType="c" tapeType="stripes" id="now" color="var(--cyan)">
 		<a href="#now">now</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
@@ -66,7 +66,7 @@ const { className = "" } = Astro.props;
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="that-3d-episode">
+	<Cassette decoType="b" tapeType="checked" id="that-3d-episode" color="var(--orange)">
 		<a href="#that-3d-episode">That 3D episode</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
@@ -80,7 +80,7 @@ const { className = "" } = Astro.props;
 		</section>
 	</Cassette>
 
-	<Cassette decoType="b" tapeType="checked" id="dinkelberg">
+	<Cassette decoType="b" tapeType="checked" id="dinkelberg" color="var(--magenta)">
 		<a href="#dinkelberg">DINKELBERG</a>
 		<section
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
@@ -91,20 +91,6 @@ const { className = "" } = Astro.props;
 					<Fragment set:html={Up} /> back
 				</button>
 			</DinkelbergPreview>
-		</section>
-	</Cassette>
-
-	<Cassette decoType="c" tapeType="stripes" id="about">
-		<a href="#about">about</a>
-		<section
-			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
-			slot="screen"
-		>
-			<AboutPreview>
-				<button class="screen-back-button hidden-without-js">
-					<Fragment set:html={Up} /> back
-				</button>
-			</AboutPreview>
 		</section>
 	</Cassette>
 
@@ -119,6 +105,20 @@ const { className = "" } = Astro.props;
 					<Fragment set:html={Up} /> back
 				</button>
 			</FixPrinterPreview>
+		</section>
+	</Cassette>
+
+	<Cassette decoType="c" tapeType="stripes" id="about">
+		<a href="#about">about</a>
+		<section
+			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
+			slot="screen"
+		>
+			<AboutPreview>
+				<button class="screen-back-button hidden-without-js">
+					<Fragment set:html={Up} /> back
+				</button>
+			</AboutPreview>
 		</section>
 	</Cassette>
 
@@ -159,10 +159,10 @@ const { className = "" } = Astro.props;
 			&:not(:has(:target)) > .cassette:first-of-type,
 			& :target {
 				margin-top: calc(var(--tv-height) * -1);
-				transform: translateZ(var(--tv-offset-z));
+				transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
 
 				.cassette-body {
-					transform: translateZ(var(--cassette-active-offset-z))
+					transform: translateZ(calc(var(--cassette-active-offset-z) + var(--screen-offset-z)))
 						translateY(calc(var(--vhs-slot-padding) * 1.5))
 						translateX(calc(var(--vhs-slot-padding) * 2));
 				}
@@ -172,6 +172,7 @@ const { className = "" } = Astro.props;
 
 				.cassette-content {
 					animation: on 500ms ease;
+					transform: translateZ(calc(var(--screen-offset-z) / 2));
 				}
 			}
 
