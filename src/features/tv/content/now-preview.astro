@@ -6,7 +6,7 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class={`screen-content-layout ${className}`}>
+<div class={`${className}`}>
 	<slot />
 	<h2>Whats happening?</h2>
 	<ul>

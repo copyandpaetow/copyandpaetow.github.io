@@ -21,7 +21,7 @@ const { className = "" } = Astro.props;
 	import "./eject-cassette";
 </script>
 
-<eject-cassette class=`cassette-pile ${className}  small-screen`>
+<eject-cassette class=`cassette-pile ${className}`>
 	<Cassette decoType="c" id="intro">
 		<a href="#intro" aria-label="jumps to the tv and previews the intro"
 			>the intro nobody asked for</a
@@ -30,7 +30,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<IndexPreview className="no-overflow">
+			<IndexPreview className="no-overflow screen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -46,7 +46,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<NowPreview className="no-overflow">
+			<NowPreview className="no-overflow screen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -62,7 +62,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<BewegungPreview className="no-overflow">
+			<BewegungPreview className="no-overflow screen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -78,7 +78,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<ThirdDimensionPreview className="no-overflow">
+			<ThirdDimensionPreview className="no-overflow screen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -92,7 +92,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<DinkelbergPreview>
+			<DinkelbergPreview className="fullscreen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -108,7 +108,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<FixPrinterPreview>
+			<FixPrinterPreview className="fullscreen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -122,7 +122,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<AboutPreview className="no-overflow">
+			<AboutPreview className="no-overflow screen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>
@@ -138,7 +138,7 @@ const { className = "" } = Astro.props;
 			class="screen-content screen-clipped-border screen-root cassette-content hidden-when-inactive"
 			slot="screen"
 		>
-			<CssDatabasePreview>
+			<CssDatabasePreview className="fullscreen-content-layout">
 				<button class="screen-back-button with-icon-start hidden-without-js">
 					<Fragment set:html={Back} /> back
 				</button>

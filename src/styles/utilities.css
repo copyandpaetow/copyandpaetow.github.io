@@ -70,3 +70,15 @@
 		width: 20px;
 	}
 }
+
+.no-overflow {
+	overflow-y: auto;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}

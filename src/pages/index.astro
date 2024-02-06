@@ -27,12 +27,19 @@ import Room from "../features/tv/room.astro";
 ##todo: 3d
 - add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
 - turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
-- align remote screen in 3d scene
+
+
+##todo: settings rework
+- maybe the cassettes also need to be details?
+- screen layout doesnt fully work yet
+
+
 
 ## bugs
 - on safari modals are focused?
 - 3d effects move the remote screen differently compared to the tapes
 - all 3d elements need to either have an outline/border or some kind of shadow not a mix of both
+- z-indices are unsorted, could be turned into a layer system
 
 */
 </script>
@@ -47,8 +54,8 @@ import Room from "../features/tv/room.astro";
 	</header>
 	<main>
 		<div class="camera">
-			<div class="tv-scene scene z-layer-interactivity">
-				<Remote className="interactive" />
+			<div class="tv-scene scene small-screen z-layer-interactivity">
+				<Remote className="" />
 
 				<TV className="tv-interactive" />
 
@@ -91,7 +98,7 @@ import Room from "../features/tv/room.astro";
 			padding-block: var(--scene-padding);
 		}
 
-		:has(#that-3d-episode:target):not(:has(:where(:popover-open, [open]))) .camera {
+		:has(#that-3d-episode:target) .camera {
 			--block-render-top: block;
 			--block-render-right: block;
 			--perspective: 2000px;
@@ -99,5 +106,14 @@ import Room from "../features/tv/room.astro";
 			--camera-pan: -40deg;
 			--camera-dolly: 1000px;
 		}
+		/* 
+		:has(#that-3d-episode:target):not(:has(:where(:popover-open, [open]))) .camera {
+			--block-render-top: block;
+			--block-render-right: block;
+			--perspective: 2000px;
+			--camera-truck: 1200px;
+			--camera-pan: -40deg;
+			--camera-dolly: 1000px;
+		} */
 	}
 </style>

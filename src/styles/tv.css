@@ -71,7 +71,7 @@
 	--tv-screen-inset: calc(var(--tv-padding) + var(--screen-padding));
 
 	--tv-absolute-screen-position: calc(var(--scene-padding) + var(--tv-screen-inset)) 0 0
-		calc((100vw - var(--tv-width)) / 2 + var(--tv-screen-inset));
+		calc((100% - var(--tv-width)) / 2 + var(--tv-screen-inset));
 
 	@media (min-width: 22rem) {
 		--tv-padding: 12px;
@@ -83,17 +83,6 @@
 		--cassette-aspect-ratio: 6.5;
 		--tv-padding: 20px;
 		--screen-module-ratio: 1.2;
-	}
-}
-
-:where(body:has([open]), body:has(:popover-open)) {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-
-	.scene {
-		--scene-padding: 0px;
-		--remote-depth: 0px;
 	}
 }
 
@@ -120,7 +109,8 @@
 	--screen-content-width: var(--inner-screen-width);
 	--screen-save-area: 0;
 	--content-size: 1fr;
-	--save-screen-padding: 5% 2.5%;
+	--save-screen-padding-block: 2vh;
+	--save-screen-padding-inline: 2vw;
 
 	:where(&) > :where(*) {
 		place-self: start;
@@ -128,16 +118,18 @@
 }
 
 .screen-content-layout {
-	--_gap: var(--screen-gap, 0.5rem);
+	--_gap: var(--screen-gap, 0.5rem 0);
 	--_height: var(--screen-content-height, 100%);
 	--_width: var(--screen-content-width, 100%);
-	--_padding: var(--save-screen-padding, 0);
+	--_padding-block: var(--save-screen-padding-block, 0);
+	--_padding-inline: var(--save-screen-padding-inline, 0);
 	--_content: var(--content-size, minmax(19rem, 40rem));
 	--_save-area: var(--screen-save-area, 1fr);
 
 	height: var(--_height);
 	width: var(--_width);
-	padding: var(--_padding);
+	padding-block: var(--_padding-block);
+	padding-inline: var(--_padding-inline);
 
 	display: grid;
 	grid-auto-rows: max-content;
@@ -158,39 +150,33 @@
 }
 
 .fullscreen-content-layout {
-	--_padding: var(--save-screen-padding, 0);
-	--_gap: var(--screen-gap, 0);
+	--_padding-block: var(--save-screen-padding-block, 0);
+	--_padding-inline: var(--save-screen-padding-inline, 0);
+	--_gap: var(--screen-gap, 0 0);
 
 	height: 100%;
 
 	display: grid;
 	grid-template-columns:
-		[full-screen-start] var(--_padding)
+		[full-screen-start] var(--_padding-inline)
 		[save-screen-start] 1fr
-		[save-screen-end] var(--_padding)
+		[save-screen-end] var(--_padding-inline)
 		[full-screen-end];
 	grid-template-rows:
-		[full-screen-start] var(--_padding)
+		[full-screen-start] var(--_padding-block)
 		[save-screen-start] 1fr
-		[save-screen-end] var(--_padding)
+		[save-screen-end] var(--_padding-block)
 		[full-screen-end];
 	gap: var(--_gap);
 
-	:where(&) > :where(*) {
+	:where(&) > :where(*:not(.full-screen)) {
 		grid-area: save-screen;
 		place-self: start;
 	}
 
 	:where(&) > :where(.full-screen) {
 		grid-area: full-screen;
-	}
-}
-
-.no-overflow {
-	overflow-y: auto;
-	scrollbar-width: none;
-	&::-webkit-scrollbar {
-		display: none;
+		height: 100%;
 	}
 }
 
@@ -238,5 +224,80 @@
 
 	.vhs-slot {
 		grid-area: vhs-slot;
+	}
+}
+
+/* this is a duplicate to the ol list counter - should be refactored */
+:where(.first-menu-level, .second-menu-level) {
+	counter-reset: orderedlist;
+}
+
+:where(.first-menu-level, .second-menu-level) summary::before {
+	counter-increment: orderedlist;
+	content: counter(orderedlist) ". ";
+	align-self: start;
+	line-height: 1.6;
+}
+
+.menu-details {
+	--_height: var(--menu-height, 100%);
+	--_width: var(--menu-width, 100%);
+	--_inset: var(--menu-inset, 0);
+	--_z-index: var(--menu-z-index, var(--default-z-index, 1));
+
+	& > summary {
+		cursor: pointer;
+		position: relative;
+	}
+
+	& > summary::marker {
+		content: none;
+	}
+
+	&:not([open]) {
+		--save-screen-padding-block: 0;
+		--save-screen-padding-inline: 0;
+		--_height: fit-content;
+		--_width: fit-content;
+	}
+
+	&:not([open]) > *:not(summary) {
+		display: none;
+	}
+
+	&[open] {
+		--default-z-index: 2;
+
+		position: absolute;
+		height: var(--_height);
+		width: var(--_width);
+		inset: var(--_inset);
+		background: var(--_screen-background);
+		z-index: var(--_z-index);
+	}
+
+	&[open] > summary {
+		width: fit-content;
+		margin-bottom: 1vh;
+	}
+
+	&[open] > summary::before {
+		content: none;
+	}
+
+	& > summary .visible-open {
+		display: none;
+	}
+
+	&[open] > summary .visible-open {
+		display: grid;
+	}
+
+	&[open] > summary .visible-closed {
+		display: none;
+	}
+
+	&[open]:not(:has(> details[open])) {
+		overflow-y: auto;
 	}
 }

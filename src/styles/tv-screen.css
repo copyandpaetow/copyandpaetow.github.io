@@ -23,8 +23,8 @@
 
 	background-color: var(--_screen-background);
 
-	:has(#settings-tv-realism:checked) &::before,
-	:has(#settings-tv-realism:checked) &::after {
+	:where(:has(#settings-tv-realism:checked)) &::before,
+	:where(:has(#settings-tv-realism:checked)) &::after {
 		content: "";
 	}
 
@@ -36,7 +36,7 @@
 		top: 0;
 		left: 0;
 		pointer-events: none;
-		z-index: 2;
+		z-index: 5;
 	}
 
 	&::before {
@@ -86,6 +86,10 @@
 		font-size: var(--font--1);
 	}
 
+	& :where(h1, h2) {
+		margin-bottom: 1em;
+	}
+
 	& button {
 		background: transparent;
 		border-color: transparent;
@@ -106,18 +110,18 @@
 		content: ".";
 	}
 
-	& ol {
+	& :where(ol) {
 		counter-reset: orderedlist;
 	}
 
-	& ol li::before {
+	& :where(ol li)::before {
 		counter-increment: orderedlist;
 		content: counter(orderedlist) ". ";
 		align-self: start;
 		line-height: 1.6;
 	}
 
-	& :where(button, a, label) {
+	& :where(button, a, label, details[open] summary) {
 		&:focus-visible,
 		&:active,
 		&:hover {

@@ -1,66 +1,45 @@
 ---
-import Back from "../icons/back.svg?raw";
-
 export interface Props {
 	className?: string;
 	animationDefault?: boolean;
+	tvRealismDefault?: boolean;
 }
 
-const { className = "", animationDefault = true } = Astro.props;
+const { className = "", animationDefault = true, tvRealismDefault = true } = Astro.props;
 ---
 
-<script>
-	import "../../../components/helper/popover-helper";
-</script>
-
-<popover-helper>
-	<dialog
-		id="settings"
-		popover="manual"
-		class=`camera secondary-menu screen-clipped-border screen-root ${className}`
-	>
-		<section class="screen-content-layout no-overflow">
-			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button
-				class="screen-back-button with-icon-start"
-				popovertarget="settings"
-				popovertargetaction="hide"><Fragment set:html={Back} />back</button
-			>
-
-			<ol class="content-settings">
-				<li>
-					<label for="settings-animation">Animations</label>
-					<hr />
-					<input
-						type="checkbox"
-						name="settings-animation"
-						id="settings-animation"
-						checked={animationDefault}
-					/>
-				</li>
-				<li>
-					<label for="settings-sound">Sound</label>
-					<hr />
-					<input type="checkbox" name="settings-sound" id="settings-sound" />
-				</li>
-				<li>
-					<label for="settings-three-dimensional">3D effects</label>
-					<hr />
-					<input
-						type="checkbox"
-						name="settings-three-dimensional"
-						id="settings-three-dimensional"
-					/>
-				</li>
-				<li>
-					<label for="settings-tv-realism">TV realism</label>
-					<hr />
-					<input type="checkbox" name="settings-tv-realism" id="settings-tv-realism" checked />
-				</li>
-			</ol>
-		</section>
-	</dialog>
-</popover-helper>
+<ol class=`content-settings ${className}`>
+	<li>
+		<label for="settings-animation">Animations</label>
+		<hr />
+		<input
+			type="checkbox"
+			name="settings-animation"
+			id="settings-animation"
+			checked={animationDefault}
+		/>
+	</li>
+	<li>
+		<label for="settings-sound">Sound</label>
+		<hr />
+		<input type="checkbox" name="settings-sound" id="settings-sound" />
+	</li>
+	<li>
+		<label for="settings-three-dimensional">3D effects</label>
+		<hr />
+		<input type="checkbox" name="settings-three-dimensional" id="settings-three-dimensional" />
+	</li>
+	<li>
+		<label for="settings-tv-realism">TV realism</label>
+		<hr />
+		<input
+			type="checkbox"
+			name="settings-tv-realism"
+			id="settings-tv-realism"
+			checked={tvRealismDefault}
+		/>
+	</li>
+</ol>
 
 <style is:global>
 	@layer components {

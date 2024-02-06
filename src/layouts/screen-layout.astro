@@ -1,6 +1,8 @@
 ---
 import "../styles/styles.css";
-import Menu from "../features/tv/menu/menu.astro";
+import Back from "../features/tv/icons/back.svg?raw";
+import Program from "../features/tv/menu/program.astro";
+import Settings from "../features/tv/menu/settings.astro";
 
 export interface Props {
 	title: string;
@@ -20,21 +22,39 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="screen-root screen-content-layout">
-		<nav class="full-screen">
+		<nav class="">
 			<!--@ts-expect-error popovertargetaction is to new? -->
-			<button class="settings-button" popovertarget="remote-modal" popovertargetaction="show">
-				settings
-				<span class="no-tv">(no tv realism)</span>
-				<span class="no-anim">(no animations)</span>
-			</button>
+			<details
+				class="screen-layout-content menu-details screen-root screen-content-layout first-menu-level"
+			>
+				<summary class="with-icon-start">
+					<p class="visible-closed">
+						settings
+						<span class="no-tv">(no tv realism)</span>
+						<span class="no-anim">(no animations)</span>
+					</p>
+					<p class="visible-open with-icon-start">
+						<Fragment set:html={Back} /> exit
+					</p>
+				</summary>
+				<details class="menu-details screen-content-layout full-screen">
+					<summary class="with-icon-start">
+						<p class="visible-closed">program</p>
+						<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+					</summary>
+					<Program />
+				</details>
+				<details class="menu-details screen-content-layout full-screen">
+					<summary class="with-icon-start">
+						<p class="visible-closed">settings</p>
+						<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+					</summary>
+					<Settings animationDefault={false} tvRealismDefault={false} />
+				</details>
+			</details>
 		</nav>
 		<slot name="header" />
-		<main class="">
-			<popover-helper type="modal">
-				<dialog id="remote-modal" popover class="scene remote-modal">
-					<Menu animationDefault={false} className="full-screen-menu" />
-				</dialog>
-			</popover-helper>
+		<main>
 			<slot />
 		</main>
 		<slot name="footer" />
@@ -45,19 +65,28 @@ const { title } = Astro.props;
 	@layer components {
 		body {
 			--save-screen-padding: 0.5rem;
+			--screen-gap: 2rem 0rem;
 
-			& nav {
-				justify-self: end;
-				padding-bottom: 5%;
+			& nav:not(:has(details[open])) {
+				position: sticky;
+				top: 0;
+			}
+
+			&:has(details[open]) {
+				height: 100dvh;
+				position: fixed;
 			}
 
 			@media (min-width: 22rem) {
 				--save-screen-padding: 1rem;
 			}
-
 			@media (min-width: 28rem) {
 				--save-screen-padding: 2rem;
 			}
+		}
+
+		header {
+			margin-top: 5rem;
 		}
 
 		.full-screen-menu {
@@ -95,6 +124,43 @@ const { title } = Astro.props;
 
 		.tertiary-menu {
 			--dialog-z-index: 3;
+		}
+
+		.screen-layout-content {
+			&:not([open]) {
+				--save-screen-padding-block: 0;
+				--save-screen-padding-inline: 0;
+				--screen-background: transparent;
+				width: fit-content;
+				height: fit-content;
+			}
+
+			&:not([open]).screen-root::before,
+			&:not([open]).screen-root::after,
+			& > summary::before,
+			& > summary::marker {
+				content: none;
+			}
+
+			&[open] {
+				--menu-height: 100dvh;
+				--menu-width: 100%;
+				--menu-inset: 0;
+				--screen-gap: 0.5rem 0rem;
+				--save-screen-padding-block: 5vh;
+			}
+
+			& .fullscreen-content-layout {
+				--screen-gap: 0rem 0rem;
+			}
+
+			& .fullscreen-content-layout[open] {
+				grid-column: full-screen;
+			}
+
+			& > details:not([open]) {
+				grid-column: save-screen;
+			}
 		}
 	}
 </style>

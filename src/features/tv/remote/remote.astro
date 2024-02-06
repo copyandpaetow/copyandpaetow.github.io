@@ -1,6 +1,8 @@
 ---
-import Menu from "../menu/menu.astro";
+import Back from "../icons/back.svg?raw";
 import RemoteBody from "./remote-body.astro";
+import Settings from "../menu/settings.astro";
+import Program from "../menu/program.astro";
 
 export interface Props {
 	className?: string;
@@ -9,103 +11,98 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<script>
-	import "../../../components/helper/popover-helper";
-</script>
-
-<Fragment>
-	<div class={`remote ${className}`}>
-		<button popovertarget="remote-modal" popovertargetaction="show"
-			>open settings in the style of a remote</button
-		>
-		<RemoteBody className="inactive-remote" inert />
-	</div>
-	<div class={`remote-popup small-screen  ${className}`}>
-		<popover-helper type="modal">
-			<dialog id="remote-modal" popover class="scene remote-modal">
-				<Menu />
-				<div class="remote-position">
-					<RemoteBody />
-				</div>
-			</dialog>
-		</popover-helper>
-	</div>
-</Fragment>
+<div class="remote">
+	<RemoteBody className="inactive-remote" inert />
+	<details
+		class=`remote-content menu-details screen-clipped-border screen-root screen-content-layout first-menu-level no-overflow ${className}`
+	>
+		<summary>
+			<p class="visible-closed visually-hidden">open remote menu</p>
+			<p class="visible-open with-icon-start"><Fragment set:html={Back} /> exit</p>
+		</summary>
+		<details class="menu-details screen-content-layout full-screen">
+			<summary class="with-icon-start">
+				<p class="visible-closed">program</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<Program />
+		</details>
+		<details class="menu-details screen-content-layout full-screen">
+			<summary class="with-icon-start">
+				<p class="visible-closed">settings</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<Settings />
+		</details>
+	</details>
+</div>
 
 <style is:global>
 	@layer components {
+		.inactive-remote {
+			transform-origin: top left;
+			transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
+				scale3d(var(--remote-scale), var(--remote-scale), 1);
+			width: max-content;
+		}
+
+		:where(body:has(details[open])) {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+
+			.scene {
+				--scene-padding: 0px;
+				--remote-depth: 0px;
+			}
+		}
+
 		.remote {
-			position: relative;
 			height: var(--remote-depth);
 
-			& > button {
-				position: absolute;
-				bottom: 0;
-				height: var(--min-button-height);
-				width: 100%;
-				appearance: none;
-				color: transparent;
-				background-color: transparent;
-				border: none;
-				transform: translateZ(var(--remote-depth));
-			}
-
-			.inactive-remote {
-				transform-origin: top left;
-				transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
-					scale3d(var(--remote-scale), var(--remote-scale), 1);
-				width: max-content;
+			display: grid;
+			& > * {
+				grid-area: 1 / 1 /-1 / -1;
 			}
 		}
 
-		.remote-popup {
-			isolation: isolate;
+		.remote-content {
+			&:not([open]) {
+				--save-screen-padding-block: 0;
+				--save-screen-padding-inline: 0;
+				--screen-background: transparent;
+				--menu-height: var(--remote-depth);
+				font-family: inherit;
+				height: var(--remote-depth);
+			}
 
-			/*remove once popovers are supported in FF */
-			&:not(:has(:where(:popover-open, [open]))) {
+			&:not([open]) details {
 				display: none;
 			}
-		}
 
-		.remote-modal {
-			--dialog-height: var(--inner-screen-height);
-			--dialog-width: var(--inner-screen-width);
-			--dialog-inset: var(--tv-absolute-screen-position);
-		}
-
-		.secondary-menu {
-			--dialog-inset: 0;
-
-			&:popover-open {
-				--dialog-inset: var(--tv-absolute-screen-position);
+			&:not([open]).screen-root::before,
+			&:not([open]).screen-root::after {
+				content: none;
 			}
-			&::backdrop {
-				display: none;
+
+			& > summary::before,
+			& > summary::marker {
+				content: none;
 			}
-		}
 
-		@keyframes fromBottom {
-			0% {
-				transform: translateX(-50%) translateY(100vh);
+			&:not([open]) > summary {
+				height: var(--remote-depth);
 			}
-			100% {
-				transform: translateX(-50%) translateY(var(--module-gap));
+
+			&[open] {
+				--menu-height: var(--inner-screen-height);
+				--menu-width: var(--inner-screen-width);
+				--menu-inset: var(--tv-absolute-screen-position);
+				transform: translateZ(calc(var(--tv-depth) + 16px));
 			}
-		}
 
-		.remote-modal:where(:popover-open, [open]) .remote-position {
-			position: absolute;
-			left: 50%;
-
-			transform: translateX(-50%) translateY(var(--module-gap));
-			height: calc(
-				(100vh - var(--tv-height)) - var(--remote-active-offset) + var(--module-gap) +
-					var(--tv-padding)
-			);
-			overflow-y: auto;
-
-			@media (prefers-reduced-motion: no-preference) {
-				animation: fromBottom 1s ease;
+			& details {
+				--menu-inset: 0 0 0 calc(var(--save-screen-padding-inline) * -1);
 			}
 		}
 	}
