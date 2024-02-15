@@ -87,7 +87,7 @@
 	}
 
 	& :where(h1, h2) {
-		margin-bottom: 1em;
+		margin-block: 0.5em 1em;
 	}
 
 	& button {
@@ -121,7 +121,7 @@
 		line-height: 1.6;
 	}
 
-	& :where(button, a, label, details[open] summary) {
+	& :where(button, a, label, details[open] > summary) {
 		&:focus-visible,
 		&:active,
 		&:hover {
@@ -131,7 +131,7 @@
 		}
 	}
 
-	& li:has(button, a, label) {
+	& li:not(.details-layout):has(button, a, label) {
 		&:focus-within,
 		&:hover {
 			background-color: white;
@@ -142,5 +142,38 @@
 			background: transparent;
 			color: currentColor;
 		}
+	}
+
+	& li.details-layout:not(:has([open])) {
+		&:hover {
+			background-color: white;
+			color: black;
+		}
+	}
+}
+
+.screen-text {
+	--_screen-text-color: var(--screen-text-color, var(--black));
+	font-family: "Press Start 2P";
+	font-size: var(--font--2);
+
+	& * {
+		font-size: var(--font--2);
+		color: var(--_screen-text-color);
+	}
+
+	:has(#settings-tv-realism:checked) & * {
+		text-shadow:
+			0 0 0.08em var(--_screen-text-color),
+			-0.08em 0 0.08em aqua,
+			0.08em 0 0.08em fuchsia;
+	}
+
+	& h1 {
+		font-size: var(--font--1);
+	}
+
+	& :where(h1, h2) {
+		margin-bottom: 1em;
 	}
 }

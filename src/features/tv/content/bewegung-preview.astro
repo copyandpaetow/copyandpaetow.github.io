@@ -1,19 +1,10 @@
 ---
 import Link from "../icons/link.svg?raw";
-
-export interface Props {
-	className?: string;
-}
-
-const { className = "" } = Astro.props;
 ---
 
-<div class={`${className}`}>
-	<slot />
-	<h2>lets move it, move it</h2>
-	<p>a small, 0 dependecy animation library using the FLIP technique</p>
-	<a href="bewegung">How it was made</a>
-	<a class="with-icon-end" href="https://github.com/copyandpaetow/bewegung"
-		>Just the github link <Fragment set:html={Link} /></a
-	>
-</div>
+<h2>lets move it, move it</h2>
+<p>a small, 0 dependecy animation library using the FLIP technique</p>
+<a href="bewegung">How it was made</a>
+<a class="with-icon-end" href="https://github.com/copyandpaetow/bewegung"
+	>Just the github link <Fragment set:html={Link} /></a
+>
