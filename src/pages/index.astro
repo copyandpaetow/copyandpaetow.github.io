@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/layout.astro";
 import TV from "../features/tv/tv.astro";
-import CassettePile from "../features/tv/cassettes/cassete-pile.astro";
+import CassettePile from "../features/tv/cassettes/cassette-pile.astro";
 import Remote from "../features/tv/remote/remote.astro";
 import Room from "../features/tv/room.astro";
 ---
@@ -13,6 +13,7 @@ import Room from "../features/tv/room.astro";
 - enable channel functionality
 - settings label buttons on the remote need some kind of grouping
 - real remote buttons
+- the remote will not be usable without javascript. In that case we should only show it in its extended form when js is enabled
 
 ## todo: content
 - rewrite about text
@@ -27,19 +28,20 @@ import Room from "../features/tv/room.astro";
 ##todo: 3d
 - add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
 - turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
+=> we can do this even better> We just need one element with 2 (pseudo) elements. If the camera changes, the elements render differently. Ideally, one element is always responsible for one plane and just moves sideways and or flips
 
+##todo: show/hide content rework
 
-##todo: settings rework
-- maybe the cassettes also need to be details?
-- screen layout doesnt fully work yet
-
+- namings are confusing compared to the other layouting classes
+- on firefox opening a detail is not closing any sibling
 
 
 ## bugs
 - on safari modals are focused?
-- 3d effects move the remote screen differently compared to the tapes
 - all 3d elements need to either have an outline/border or some kind of shadow not a mix of both
 - z-indices are unsorted, could be turned into a layer system
+- overflowing the preview content leads to also moving of the screen effect, can it be done without a wrapper?
+- maybe splitting the screen text and screen animation might be a good idea after all because in the remote setting, the text is needed seperatly
 
 */
 </script>
@@ -55,7 +57,7 @@ import Room from "../features/tv/room.astro";
 	<main>
 		<div class="camera">
 			<div class="tv-scene scene small-screen z-layer-interactivity">
-				<Remote className="" />
+				<Remote className="interactive" />
 
 				<TV className="tv-interactive" />
 
@@ -77,43 +79,5 @@ import Room from "../features/tv/room.astro";
 			display: grid;
 			place-content: center;
 		}
-	}
-
-	@layer components {
-		.z-layer-interactivity {
-			/* this are required for safari and firefox interactivity */
-			transform: translateZ(calc(var(--tv-depth) * -1));
-
-			.interactive {
-				transform: translateZ(var(--tv-depth));
-			}
-
-			.tv-interactive {
-				transform: translateZ(calc(var(--tv-depth) + var(--tv-offset-z)));
-			}
-		}
-
-		.tv-scene {
-			width: var(--scene-width);
-			padding-block: var(--scene-padding);
-		}
-
-		:has(#that-3d-episode:target) .camera {
-			--block-render-top: block;
-			--block-render-right: block;
-			--perspective: 2000px;
-			--camera-truck: 1200px;
-			--camera-pan: -40deg;
-			--camera-dolly: 1000px;
-		}
-		/* 
-		:has(#that-3d-episode:target):not(:has(:where(:popover-open, [open]))) .camera {
-			--block-render-top: block;
-			--block-render-right: block;
-			--perspective: 2000px;
-			--camera-truck: 1200px;
-			--camera-pan: -40deg;
-			--camera-dolly: 1000px;
-		} */
 	}
 </style>

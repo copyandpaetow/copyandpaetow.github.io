@@ -6,15 +6,12 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<div class={`${className}`}>
-	<slot />
-	<picture class="dinkelberg full-screen">
-		<img
-			loading="lazy"
-			src="/images/dinkelberg.jpg"
-			alt="A man furiously yelling dinkelberg. A meme from the Fairly OddParents tv series."
-			width="300"
-			height="225"
-		/>
-	</picture>
-</div>
+<picture class={`${className}`}>
+	<img
+		loading="lazy"
+		src="/images/dinkelberg.jpg"
+		alt="A man furiously yelling dinkelberg. A meme from the Fairly OddParents tv series."
+		width="300"
+		height="225"
+	/>
+</picture>

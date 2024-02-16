@@ -1,0 +1,256 @@
+---
+import AboutPreview from "../content/about-preview.astro";
+import BewegungPreview from "../content/bewegung-preview.astro";
+import RickrollPreviw from "../content/rickroll.astro";
+import IndexPreview from "../content/index-preview.astro";
+import NowPreview from "../content/now-preview.astro";
+import ThirdDimensionPreview from "../content/third-dimension-preview.astro";
+import DinkelbergPreview from "../content/dinkelberg-preview.astro";
+import Cassette from "./cassette.astro";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
+
+const randomNumber = (min: number, max: number) => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+---
+
+<script>
+	import "./cassette-interaction.ts";
+</script>
+
+<cassette-interaction class="display-contents">
+	<ul class=`small-screen cassette-pile ${className}`>
+		<li>
+			<details
+				open
+				id="intro"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="c">the intro nobody asked for</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+				>
+					<IndexPreview />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="now"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+				>
+					<NowPreview />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="bewegung"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+				>
+					<BewegungPreview />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="that-3d-episode"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+				>
+					<ThirdDimensionPreview />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="dinkelberg"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+				>
+					<DinkelbergPreview className="full-screen" />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="printer"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+						How to fix your printer
+					</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+				>
+					<RickrollPreviw className="full-screen" />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="about"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="c" tapeType="stripes">about</Cassette>
+				</summary>
+				<div
+					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+				>
+					<AboutPreview />
+				</div>
+			</details>
+		</li>
+
+		<li>
+			<details
+				id="css-database"
+				name="cassette"
+				class="cassette"
+				style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+			>
+				<summary class="vhs-slot cassette-body">
+					<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+						Connect your database with CSS
+					</Cassette>
+				</summary>
+
+				<div
+					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+				>
+					<RickrollPreviw className="full-screen" />
+				</div>
+			</details>
+		</li>
+	</ul>
+</cassette-interaction>
+
+<style is:global>
+	@layer components {
+		.cassette-pile {
+			--list-gap: var(--cassette-gap) 0;
+
+			& > li {
+				display: contents;
+			}
+
+			&:not(:has([open])) > li:nth-of-type(1) .cassette-body,
+			&:has([open]) > li:nth-of-type(2) .cassette-body {
+				transform: translateZ(var(--cassette-offset-z));
+			}
+		}
+
+		.cassette {
+			font-size: var(--font--1);
+			margin-inline: auto;
+		}
+
+		.cassette[open] {
+			order: -1;
+			margin-top: calc(var(--tv-height) * -1);
+			transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
+			width: 100%;
+
+			.cassette-body {
+				transform: translateZ(calc(var(--cassette-active-offset-z) + var(--screen-offset-z)));
+				position: absolute;
+				bottom: calc(var(--tv-padding) + var(--vhs-slot-padding));
+				left: calc(var(--tv-padding) + var(--vhs-slot-padding));
+			}
+
+			.cassette-content {
+				animation: on 500ms ease;
+				transform: translateZ(calc(var(--screen-offset-z) / 2));
+				position: absolute;
+				top: var(--tv-screen-inset);
+				left: var(--tv-screen-inset);
+			}
+
+			:has(#tv-power-button:not(:checked)) & .cassette-content {
+				scale: 0 0;
+				animation: on 500ms ease reverse;
+			}
+		}
+
+		.cassette-body {
+			--cassette-background: hsla(0, 0%, 10%, 1);
+
+			--block-border: var(--border-width) solid var(--black);
+			--block-background: var(--cassette-background);
+			--block-depth: calc(var(--cassette-depth));
+			--block-width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
+			--block-aspect-ratio: var(--cassette-aspect-ratio);
+			--block-border-radius: var(--tv-border-radius);
+
+			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
+		}
+	}
+</style>

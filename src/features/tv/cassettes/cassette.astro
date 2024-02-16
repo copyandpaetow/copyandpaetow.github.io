@@ -6,57 +6,13 @@ export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
 	color?: string;
-	id: string;
 }
-
-const { id, ...tapeProps } = Astro.props;
-
-const randomNumber = (min: number, max: number) => {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const randomXOffset = randomNumber(-10, 10);
-const randomZOffset = randomNumber(1, 30);
 ---
 
-<article
-	class="cassette tv-layout"
-	id={id}
-	style=`
-	--cassette-offset-x: ${randomXOffset}%;
-	--cassette-offset-z: ${randomZOffset}px;`
->
-	<Block className="cassette-body vhs-slot">
-		<CassetteTape {...tapeProps}>
+<Block>
+	<CassetteTape {...Astro.props}>
+		<span>
 			<slot />
-		</CassetteTape>
-	</Block>
-
-	<slot name="screen" />
-</article>
-
-<style is:global>
-	@layer components {
-		.cassette {
-			font-size: var(--font--1);
-			pointer-events: none;
-
-			& > * {
-				pointer-events: initial;
-			}
-		}
-
-		.cassette-body {
-			--cassette-background: hsla(0, 0%, 10%, 1);
-
-			--block-border: var(--border-width) solid var(--black);
-			--block-background: var(--cassette-background);
-			--block-depth: calc(var(--cassette-depth));
-			--block-width: calc(var(--vhs-slot-width) - 4 * var(--vhs-slot-padding));
-			--block-aspect-ratio: var(--cassette-aspect-ratio);
-			--block-border-radius: var(--tv-border-radius);
-
-			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
-		}
-	}
-</style>
+		</span>
+	</CassetteTape>
+</Block>

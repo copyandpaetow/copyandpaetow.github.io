@@ -48,14 +48,15 @@
 	padding: 0;
 	list-style: none;
 	display: grid;
-	gap: 1rem;
+	gap: var(--list-gap, 1rem);
+	grid-auto-rows: max-content;
 }
 
 :where(li) {
 	display: grid;
 	grid-template-columns: 0 1fr;
-	gap: 2.25em;
-	align-items: start;
+	gap: 0 2.25em;
+	align-items: center;
 	font-size: 1.5rem;
 	line-height: 1.25;
 }
@@ -77,35 +78,11 @@
 
 :where(video) {
 	width: 100%;
+	height: 100%;
 	object-fit: cover;
 }
 
-:where(a, button, input),
+:where(a, button, input, summary),
 :where(label:has(input)) {
 	cursor: pointer;
-}
-
-:where(dialog) {
-	--_dialog-height: var(--dialog-height, 100%);
-	--_dialog-width: var(--dialog-width, 100%);
-	--_dialog-position: var(--dialog-position, fixed);
-	--_dialog-inset: var(--dialog-inset, 0);
-	--_dialog-z-index: var(--dialog-z-index, 1);
-
-	overflow: initial;
-	color: transparent;
-	background: transparent;
-	border: none;
-	padding: 0;
-	width: var(--_dialog-width);
-	height: var(--_dialog-height);
-	max-height: var(--_dialog-height);
-	max-width: var(--_dialog-width);
-	position: var(--_dialog-position);
-	inset: var(--_dialog-inset);
-	z-index: var(--_dialog-z-index);
-}
-
-:where(popover-helper) {
-	display: contents;
 }

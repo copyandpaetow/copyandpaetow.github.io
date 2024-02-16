@@ -1,66 +1,95 @@
 ---
 import AboutPreview from "../content/about-preview.astro";
 import BewegungPreview from "../content/bewegung-preview.astro";
-import CssDatabasePreview from "../content/css-database-preview.astro";
+import RickrollPreviw from "../content/rickroll.astro";
 import DinkelbergPreview from "../content/dinkelberg-preview.astro";
-import FixPrinterPreview from "../content/fix-printer-preview.astro";
 import IndexPreview from "../content/index-preview.astro";
 import NowPreview from "../content/now-preview.astro";
 import Back from "../icons/back.svg?raw";
+
+export interface Props {
+	className?: string;
+}
+
+const { className = "" } = Astro.props;
 ---
 
-<details class="menu-details screen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">About</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<AboutPreview />
-</details>
-
-<details class="menu-details screen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">Bewegung - an animation library</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<BewegungPreview />
-</details>
-
-<details class="menu-details fullscreen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">How to connect to your database with CSS</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<CssDatabasePreview className="full-screen overflow-hidden" />
-</details>
-
-<details class="menu-details fullscreen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">DINKELBERG</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<DinkelbergPreview className="full-screen" />
-</details>
-
-<details class="menu-details fullscreen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">How to fix your printer in seconds</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<FixPrinterPreview className="full-screen overflow-hidden" />
-</details>
-
-<details class="menu-details screen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">The intro nobody asked for</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<IndexPreview />
-</details>
-
-<details class="menu-details screen-content-layout">
-	<summary class="with-icon-start">
-		<p class="visible-closed">Now</p>
-		<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-	</summary>
-	<NowPreview />
-</details>
+<ol {...className && { class: className }}>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">About</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<AboutPreview />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">Bewegung - an animation library</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<BewegungPreview />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">How to connect to your database with CSS</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<RickrollPreviw className="full-screen overflow-hidden" />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">DINKELBERG</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<DinkelbergPreview className="full-screen" />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">How to fix your printer in seconds</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<RickrollPreviw className="full-screen overflow-hidden" />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">The intro nobody asked for</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<IndexPreview />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">Now</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<NowPreview />
+			</div>
+		</details>
+	</li>
+</ol>

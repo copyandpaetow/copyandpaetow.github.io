@@ -36,7 +36,7 @@
 		transform-style: preserve-3d;
 	}
 
-	& :where(*:not(button, label, a, input)) {
+	& :where(*:not(button, label, a, input, summary)) {
 		outline: 1px solid transparent;
 	}
 }
@@ -71,7 +71,8 @@
 	}
 }
 
-.no-overflow {
+.overflow-scroll {
+	overscroll-behavior: contain;
 	overflow-y: auto;
 	scrollbar-width: none;
 	&::-webkit-scrollbar {
@@ -81,4 +82,8 @@
 
 .overflow-hidden {
 	overflow: hidden;
+}
+
+.display-contents {
+	display: contents;
 }

@@ -22,12 +22,9 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="screen-root screen-content-layout">
-		<nav class="">
-			<!--@ts-expect-error popovertargetaction is to new? -->
-			<details
-				class="screen-layout-content menu-details screen-root screen-content-layout first-menu-level"
-			>
-				<summary class="with-icon-start">
+		<nav class="navigation details-layout">
+			<details>
+				<summary>
 					<p class="visible-closed">
 						settings
 						<span class="no-tv">(no tv realism)</span>
@@ -37,20 +34,30 @@ const { title } = Astro.props;
 						<Fragment set:html={Back} /> exit
 					</p>
 				</summary>
-				<details class="menu-details screen-content-layout full-screen">
-					<summary class="with-icon-start">
-						<p class="visible-closed">program</p>
-						<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-					</summary>
-					<Program />
-				</details>
-				<details class="menu-details screen-content-layout full-screen">
-					<summary class="with-icon-start">
-						<p class="visible-closed">settings</p>
-						<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-					</summary>
-					<Settings animationDefault={false} tvRealismDefault={false} />
-				</details>
+				<ol class="content">
+					<li class="details-layout">
+						<details>
+							<summary>
+								<p class="visible-closed">program</p>
+								<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+							</summary>
+							<Program className="content overflow-scroll" />
+						</details>
+					</li>
+					<li class="details-layout">
+						<details>
+							<summary>
+								<p class="visible-closed">settings</p>
+								<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+							</summary>
+							<Settings
+								animationDefault={false}
+								tvRealismDefault={false}
+								className="content overflow-scroll"
+							/>
+						</details>
+					</li>
+				</ol>
 			</details>
 		</nav>
 		<slot name="header" />
@@ -66,16 +73,6 @@ const { title } = Astro.props;
 		body {
 			--save-screen-padding: 0.5rem;
 			--screen-gap: 2rem 0rem;
-
-			& nav:not(:has(details[open])) {
-				position: sticky;
-				top: 0;
-			}
-
-			&:has(details[open]) {
-				height: 100dvh;
-				position: fixed;
-			}
 
 			@media (min-width: 22rem) {
 				--save-screen-padding: 1rem;
@@ -99,19 +96,9 @@ const { title } = Astro.props;
 			}
 		}
 
-		.settings-button {
-			display: grid;
-			grid-auto-flow: column;
-			gap: 0.25rem;
-		}
-
 		:has(#settings-animation:checked) .no-anim,
 		:has(#settings-tv-realism:checked) .no-tv {
 			display: none;
-		}
-
-		.screen-content-layout > .screen-back-button {
-			margin-bottom: 5%;
 		}
 
 		.screen-root::after,
@@ -122,44 +109,23 @@ const { title } = Astro.props;
 			height: 100svh;
 		}
 
-		.tertiary-menu {
-			--dialog-z-index: 3;
-		}
+		.navigation {
+			--screen-content-height: 100dvh;
+			--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+			--content-width: minmax(19rem, 40rem);
+			--save-screen-padding-inline: 1fr;
 
-		.screen-layout-content {
-			&:not([open]) {
-				--save-screen-padding-block: 0;
-				--save-screen-padding-inline: 0;
-				--screen-background: transparent;
-				width: fit-content;
+			background-color: var(--_screen-background);
+
+			&:has(> [open]) {
+				height: var(--screen-content-height);
+				position: absolute;
+			}
+
+			&:not(:has(> [open])) {
 				height: fit-content;
-			}
-
-			&:not([open]).screen-root::before,
-			&:not([open]).screen-root::after,
-			& > summary::before,
-			& > summary::marker {
-				content: none;
-			}
-
-			&[open] {
-				--menu-height: 100dvh;
-				--menu-width: 100%;
-				--menu-inset: 0;
-				--screen-gap: 0.5rem 0rem;
-				--save-screen-padding-block: 5vh;
-			}
-
-			& .fullscreen-content-layout {
-				--screen-gap: 0rem 0rem;
-			}
-
-			& .fullscreen-content-layout[open] {
-				grid-column: full-screen;
-			}
-
-			& > details:not([open]) {
-				grid-column: save-screen;
+				position: sticky;
+				top: 0;
 			}
 		}
 	}
