@@ -151,29 +151,3 @@
 		}
 	}
 }
-
-.screen-text {
-	--_screen-text-color: var(--screen-text-color, var(--black));
-	font-family: "Press Start 2P";
-	font-size: var(--font--2);
-
-	& * {
-		font-size: var(--font--2);
-		color: var(--_screen-text-color);
-	}
-
-	:has(#settings-tv-realism:checked) & * {
-		text-shadow:
-			0 0 0.08em var(--_screen-text-color),
-			-0.08em 0 0.08em aqua,
-			0.08em 0 0.08em fuchsia;
-	}
-
-	& h1 {
-		font-size: var(--font--1);
-	}
-
-	& :where(h1, h2) {
-		margin-bottom: 1em;
-	}
-}

@@ -90,46 +90,6 @@ const { className = "" } = Astro.props;
 				);
 		}
 
-		.tv-layout {
-			height: var(--tv-height);
-			width: 100%;
-
-			display: grid;
-			grid-template-columns:
-				var(--tv-padding)
-				[vhs-slot-start screen-frame-start] var(--screen-padding)
-				[screen-content-start] 1fr
-				[screen-content-end] var(--screen-padding)
-				[vhs-slot-end screen-frame-end] var(--tv-padding);
-
-			grid-template-rows:
-				var(--tv-padding)
-				[screen-frame-start] var(--screen-padding)
-				[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
-				[screen-content-end] var(--screen-padding)
-				[screen-frame-end button-row-start]
-				var(--module-gap)
-				[button-row-end vhs-slot-start] var(--vhs-slot-height)
-				[vhs-slot-end]
-				var(--tv-padding);
-
-			.tv-screen {
-				grid-area: screen-frame;
-			}
-
-			.screen-content {
-				grid-area: screen-content;
-			}
-
-			.tv-power-button {
-				grid-area: button-row / screen-content;
-			}
-
-			.vhs-slot {
-				grid-area: vhs-slot;
-			}
-		}
-
 		.tv-power-button {
 			--tv-button-background: rgb(255, 0, 0);
 			--tv-button-background-border: rgb(130, 0, 0);

@@ -55,7 +55,7 @@
 :where(li) {
 	display: grid;
 	grid-template-columns: 0 1fr;
-	gap: 0 2.25em;
+	gap: var(--list-item-gap, 0 2.25em);
 	align-items: center;
 	font-size: 1.5rem;
 	line-height: 1.25;

@@ -30,7 +30,7 @@ const { className = "" } = Astro.props;
 			font-weight: bold;
 		}
 
-		:has(.cassette[open]) .vhs-player span {
+		:has(.cassette > details[open]) .vhs-player span {
 			transform: rotateX(89deg);
 			transition: none;
 		}

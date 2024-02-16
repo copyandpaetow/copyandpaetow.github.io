@@ -1,50 +1,42 @@
 const isFirefox = CSS.supports("-moz-appearance: none");
 
-export class CassetteInteraction extends HTMLElement {
-	controller: AbortController;
+export const polyFillFirefoxDetailAccordions = () => {
+	const cassettePile = document.querySelector(".cassette-pile") as HTMLOListElement | undefined;
 
-	constructor() {
-		super();
-		this.controller = new AbortController();
+	if (!isFirefox || !cassettePile) {
+		return;
 	}
 
-	connectedCallback() {
-		this.controller = new AbortController();
-		const { signal } = this.controller;
+	const signal = new AbortController().signal;
+	let activeCassette = cassettePile.querySelector("details[open]") as
+		| HTMLDetailsElement
+		| undefined;
 
-		if (!isFirefox) {
-			return;
-		}
-		let activeCassette = this.querySelector(".cassette[open]") as HTMLDetailsElement | undefined;
+	cassettePile.addEventListener(
+		"click",
+		(event) => {
+			const target = event.target as HTMLElement;
+			const nextSummary = target.tagName === "SUMMARY" ? target : target.closest("summary");
 
-		this.addEventListener(
-			"click",
-			(event) => {
-				const target = event.target as HTMLElement;
-				const nextSummary = target.tagName === "SUMMARY" ? target : target.closest("summary");
+			if (!nextSummary) {
+				return;
+			}
 
-				if (!nextSummary) {
-					return;
-				}
+			const details = nextSummary.parentElement as HTMLDetailsElement;
 
-				const details = nextSummary.parentElement as HTMLDetailsElement;
+			if (activeCassette) {
+				[activeCassette, ...activeCassette.querySelectorAll("details[open]")].forEach(
+					(openedDetail) => openedDetail.removeAttribute("open")
+				);
+			}
 
-				if (activeCassette === details) {
-					activeCassette?.removeAttribute("open");
-					activeCassette = undefined;
-					return;
-				}
+			if (activeCassette === details) {
+				activeCassette = undefined;
+				return;
+			}
 
-				activeCassette?.removeAttribute("open");
-				activeCassette = details;
-			},
-			{ signal }
-		);
-	}
-
-	disconnectedCallback() {
-		this.controller.abort();
-	}
-}
-
-customElements.define("cassette-interaction", CassetteInteraction);
+			activeCassette = details;
+		},
+		{ signal }
+	);
+};

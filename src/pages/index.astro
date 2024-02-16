@@ -30,18 +30,12 @@ import Room from "../features/tv/room.astro";
 - turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
 => we can do this even better> We just need one element with 2 (pseudo) elements. If the camera changes, the elements render differently. Ideally, one element is always responsible for one plane and just moves sideways and or flips
 
-##todo: show/hide content rework
-
-- namings are confusing compared to the other layouting classes
-- on firefox opening a detail is not closing any sibling
-
 
 ## bugs
-- on safari modals are focused?
 - all 3d elements need to either have an outline/border or some kind of shadow not a mix of both
 - z-indices are unsorted, could be turned into a layer system
 - overflowing the preview content leads to also moving of the screen effect, can it be done without a wrapper?
-- maybe splitting the screen text and screen animation might be a good idea after all because in the remote setting, the text is needed seperatly
+- layout namings / custom properties are confusing and overlap 
 
 */
 </script>
