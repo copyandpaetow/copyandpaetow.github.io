@@ -20,200 +20,198 @@ const randomNumber = (min: number, max: number) => {
 ---
 
 <script>
-	import "./cassette-interaction.ts";
+	import { polyFillFirefoxDetailAccordions } from "./cassette-interaction.ts";
+
+	requestAnimationFrame(polyFillFirefoxDetailAccordions);
 </script>
 
-<cassette-interaction class="display-contents">
-	<ul class=`small-screen cassette-pile ${className}`>
-		<li>
-			<details
-				open
-				id="intro"
-				name="cassette"
-				class="cassette"
-				style=`
+<ul class=`small-screen cassette-pile ${className}`>
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details open id="intro" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="c">the intro nobody asked for</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="c">the intro nobody asked for</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-				>
-					<IndexPreview />
-				</div>
-			</details>
-		</li>
+				<IndexPreview />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="now"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="now" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-				>
-					<NowPreview />
-				</div>
-			</details>
-		</li>
+				<NowPreview />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="bewegung"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="bewegung" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-				>
-					<BewegungPreview />
-				</div>
-			</details>
-		</li>
+				<BewegungPreview />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="that-3d-episode"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="that-3d-episode" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-				>
-					<ThirdDimensionPreview />
-				</div>
-			</details>
-		</li>
+				<ThirdDimensionPreview />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="dinkelberg"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="dinkelberg" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-				>
-					<DinkelbergPreview className="full-screen" />
-				</div>
-			</details>
-		</li>
+				<DinkelbergPreview className="full-screen" />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="printer"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="printer" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+					How to fix your printer
+				</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="b" tapeType="checked" color="var(--blue)">
-						How to fix your printer
-					</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-				>
-					<RickrollPreviw className="full-screen" />
-				</div>
-			</details>
-		</li>
+				<RickrollPreviw className="full-screen" />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="about"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<details id="about" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="c" tapeType="stripes">about</Cassette>
+			</summary>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="c" tapeType="stripes">about</Cassette>
-				</summary>
-				<div
-					class="cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-				>
-					<AboutPreview />
-				</div>
-			</details>
-		</li>
+				<AboutPreview />
+			</div>
+		</details>
+	</li>
 
-		<li>
-			<details
-				id="css-database"
-				name="cassette"
-				class="cassette"
-				style=`
+	<li
+		class="tv-layout cassette"
+		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
-			>
-				<summary class="vhs-slot cassette-body">
-					<Cassette decoType="b" tapeType="checked" color="var(--blue)">
-						Connect your database with CSS
-					</Cassette>
-				</summary>
+	>
+		<details id="css-database" name="cassette">
+			<summary class="vhs-slot cassette-body">
+				<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+					Connect your database with CSS
+				</Cassette>
+			</summary>
 
-				<div
-					class="cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-				>
-					<RickrollPreviw className="full-screen" />
-				</div>
-			</details>
-		</li>
-	</ul>
-</cassette-interaction>
+			<div
+				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+			>
+				<RickrollPreviw className="full-screen" />
+			</div>
+		</details>
+	</li>
+</ul>
 
 <style is:global>
 	@layer components {
 		.cassette-pile {
 			--list-gap: var(--cassette-gap) 0;
+			--list-item-gap: 0;
 
-			& > li {
+			& details {
 				display: contents;
 			}
 
-			&:not(:has([open])) > li:nth-of-type(1) .cassette-body,
-			&:has([open]) > li:nth-of-type(2) .cassette-body {
+			&:has([open]):has(li:nth-of-type(1) > details:not([open])) > li:nth-of-type(1) .cassette-body,
+			&:has(li:nth-of-type(1) > details[open]) > li:nth-of-type(2) .cassette-body {
 				transform: translateZ(var(--cassette-offset-z));
 			}
 		}
 
-		.cassette {
-			font-size: var(--font--1);
-			margin-inline: auto;
+		/* this needs to be refactored at some point */
+		.cassette .screen-content {
+			& ul {
+				--list-item-gap: 0 2.25em;
+				--list-gap: 1rem;
+			}
+
+			& li {
+				align-items: start;
+			}
 		}
 
-		.cassette[open] {
+		.cassette:not(:has([open])) {
+			grid-template-columns: 1fr max-content 1fr;
+			grid-template-rows: max-content;
+			grid-template-areas: ". vhs-slot .";
+			height: 100%;
+		}
+
+		.cassette:has([open]) {
 			order: -1;
 			margin-top: calc(var(--tv-height) * -1);
 			transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
@@ -221,17 +219,12 @@ const randomNumber = (min: number, max: number) => {
 
 			.cassette-body {
 				transform: translateZ(calc(var(--cassette-active-offset-z) + var(--screen-offset-z)));
-				position: absolute;
-				bottom: calc(var(--tv-padding) + var(--vhs-slot-padding));
-				left: calc(var(--tv-padding) + var(--vhs-slot-padding));
+				margin-inline: auto;
 			}
 
 			.cassette-content {
 				animation: on 500ms ease;
 				transform: translateZ(calc(var(--screen-offset-z) / 2));
-				position: absolute;
-				top: var(--tv-screen-inset);
-				left: var(--tv-screen-inset);
 			}
 
 			:has(#tv-power-button:not(:checked)) & .cassette-content {
