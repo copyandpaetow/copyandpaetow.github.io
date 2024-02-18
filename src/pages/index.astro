@@ -6,40 +6,6 @@ import Remote from "../features/tv/remote/remote.astro";
 import Room from "../features/tv/room.astro";
 ---
 
-<script>
-	/*
-
-## todo: remote
-- enable channel functionality
-- settings label buttons on the remote need some kind of grouping
-- real remote buttons
-- the remote will not be usable without javascript. In that case we should only show it in its extended form when js is enabled
-
-## todo: content
-- rewrite about text
-- include bewegung text
-
-## todo: animation and sounds
-- add more sounds
-=> tv turning on
-=> static noise and animation of the static
-- rotate the scene slightly based on mouse position
-
-##todo: 3d
-- add height with boxes and gimmicks like a 3d sandwhich (2 buns + lettuce + patty + cheese + tomatO => https://codepen.io/qub3r-001/pen/KKveNaK)
-- turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
-=> we can do this even better> We just need one element with 2 (pseudo) elements. If the camera changes, the elements render differently. Ideally, one element is always responsible for one plane and just moves sideways and or flips
-
-
-## bugs
-- all 3d elements need to either have an outline/border or some kind of shadow not a mix of both
-- z-indices are unsorted, could be turned into a layer system
-- overflowing the preview content leads to also moving of the screen effect, can it be done without a wrapper?
-- layout namings / custom properties are confusing and overlap 
-
-*/
-</script>
-
 <Layout title="Copy and Paetow">
 	<header class="visually-hidden">
 		<h1>Hey, it</h1>
