@@ -1,42 +1,45 @@
-const isFirefox = CSS.supports("-moz-appearance: none");
+export const cassetteInteractionEnhancement = () => {
+	const cassettePile = document.querySelector(".cassette-pile") as HTMLUListElement;
 
-export const polyFillFirefoxDetailAccordions = () => {
-	const cassettePile = document.querySelector(".cassette-pile") as HTMLOListElement | undefined;
-
-	if (!isFirefox || !cassettePile) {
+	if (!cassettePile) {
 		return;
 	}
 
-	const signal = new AbortController().signal;
-	let activeCassette = cassettePile.querySelector("details[open]") as
-		| HTMLDetailsElement
-		| undefined;
+	const controller = new AbortController();
+	const signal = controller.signal;
 
-	cassettePile.addEventListener(
-		"click",
-		(event) => {
-			const target = event.target as HTMLElement;
-			const nextSummary = target.tagName === "SUMMARY" ? target : target.closest("summary");
+	try {
+		document.addEventListener(
+			"keydown",
+			(event) => {
+				if (event.key !== "Escape" || !window.location.hash) {
+					return;
+				}
 
-			if (!nextSummary) {
-				return;
-			}
+				window.location.hash = "";
+			},
+			{ signal }
+		);
 
-			const details = nextSummary.parentElement as HTMLDetailsElement;
+		cassettePile.addEventListener(
+			"click",
+			(event) => {
+				const target = event.target as HTMLElement;
+				const anchor = target.hasAttribute("href") ? target : target.closest("a");
+				const href = anchor?.getAttribute("href");
 
-			if (activeCassette) {
-				[activeCassette, ...activeCassette.querySelectorAll("details[open]")].forEach(
-					(openedDetail) => openedDetail.removeAttribute("open")
-				);
-			}
+				if (href === window.location.hash) {
+					event.preventDefault();
+					window.location.hash = "";
+				}
+			},
+			{ signal }
+		);
 
-			if (activeCassette === details) {
-				activeCassette = undefined;
-				return;
-			}
-
-			activeCassette = details;
-		},
-		{ signal }
-	);
+		if (!window.location.hash) {
+			window.location.hash = "#intro";
+		}
+	} catch (error) {
+		controller.abort();
+	}
 };

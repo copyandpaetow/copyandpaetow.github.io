@@ -20,159 +20,183 @@ const randomNumber = (min: number, max: number) => {
 ---
 
 <script>
-	import { polyFillFirefoxDetailAccordions } from "./cassette-interaction.ts";
+	import { cassetteInteractionEnhancement } from "./cassette-interaction.ts";
 
-	requestAnimationFrame(polyFillFirefoxDetailAccordions);
+	setTimeout(cassetteInteractionEnhancement, 2000);
 </script>
 
 <ul class=`small-screen cassette-pile ${className}`>
 	<li
+		id="intro"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details open id="intro" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="c">the intro nobody asked for</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-			>
-				<IndexPreview />
-			</div>
-		</details>
+		<a
+			href="#intro"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews the intro"
+		>
+			<Cassette decoType="c">the intro nobody asked for</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<IndexPreview />
+		</dialog>
 	</li>
 
 	<li
+		id="now"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="now" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-			>
-				<NowPreview />
-			</div>
-		</details>
+		<a
+			href="#now"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews what I am working on at the moment"
+		>
+			<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<NowPreview />
+		</dialog>
 	</li>
 
 	<li
+		id="bewegung"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="bewegung" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-			>
-				<BewegungPreview />
-			</div>
-		</details>
+		<a
+			href="#bewegung"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews the bewegung github project"
+		>
+			<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<BewegungPreview />
+		</dialog>
 	</li>
 
 	<li
+		id="that-3d-episode"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="that-3d-episode" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-			>
-				<ThirdDimensionPreview />
-			</div>
-		</details>
+		<a
+			href="#that-3d-episode"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and shows the whole scene in 3D"
+		>
+			<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<ThirdDimensionPreview />
+		</dialog>
 	</li>
 
 	<li
+		id="dinkelberg"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="dinkelberg" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-			>
-				<DinkelbergPreview className="full-screen" />
-			</div>
-		</details>
+		<a
+			href="#dinkelberg"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews a meme"
+		>
+			<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+		>
+			<DinkelbergPreview className="full-screen" />
+		</dialog>
 	</li>
 
 	<li
+		id="printer"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="printer" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="b" tapeType="checked" color="var(--blue)">
-					How to fix your printer
-				</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-			>
-				<RickrollPreviw className="full-screen" />
-			</div>
-		</details>
+		<a
+			href="#printer"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews a meme video"
+		>
+			<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+				How to fix your printer
+			</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+		>
+			<RickrollPreviw className="full-screen" />
+		</dialog>
 	</li>
 
 	<li
+		id="about"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="about" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="c" tapeType="stripes">about</Cassette>
-			</summary>
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
-			>
-				<AboutPreview />
-			</div>
-		</details>
+		<a
+			href="#about"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews content about myself"
+		>
+			<Cassette decoType="c" tapeType="stripes">about</Cassette>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<AboutPreview />
+		</dialog>
 	</li>
 
 	<li
+		id="css-database"
 		class="tv-layout cassette"
 		style=`
 	--cassette-offset-x: ${randomNumber(-10, 10)}%;
 	--cassette-offset-z: ${randomNumber(1, 30)}px;`
 	>
-		<details id="css-database" name="cassette">
-			<summary class="vhs-slot cassette-body">
-				<Cassette decoType="b" tapeType="checked" color="var(--blue)">
-					Connect your database with CSS
-				</Cassette>
-			</summary>
+		<a
+			href="#css-database"
+			class="vhs-slot cassette-body"
+			aria-label="jumps to the tv and previews a meme video"
+		>
+			<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+				Connect your database with CSS
+			</Cassette>
+		</a>
 
-			<div
-				class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
-			>
-				<RickrollPreviw className="full-screen" />
-			</div>
-		</details>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
+		>
+			<RickrollPreviw className="full-screen" />
+		</dialog>
 	</li>
 </ul>
 
@@ -182,13 +206,15 @@ const randomNumber = (min: number, max: number) => {
 			--list-gap: var(--cassette-gap) 0;
 			--list-item-gap: 0;
 
-			& details {
-				display: contents;
-			}
-
-			&:has([open]):has(li:nth-of-type(1) > details:not([open])) > li:nth-of-type(1) .cassette-body,
-			&:has(li:nth-of-type(1) > details[open]) > li:nth-of-type(2) .cassette-body {
+			&:has(:target):not(:has(li:nth-of-type(1):target)) > li:nth-of-type(1) .cassette-body,
+			&:has(li:nth-of-type(1):target) > li:nth-of-type(2) .cassette-body {
 				transform: translateZ(var(--cassette-offset-z));
+			}
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			:has(:target) {
+				scroll-behavior: smooth;
 			}
 		}
 
@@ -204,14 +230,22 @@ const randomNumber = (min: number, max: number) => {
 			}
 		}
 
-		.cassette:not(:has([open])) {
+		.cassette:not(:target) {
 			grid-template-columns: 1fr max-content 1fr;
 			grid-template-rows: max-content;
 			grid-template-areas: ". vhs-slot .";
 			height: 100%;
+
+			.cassette-content {
+				display: none;
+			}
 		}
 
-		.cassette:has([open]) {
+		:target {
+			scroll-margin-block-start: var(--tv-height);
+		}
+
+		.cassette:target {
 			order: -1;
 			margin-top: calc(var(--tv-height) * -1);
 			transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
@@ -244,6 +278,7 @@ const randomNumber = (min: number, max: number) => {
 			--block-border-radius: var(--tv-border-radius);
 
 			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
+			text-decoration: none;
 		}
 	}
 </style>

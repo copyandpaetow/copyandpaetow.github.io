@@ -103,7 +103,7 @@
 	padding-block: var(--scene-padding);
 }
 
-:has(#that-3d-episode[open]) .camera {
+:has(#that-3d-episode:target) .camera {
 	--block-render-top: block;
 	--block-render-right: block;
 	--perspective: 2000px;
