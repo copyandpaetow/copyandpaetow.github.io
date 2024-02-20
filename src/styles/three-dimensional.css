@@ -1,0 +1,129 @@
+.camera {
+	--_perspective: var(--perspective, 200000px);
+	--_camera-truck: var(--camera-truck, 0px);
+	--_camera-pedestal: var(--camera-pedestal, 0px);
+	--_camera-dolly: var(--camera-dolly, 0px);
+
+	--_camera-roll: var(--camera-roll, 0deg);
+	--_camera-pan: var(--camera-pan, 0deg);
+	--_camera-tilt: var(--camera-tilt, 0deg);
+
+	transform: perspective(var(--_perspective)) translateZ(var(--_perspective))
+		translateX(calc(var(--_camera-truck) * -1)) translateY(var(--_camera-pedestal))
+		translateZ(calc(var(--_camera-dolly) * -1)) rotateX(var(--_camera-roll))
+		rotateY(var(--_camera-pan)) rotateZ(var(--_camera-tilt))
+		translateZ(calc(var(--_perspective) * -1));
+
+	transform-style: preserve-3d;
+	display: block;
+
+	& :where(*) {
+		transform-style: preserve-3d;
+	}
+
+	& :where(*:not(button, label, a, input, summary)) {
+		outline: 1px solid transparent;
+	}
+}
+
+.three-dimensional {
+	position: relative;
+
+	--_block-depth: var(--block-depth);
+	--_block-x-direction: var(--block-x-direction, 1);
+	--_block-y-direction: var(--block-y-direction, 1);
+
+	--_block-render-front: var(--block-render-front, var(--default-display, block));
+	--_block-render-top: var(--block-render-top, none);
+	--_block-render-right: var(--block-render-right, none);
+	--_block-render-back: var(--block-render-back, none);
+	--_block-render-bottom: var(--block-render-bottom, none);
+	--_block-render-left: var(--block-render-left, none);
+
+	--_block-render-x: var(--block-render-x, none);
+	--_block-render-y: var(--block-render-y, none);
+
+	--_block-border-radius: var(--block-border-radius, 0);
+
+	&:has(> .top):has(> .bottom) {
+		--_block-render-y: none;
+	}
+	&:has(> .right):has(> .left) {
+		--_block-render-x: none;
+	}
+
+	&:has(> .right) {
+		--_block-x-direction: var(--block-x-direction, -1);
+	}
+
+	&:has(> .bottom) {
+		--_block-y-direction: var(--block-y-direction, -1);
+	}
+
+	.front {
+		height: 100%;
+		display: var(--_block-render-front);
+		border: var(--block-border);
+		background: var(--block-background);
+	}
+
+	.front:not(.no-opposite)::after {
+		content: "";
+		position: absolute;
+		display: var(--_block-render-back);
+		inset: 0;
+		border: var(--block-border);
+		background: var(--block-background);
+		transform: rotateY(90.01deg) translateX(var(--_block-depth)) rotateY(-90.01deg);
+	}
+
+	.top,
+	.bottom,
+	&::before {
+		content: var(--_block-render-y);
+		position: absolute;
+		inset: 0;
+		border: var(--block-border);
+		background: var(--block-background);
+		height: var(--_block-depth);
+		transform: translateY(-50%) rotateX(90.01deg) translateY(-50%);
+		top: calc(50% - 50% * var(--_block-y-direction));
+	}
+
+	&:has(> .bottom)::before,
+	.top {
+		top: 0%;
+		display: var(--_block-render-top);
+	}
+
+	&:has(> .top)::before,
+	.bottom {
+		top: 100%;
+		display: var(--_block-render-bottom);
+	}
+
+	.right,
+	.left,
+	&::after {
+		content: var(--_block-render-x);
+		position: absolute;
+		inset: 0;
+		border: var(--block-border);
+		background: var(--block-background);
+		width: var(--_block-depth);
+		transform: translateX(-50%) rotateY(90.01deg) translateX(50%);
+		left: calc(50% + 50% * var(--_block-x-direction));
+	}
+
+	&:has(> .right)::after,
+	.left {
+		left: 0%;
+		display: var(--_block-render-left);
+	}
+
+	&:has(> .left)::after,
+	.right {
+		left: 100%;
+		display: var(--_block-render-right);
+	}
+}

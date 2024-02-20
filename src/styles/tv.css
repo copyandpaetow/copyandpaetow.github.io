@@ -14,6 +14,7 @@
 	--tv-background: hsl(255, 2%, 67%);
 	--tv-padding: 8px;
 	--tv-border-color: hsl(255, 2%, 27%);
+	--tv-border-width: 0px;
 	--tv-border: var(--tv-border-width) solid var(--tv-border-color);
 	--tv-height: calc(
 		var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + var(--module-gap)
@@ -106,6 +107,8 @@
 :has(#that-3d-episode:target) .camera {
 	--block-render-top: block;
 	--block-render-right: block;
+	--block-render-y: "";
+	--block-render-x: "";
 	--perspective: 2000px;
 	--camera-truck: 1200px;
 	--camera-pan: -40deg;

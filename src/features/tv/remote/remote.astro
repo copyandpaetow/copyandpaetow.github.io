@@ -12,7 +12,7 @@ const { className = "" } = Astro.props;
 ---
 
 <div class=`remote ${className}`>
-	<RemoteBody className="inactive-remote" inert />
+	<RemoteBody className="interactive-remote" />
 	<section class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden">
 		<details>
 			<summary>
@@ -46,7 +46,7 @@ const { className = "" } = Astro.props;
 
 <style is:global>
 	@layer components {
-		.inactive-remote {
+		.interactive-remote {
 			transform-origin: top left;
 			transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
 				scale3d(var(--remote-scale), var(--remote-scale), 1);
@@ -61,6 +61,28 @@ const { className = "" } = Astro.props;
 			& > * {
 				grid-area: 1 / 1 /-1 / -1;
 			}
+
+			&:has([open]) {
+				@media (scripting: enabled) {
+					.interactive-remote {
+						position: absolute;
+						left: 50%;
+						transform: translateZ(300px)
+							translateY(
+								calc(
+									var(--screen-height) + 2 * var(--screen-padding) + var(--tv-padding) +
+										var(--remote-depth)
+								)
+							)
+							scale3d(0.8, 0.8, 0.8) translateX(-50%) rotateX(45deg);
+					}
+				}
+			}
+		}
+
+		.remote-toggle {
+			width: 100%;
+			height: var(--remote-depth);
 		}
 
 		.remote-screen.details-layout {

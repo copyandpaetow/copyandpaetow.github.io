@@ -3,19 +3,23 @@ export interface Props {
 	decoType?: "a" | "b" | "c";
 	tapeType?: "blank" | "stripes" | "checked";
 	color?: string;
+	className?: string;
 }
 
-const { decoType = "a", tapeType = "blank", color } = Astro.props;
+const { decoType = "a", tapeType = "blank", color, className = "" } = Astro.props;
 ---
 
-<div class="cassette-front">
+<div class=`cassette-front ${className}`>
+	<aside class="reader"></aside>
 	<div
 		class="tape"
 		data-deco-type={decoType}
 		data-tape-type={tapeType}
 		{...color && { style: `--tape-color: ${color};` }}
 	>
-		<slot />
+		<span>
+			<slot />
+		</span>
 	</div>
 </div>
 
@@ -43,9 +47,7 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				grid-area: 1 / tape;
 			}
 
-			&::before,
-			&::after {
-				content: "";
+			.reader {
 				grid-area: 1 / reader;
 				width: 50%;
 				height: 60%;
@@ -53,10 +55,14 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				background-color: hsla(0, 0%, 0%, 1);
 				align-self: end;
 			}
-			&::after {
-				width: 40%;
-				height: 35%;
-				transform: translateX(calc(75%)) translateY(0%);
+			.reader::after {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				width: 80%;
+				height: 60%;
+				transform: translateX(-50%);
 				background-color: var(--cassette-background);
 			}
 		}
@@ -81,14 +87,6 @@ const { decoType = "a", tapeType = "blank", color } = Astro.props;
 				@media (min-width: 28rem) {
 					font-size: 1.2rem;
 				}
-			}
-
-			& a:visited {
-				color: currentColor;
-			}
-
-			&:has(:focus-visible) {
-				outline: var(--tv-outline);
 			}
 
 			&[data-tape-type="stripes"] {

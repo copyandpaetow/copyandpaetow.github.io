@@ -86,3 +86,12 @@
 :where(label:has(input)) {
 	cursor: pointer;
 }
+
+:where(label:has(input:focus-visible)) {
+	outline: 1px solid white;
+}
+
+:where(svg) {
+	height: 100%;
+	width: 100%;
+}

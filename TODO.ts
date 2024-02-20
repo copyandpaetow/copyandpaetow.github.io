@@ -1,17 +1,14 @@
 /*
 
 todo: 3d
-- turn the top level div inside of the block into a custom component that gets coordinates and can render the scene based on what the camera is like
-=> maybe just do it with js, 3d custom components behave weird in some browsers
-
-=> we can do this even better> We just need one element with 2 (pseudo) elements. If the camera changes, the elements render differently. Ideally, one element is always responsible for one plane and just moves sideways and or flips
+- for the css only approach we can define classes like x0-y0-z0 for frontfacing elements or x115-y90-z0 for the remote. If we change the camera, we can target these elements together
+=> this could be done in a script none media query
+=> maybe we only need a dedicated class if it is not front facing
 
 todo: remote
 - enable channel functionality
-- settings label buttons on the remote need some kind of grouping
-- real remote buttons
-- the remote will not be usable without javascript. In that case we should only show it in its extended form when js is enabled
 - the trigger of the remote shifts away from its initial position, which might cause confusion. We can also turn this into a checkbox trigger
+- animate the remote opening
 
 todo: animation and sounds
 - add more sounds
@@ -30,6 +27,10 @@ todo: bugs
 - z-indices are unsorted, could be turned into a layer system
 - overflowing the preview content leads to also moving of the screen effect, can it be done without a wrapper?
 - layout namings / custom properties are confusing and overlap 
+
+?questions
+
+? should the page becomes inert if the settings are open ?
 
 */
 
