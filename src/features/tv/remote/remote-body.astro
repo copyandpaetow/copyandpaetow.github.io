@@ -9,8 +9,8 @@ import Up from "../icons/up.svg?raw";
 const { className = "" } = Astro.props;
 ---
 
-<section class={`remote-body three-dimensional ${className}`}>
-	<div class="front remote-front" inert>
+<section class={`remote-body three-dimensional ${className}`} inert>
+	<div class="front remote-front">
 		<label for="remote-power" class="row1"> exit</label>
 		<button id="remote-power" class="three-dimensional remote-button power-button row2"
 			><span class="front"><Fragment set:html={Power} /></span></button

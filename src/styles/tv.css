@@ -59,7 +59,9 @@
 	--remote-border-width: 2px;
 	--remote-bottom-padding: 5rem;
 
-	--remote-active-offset: calc(var(--vhs-slot-height) * -1 - var(--tv-padding));
+	--remote-active-offset: calc(
+		var(--screen-height) + 2 * var(--screen-padding) + var(--tv-padding) + var(--remote-depth)
+	);
 	--inner-screen-width: calc(var(--tv-width) - 2 * var(--tv-screen-inset));
 	--inner-screen-height: calc(var(--screen-height) - 2 * var(--screen-padding));
 	--tv-offset-top: calc(var(--tv-padding-block) + var(--remote-depth));
