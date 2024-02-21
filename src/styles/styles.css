@@ -6,3 +6,4 @@
 @import "./three-dimensional.css" layer(components);
 @import "./tv.css" layer(components);
 @import "./tv-screen.css" layer(components);
+@import "./tv-interactivity.css" layer(components);

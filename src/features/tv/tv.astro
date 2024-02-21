@@ -2,9 +2,6 @@
 import StaticBackground from "./screen/static-background.astro";
 import VHSPlayer from "./vhs-player.astro";
 import ScreenCurvature from "./screen/screen-curvature.astro";
-import Overview from "./menu/overview.astro";
-import Back from "./icons/back.svg?raw";
-
 import Power from "./icons/power.svg?raw";
 
 export interface Props {
@@ -20,7 +17,7 @@ const { className = "" } = Astro.props;
 		<aside class="tv-screen screen-inset screen-inset-block"></aside>
 
 		<aside class="screen-background screen-content screen-clipped-border overflow-hidden">
-			<StaticBackground className="full-screen" />
+			<StaticBackground className="full-screen screen-animation" />
 		</aside>
 
 		<ScreenCurvature />
@@ -65,13 +62,6 @@ const { className = "" } = Astro.props;
 
 			.screen-content {
 				transform: translateZ(calc(var(--screen-offset-z) / -2));
-			}
-
-			.screen-content svg {
-				background-color: var(--tv-background);
-				aspect-ratio: 1;
-				transform: scale(1.5);
-				pointer-events: none;
 			}
 		}
 		.tv > .front {
@@ -141,11 +131,13 @@ const { className = "" } = Astro.props;
 
 		.screen-background {
 			background: var(--black);
-		}
 
-		:has(#tv-power-button:not(:checked)) .screen-background svg {
-			scale: 0 0;
-			animation: on 500ms ease reverse;
+			& svg {
+				background-color: var(--tv-background);
+				aspect-ratio: 1;
+				transform: scale(1.5);
+				pointer-events: none;
+			}
 		}
 
 		.screen-inset {

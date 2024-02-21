@@ -114,13 +114,6 @@ const { className = "" } = Astro.props;
 			--block-depth: var(--remote-depth);
 			--block-border: 2px solid var(--tv-border-color);
 			--block-border-radius: var(--tv-border-radius);
-
-			--block-render-front: grid;
-			--block-render-bottom: block;
-			--block-render-left: block;
-			--block-render-x: "";
-			--block-render-y: "";
-			--block-x-direction: -1;
 		}
 
 		.remote-front {
@@ -165,6 +158,9 @@ const { className = "" } = Astro.props;
 			transform: translateZ(var(--block-depth));
 			cursor: pointer;
 			box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+			border: none;
+			appearance: none;
+			background: transparent;
 
 			&:active {
 				transform: translateZ(calc(var(--block-depth) / 2));
@@ -180,12 +176,6 @@ const { className = "" } = Astro.props;
 		.power-button {
 			--block-background: var(--power-active, rgb(255, 0, 0));
 			--block-border: 1px solid var(--power-active-border, rgb(130, 0, 0));
-		}
-
-		:where(.remote-front) :where(button, label) {
-			border: none;
-			appearance: none;
-			background: transparent;
 		}
 
 		.remote-label {

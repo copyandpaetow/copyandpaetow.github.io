@@ -60,3 +60,8 @@
 .display-contents {
 	display: contents;
 }
+
+.text-block {
+	display: grid;
+	gap: var(--text-gap, 2rem);
+}

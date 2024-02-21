@@ -36,10 +36,10 @@
 	--screen-module-ratio: 1.1;
 	--screen-height: calc(((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio)));
 	--screen-offset-z: 20px;
+	--screen-text-color: var(--black);
 
 	--speaker-grill-color: var(--grey-85);
 
-	--screen-text-color: var(--black);
 	--tv-button-depth: 5px;
 	--tv-button-gap: 8px;
 	--tv-button-width: 44px;
@@ -102,19 +102,6 @@
 .tv-scene {
 	width: var(--scene-width);
 	padding-block: var(--scene-padding);
-}
-
-:has(#that-3d-episode:target) .camera {
-	--block-render-top: block;
-	--block-render-right: block;
-	--block-render-y: "";
-	--block-render-x: "";
-	--perspective: 2000px;
-	--camera-truck: 1200px;
-	--camera-pan: -40deg;
-	--camera-dolly: 1000px;
-	--camera-pedestal: 1130px;
-	--camera-roll: -34deg;
 }
 
 @keyframes on {
@@ -355,4 +342,9 @@ li.details-layout:has([open])::before {
 	.vhs-slot {
 		grid-area: vhs-slot;
 	}
+}
+
+:has(#tv-power-button:not(:checked)) .screen-animation {
+	scale: 0 0;
+	animation: on 500ms ease reverse;
 }
