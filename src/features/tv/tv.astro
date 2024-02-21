@@ -38,7 +38,7 @@ const { className = "" } = Astro.props;
 					class="visually-hidden"
 				/>
 			</label>
-			Copy and Paetow TV
+			<span class="tv-label">Copy and Paetow TV</span>
 		</div>
 	</div>
 	<div class="right speaker"></div>
@@ -50,7 +50,6 @@ const { className = "" } = Astro.props;
 		.tv {
 			--block-depth: var(--tv-depth);
 			--block-background: var(--tv-background);
-			--block-border: var(--tv-border);
 			--block-border-radius: var(--tv-border-radius);
 			--default-display: grid;
 
@@ -97,8 +96,8 @@ const { className = "" } = Astro.props;
 
 		.tv-power-button {
 			--block-depth: 10px;
-			--block-background: rgb(255, 0, 0);
-			--block-border: 2px solid rgb(130, 0, 0);
+			--block-background: var(--tv-power-off-color);
+			--block-border: 2px solid color-mix(in HSL, var(--tv-power-off-color) 75%, var(--black));
 
 			width: max-content;
 			pointer-events: initial;
@@ -109,23 +108,28 @@ const { className = "" } = Astro.props;
 			height: max-content;
 
 			&:has(:checked) {
-				--block-background: limegreen;
-				--block-border: 2px solid green;
+				--block-background: var(--tv-power-on-color);
+				--block-border: 2px solid color-mix(in HSL, var(--tv-power-on-color) 75%, var(--black));
 			}
 
 			.front {
-				width: var(--remote-button-width);
-				height: var(--remote-button-height);
+				width: var(--tv-button-width);
+				height: var(--tv-button-height);
 			}
 
 			.three-dimensional {
 				transform: translateZ(var(--block-depth));
-				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+				box-shadow: var(--tv-button-shadow);
 			}
 
 			.three-dimensional:has(:checked) {
 				transform: translateZ(calc(var(--block-depth) / 1.5));
-				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
+				box-shadow: var(--tv-button-shadow-active);
+			}
+
+			.tv-label {
+				/* required for safari */
+				transform: translateZ(1px);
 			}
 		}
 

@@ -21,7 +21,10 @@ dialog {
 	--space-4: clamp(4.5rem, 4.3261rem + 0.8696vw, 5rem);
 	--space-5: clamp(6.75rem, 6.4891rem + 1.3043vw, 7.5rem);
 	--gutter: clamp(1.125rem, 0.6467rem + 2.3913vw, 2.5rem);
-	--full-width: 100vw;
+
+	--min-width: 320px;
+	--min-padding: 4px;
+	--border-width: 4px;
 
 	/*colors*/
 	--grey-10: hsl(210, 17%, 98%);
@@ -39,28 +42,10 @@ dialog {
 	--red: hsl(5, 61%, 54%);
 	--orange: hsl(23, 70%, 51%);
 	--yellow: hsl(45, 82%, 45%);
-	--green: hsl(72, 46%, 41%);
+	--green: hsl(96, 54%, 54%);
 	--cyan: hsl(175, 49%, 45%);
 	--blue: hsl(208, 49%, 50%);
 	--purple: hsl(251, 40%, 64%);
 	--magenta: hsl(329, 54%, 59%);
-
-	--book-background: var(--grey-50);
-	--text: var(--grey-90);
-
-	--border-width: var(--space--3);
-	--border-color: var(--black);
-	--border: var(--border-width) solid var(--black);
-	--background: var(--grey-85);
-
-	--min-button-height: 3rem;
-	--min-button-width: 3rem;
-}
-
-body {
-	background-color: var(--background);
-}
-
-h1 {
-	font-size: var(--font-4);
+	--silver: hsl(255, 2%, 67%);
 }

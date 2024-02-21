@@ -5,6 +5,8 @@ import RickrollPreviw from "../content/rickroll.astro";
 import DinkelbergPreview from "../content/dinkelberg-preview.astro";
 import IndexPreview from "../content/index-preview.astro";
 import NowPreview from "../content/now-preview.astro";
+import Browser3DPreview from "../content/3d-challenges-preview.astro";
+
 import Back from "../icons/back.svg?raw";
 
 export interface Props {
@@ -23,6 +25,17 @@ const { className = "" } = Astro.props;
 			</summary>
 			<div class="content overflow-scroll">
 				<AboutPreview />
+			</div>
+		</details>
+	</li>
+	<li class="details-layout">
+		<details>
+			<summary>
+				<p class="visible-closed">Browser adventures in 3D</p>
+				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
+			</summary>
+			<div class="content overflow-scroll">
+				<Browser3DPreview />
 			</div>
 		</details>
 	</li>

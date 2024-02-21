@@ -106,21 +106,6 @@
 		width: fit-content;
 	}
 
-	& ul li::before {
-		content: ".";
-	}
-
-	& :where(ol) {
-		counter-reset: orderedlist;
-	}
-
-	& :where(ol li)::before {
-		counter-increment: orderedlist;
-		content: counter(orderedlist) ". ";
-		align-self: start;
-		line-height: 1.6;
-	}
-
 	& :where(button, a, label, details[open] > summary) {
 		&:focus-visible,
 		&:active,

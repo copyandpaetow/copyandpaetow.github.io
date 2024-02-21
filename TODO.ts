@@ -39,14 +39,3 @@ todo: bugs
 ? should the page becomes inert if the settings are open ?
 
 */
-
-/*
-!things that didnt work
-
-- position sticky on the tv was breaking firefox 
-- details can only be styled in chrome and need to be surrounded by a container (and set to display contents) on FF and Safari
-- details dont keep the 3D space in their shadow parts
-- custom component wrapper with display contents was also breaking interactivity on safari
-- transformZ shenanigans for FF and Safari
-
-*/
