@@ -11,9 +11,16 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
+<script>
+	import { remoteInteractions } from "./remote-interactions.ts";
+
+	remoteInteractions();
+</script>
+
 <div class=`remote ${className}`>
 	<RemoteBody className="interactive-remote" />
 	<section
+		id="settings-menu"
 		class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden screen-animation"
 	>
 		<details>
@@ -70,23 +77,6 @@ const { className = "" } = Astro.props;
 			& > * {
 				grid-area: 1 / 1 /-1 / -1;
 			}
-
-			/* &:has([open]) {
-				@media (scripting: enabled) {
-					.interactive-remote {
-						position: absolute;
-						left: 50%;
-						transform: translateZ(300px)
-							translateY(
-								calc(
-									var(--screen-height) + 2 * var(--screen-padding) + var(--tv-padding) +
-										var(--remote-depth)
-								)
-							)
-							scale3d(0.8, 0.8, 0.8) translateX(-50%) rotateX(45deg);
-					}
-				}
-			} */
 		}
 
 		.remote-toggle {

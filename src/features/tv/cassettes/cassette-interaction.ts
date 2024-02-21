@@ -12,7 +12,11 @@ export const cassetteInteractionEnhancement = () => {
 		document.addEventListener(
 			"keydown",
 			(event) => {
-				if (event.key !== "Escape" || !window.location.hash) {
+				if (
+					event.key !== "Escape" ||
+					!window.location.hash ||
+					Boolean(document.querySelector("#settings-menu:has([open])"))
+				) {
 					return;
 				}
 

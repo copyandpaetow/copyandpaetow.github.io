@@ -9,7 +9,7 @@ import Up from "../icons/up.svg?raw";
 const { className = "" } = Astro.props;
 ---
 
-<section class={`remote-body three-dimensional ${className}`}>
+<section class={`remote-body three-dimensional ${className}`} inert>
 	<div class="front remote-front">
 		<label for="remote-power" class="row1"> exit</label>
 		<button id="remote-power" class="three-dimensional remote-button power-button row2"
@@ -112,7 +112,7 @@ const { className = "" } = Astro.props;
 		.remote-body {
 			--block-background: var(--tv-background);
 			--block-depth: var(--remote-depth);
-			--block-border: 2px solid var(--tv-border-color);
+			--block-border: var(--remote-border-width) solid var(--remote-border);
 			--block-border-radius: var(--tv-border-radius);
 		}
 
@@ -120,13 +120,13 @@ const { className = "" } = Astro.props;
 			--offset-direction: -1;
 
 			grid-template-columns:
-				var(--remote-button-width) var(--remote-button-width) var(--remote-button-width)
-				calc(var(--remote-button-width) * 1.25);
-			grid-auto-rows: var(--remote-button-height);
+				var(--tv-button-width) var(--tv-button-width) var(--tv-button-width)
+				calc(var(--tv-button-width) * 1.25);
+			grid-auto-rows: var(--tv-button-height);
 			gap: var(--remote-button-gap);
 
-			padding: calc(var(--remote-button-height) / 2);
-			padding-bottom: 5rem;
+			padding: calc(var(--tv-button-height) / 2);
+			padding-bottom: var(--remote-bottom-padding);
 
 			[for="remote-power"],
 			.power-button,
@@ -141,7 +141,7 @@ const { className = "" } = Astro.props;
 			&::before {
 				content: "";
 				grid-area: 4 / 4 / 14 / 5;
-				background: grey;
+				background: var(--grey-70);
 			}
 
 			& :where(.channel-button, .volume-button):nth-of-type(2n + 1) svg {
@@ -154,33 +154,32 @@ const { className = "" } = Astro.props;
 		}
 
 		.remote-button {
-			--block-depth: 5px;
-			transform: translateZ(var(--block-depth));
+			transform: translateZ(var(--tv-button-depth));
 			cursor: pointer;
-			box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+			box-shadow: var(--tv-button-shadow);
 			border: none;
 			appearance: none;
 			background: transparent;
 
 			&:active {
-				transform: translateZ(calc(var(--block-depth) / 2));
-				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
+				transform: translateZ(calc(var(--tv-button-depth) / 2));
+				box-shadow: var(--tv-button-shadow-active);
 			}
 
 			.front {
-				width: var(--remote-button-width);
-				height: var(--remote-button-height);
+				width: var(--tv-button-width);
+				height: var(--tv-button-height);
 			}
 		}
 
 		.power-button {
-			--block-background: var(--power-active, rgb(255, 0, 0));
-			--block-border: 1px solid var(--power-active-border, rgb(130, 0, 0));
+			--block-background: var(--tv-power-off-color);
+			--block-border: 2px solid color-mix(in HSL, var(--tv-power-off-color) 75%, var(--black));
 		}
 
 		.remote-label {
-			transform: rotate(90.01deg) rotateX(-180.01deg) translateX(100%)
-				scaleX(calc(1 / var(--remote-scale)));
+			transform: rotateX(180deg) rotateZ(-90deg) scaleX(calc(1 / var(--remote-scale)))
+				translateX(50%);
 		}
 
 		.row1 {

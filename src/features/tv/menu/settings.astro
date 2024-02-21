@@ -53,16 +53,14 @@ const { className = "", animationDefault = true, tvRealismDefault = true } = Ast
 	@layer components {
 		.content-settings {
 			& li {
-				display: grid;
 				grid-template-columns: max-content max-content 1fr max-content;
 				grid-template-areas: "number title line state";
-				gap: var(--_screen-content-gap);
 				align-items: center;
 				width: 100%;
 			}
 
 			& hr {
-				border-bottom: 4px dotted currentColor;
+				border-bottom: var(--border-width) dotted currentColor;
 				transform: translateY(2px);
 				align-self: center;
 			}

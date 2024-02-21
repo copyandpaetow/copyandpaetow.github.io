@@ -1,31 +1,24 @@
 .scene {
-	--min-width: 320px;
-	--min-padding: 4px;
-
-	--scene-width: clamp(
+	--tv-padding-block: 10dvh;
+	--tv-width: clamp(
 		calc(var(--min-width) - 2 * var(--min-padding)),
 		calc(100vw - 2 * var(--min-padding)),
 		500px
 	);
-	--scene-padding: 10dvh;
-
-	--tv-width: var(--scene-width);
 	--tv-depth: 300px;
-	--tv-background: hsl(255, 2%, 67%);
+	--tv-background: silver;
 	--tv-padding: 8px;
-	--tv-border-color: hsl(255, 2%, 27%);
-	--tv-border-width: 0px;
-	--tv-border: var(--tv-border-width) solid var(--tv-border-color);
 	--tv-height: calc(
 		var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + var(--module-gap)
 	);
 	--tv-outline-color: var(--blue);
 	--tv-outline-width: 2px;
 	--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
-	--tv-light: var(--green);
-
+	--tv-power-on-color: var(--green);
+	--tv-power-off-color: var(--red);
 	--tv-border-radius: 2px;
 	--tv-offset-z: 25px;
+	--tv-animation-duration: 500ms;
 
 	--module-border-radius: 0.25rem;
 	--module-gap: 32px;
@@ -44,7 +37,8 @@
 	--tv-button-gap: 8px;
 	--tv-button-width: 44px;
 	--tv-button-height: 24px;
-
+	--tv-button-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+	--tv-button-shadow-active: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
 	--vhs-slot-padding: 0.2rem;
 	--vhs-slot-width: calc(var(--tv-width) - 2 * var(--tv-padding));
 	--vhs-slot-height: calc(
@@ -56,18 +50,21 @@
 	--cassette-active-offset-z: 20px;
 	--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
 	--cassette-gap: 2px;
+	--cassette-border: 4px solid var(--black);
 
 	--remote-depth: 30px;
 	--remote-scale: 0.4;
-
+	--remote-border: var(--grey-80);
 	--remote-button-gap: 8px;
-	--remote-button-width: var(--min-button-width);
-	--remote-button-height: 24px;
+	--remote-border-width: 2px;
+	--remote-bottom-padding: 5rem;
 
-	--remote-active-offset: calc(var(--vhs-slot-height) * -1 - var(--tv-padding));
+	--remote-active-offset: calc(
+		var(--screen-height) + 2 * var(--screen-padding) + var(--tv-padding) + var(--remote-depth)
+	);
 	--inner-screen-width: calc(var(--tv-width) - 2 * var(--tv-screen-inset));
 	--inner-screen-height: calc(var(--screen-height) - 2 * var(--screen-padding));
-	--tv-offset-top: calc(var(--scene-padding) + var(--remote-depth));
+	--tv-offset-top: calc(var(--tv-padding-block) + var(--remote-depth));
 	--tv-screen-inset: calc(var(--tv-padding) + var(--screen-padding));
 
 	--tv-absolute-screen-position: calc(var(--remote-depth) + var(--tv-screen-inset)) 0 0
@@ -100,8 +97,8 @@
 }
 
 .tv-scene {
-	width: var(--scene-width);
-	padding-block: var(--scene-padding);
+	width: var(--tv-width);
+	padding-block: var(--tv-padding-block);
 }
 
 @keyframes on {
@@ -138,7 +135,7 @@
 	--_padding-block: var(--save-screen-padding-block, 0);
 	--_padding-inline: var(--save-screen-padding-inline, 0);
 	--_content: var(--content-size, minmax(19rem, 40rem));
-	--_save-area: var(--screen-save-area, 1fr);
+	--_save-area: var(--screen-save-area, minmax(1rem, 1fr));
 
 	height: var(--_height);
 	width: var(--_width);

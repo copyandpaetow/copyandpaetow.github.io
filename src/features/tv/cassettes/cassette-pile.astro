@@ -1,4 +1,5 @@
 ---
+import CassetteTape from "./cassette-tape.astro";
 import AboutPreview from "../content/about-preview.astro";
 import BewegungPreview from "../content/bewegung-preview.astro";
 import RickrollPreviw from "../content/rickroll.astro";
@@ -6,7 +7,7 @@ import IndexPreview from "../content/index-preview.astro";
 import NowPreview from "../content/now-preview.astro";
 import ThirdDimensionPreview from "../content/third-dimension-preview.astro";
 import DinkelbergPreview from "../content/dinkelberg-preview.astro";
-import CassetteTape from "./cassette-tape.astro";
+import Browser3DPreview from "../content/3d-challenges-preview.astro";
 
 export interface Props {
 	className?: string;
@@ -25,7 +26,7 @@ const randomNumber = (min: number, max: number) => {
 	setTimeout(cassetteInteractionEnhancement, 2000);
 </script>
 
-<ul class=`small-screen cassette-pile ${className}`>
+<ul role="list" class=`small-screen cassette-pile ${className}`>
 	<li
 		id="intro"
 		class="tv-layout cassette"
@@ -67,6 +68,29 @@ const randomNumber = (min: number, max: number) => {
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
 		>
 			<NowPreview />
+		</dialog>
+	</li>
+
+	<li
+		id="more-3d-challenges"
+		class="tv-layout cassette"
+		style=`
+--cassette-offset-x: ${randomNumber(-10, 10)}%;
+--cassette-offset-z: ${randomNumber(1, 30)}px;`
+	>
+		<a
+			href="#more-3d-challenges"
+			class="vhs-slot cassette-body three-dimensional"
+			aria-label="jumps to the tv and previews what I am working on at the moment"
+		>
+			<CassetteTape className="front" decoType="a" color="var(--orange)">
+				Browser adventures in 3D
+			</CassetteTape>
+		</a>
+		<dialog
+			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+		>
+			<Browser3DPreview />
 		</dialog>
 	</li>
 
@@ -212,7 +236,6 @@ const randomNumber = (min: number, max: number) => {
 	@layer components {
 		.cassette-pile {
 			--list-gap: var(--cassette-gap) 0;
-			--list-item-gap: 0;
 
 			&:has(:target):not(:has(li:nth-of-type(1):target)) > li:nth-of-type(1) .cassette-body,
 			&:has(li:nth-of-type(1):target) > li:nth-of-type(2) .cassette-body {
@@ -223,18 +246,6 @@ const randomNumber = (min: number, max: number) => {
 		@media (prefers-reduced-motion: no-preference) {
 			:has(:target) {
 				scroll-behavior: smooth;
-			}
-		}
-
-		/* this needs to be refactored at some point */
-		.cassette .screen-content {
-			& ul {
-				--list-item-gap: 0 2.25em;
-				--list-gap: 1rem;
-			}
-
-			& li {
-				align-items: start;
 			}
 		}
 
@@ -261,25 +272,25 @@ const randomNumber = (min: number, max: number) => {
 
 			.cassette-body {
 				transform: translateZ(calc(var(--cassette-active-offset-z) + var(--screen-offset-z)));
-				margin-inline: auto;
+				place-self: center;
 			}
 
 			.cassette-content {
-				animation: on 500ms ease;
+				animation: on var(--tv-animation-duration) ease;
 				transform: translateZ(calc(var(--screen-offset-z) / 2));
 				position: relative;
 			}
 
 			:has(#tv-power-button:not(:checked)) & .cassette-content {
 				scale: 0 0;
-				animation: on 500ms ease reverse;
+				animation: on var(--tv-animation-duration) ease reverse;
 			}
 		}
 
 		.cassette-body {
 			--cassette-background: hsla(0, 0%, 10%, 1);
 
-			--block-border: var(--border-width) solid var(--black);
+			--block-border: var(--cassette-border);
 			--block-background: var(--cassette-background);
 			--block-depth: calc(var(--cassette-depth));
 			--block-width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));

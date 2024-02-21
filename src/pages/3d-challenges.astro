@@ -1,0 +1,36 @@
+---
+import ScreenLayout from "../layouts/screen-layout.astro";
+---
+
+<ScreenLayout title="About Copy and Paetow">
+	<header slot="header">
+		<h1>Adventures and nightmares of the HTML + CSS 3D space</h1>
+		<p>
+			a non exhaustive list of issues I found trying to make 3D work without Javascript. This might
+			be outdated at some point, but it was a pain in early 2024.
+		</p>
+	</header>
+	<ul>
+		<li>Using position: sticky broke the 3D effect in Firefox.</li>
+		<li>
+			Firefox and Safari ignored interactive elements that are move back a little within a parent
+			element, even if that parent is move forward quite a lot.
+		</li>
+		<li>
+			<p>
+				Safari didn't render perfect right angles. Most of my (pseudo)element I needed to create
+				block/cube/box faces have rotate values of e.g. <b>90.01deg</b> instead of round 90deg. Otherwise
+				they would be invisible.
+			</p>
+		</li>
+		<li>
+			Safari had issues with display:contents and 3D effects. I tried to use the details + summary
+			combination more but nothing in there would keep the 3D effect. Additionally, both Safari and
+			Firefox didn't let me change the display value of the details element.
+		</li>
+		<li>
+			A million small cases were Firefox rendered supported properties visually different than
+			Chrome and Safari.
+		</li>
+	</ul>
+</ScreenLayout>
