@@ -1,62 +1,111 @@
 ---
-import Block from "../block.astro";
-
 export interface Props {
 	className?: string;
-	inert?: boolean;
 }
 
 import Power from "../icons/power.svg?raw";
 import Up from "../icons/up.svg?raw";
 
-const { className = "", inert } = Astro.props;
+const { className = "" } = Astro.props;
 ---
 
-<script>
-	//
-</script>
+<section class={`remote-body three-dimensional ${className}`}>
+	<div class="front remote-front">
+		<label for="remote-power" class="row1"> exit</label>
+		<button id="remote-power" class="three-dimensional remote-button power-button row2"
+			><span class="front"><Fragment set:html={Power} /></span></button
+		>
 
-<Block className={`remote-body ${className}`}>
-	<section class="remote-front" {...inert && { inert: "" }}>
-		<button class="power" popovertarget="remote-modal" popovertargetaction="hide"
-			><span>exit</span><Block><Fragment set:html={Power} /></Block></button
+		<label for="channel-up" class="row5">channel</label>
+		<button id="channel-up" class="three-dimensional remote-button channel-button row4"
+			><span class="front"><Fragment set:html={Up} /></span></button
 		>
-		<button class="channel row1"
-			><span class="visually-hidden">channel up</span><Fragment set:html={Up} /></button
+		<label for="channel-down" class="row5 visually-hidden">channel</label>
+		<button id="channel-down" class="three-dimensional remote-button channel-button row6"
+			><span class="front"><Fragment set:html={Up} /></span></button
 		>
-		<button class="channel row2"
-			><span>channel</span><span class="visually-hidden">channel down</span><Fragment
-				set:html={Up}
-			/></button
-		>
-		<button class="volumne row3"
-			><span class="visually-hidden">volume up</span><Fragment set:html={Up} /></button
-		>
-		<button class="volumne row4">
-			<span>vol</span>
-			<span class="visually-hidden">volume down</span>
-			<Fragment set:html={Up} />
-		</button>
-		<button class="row1"><span>1</span></button>
-		<button class="row1"><span>2</span></button>
-		<button class="row1"><span>3</span></button>
-		<button class="row2"><span>4</span></button>
-		<button class="row2"><span>5</span></button>
-		<button class="row2"><span>6</span></button>
-		<button class="row3"><span>7</span></button>
-		<button class="row3"><span>8</span></button>
-		<button class="row3"><span>9</span></button>
-		<button class="row4"><span>0</span></button>
-		<button class="row5"><span>home</span></button>
-		<button class="row5"><span>back</span></button>
-		<button class="row5"><span>select</span></button>
 
-		<label for="settings-animation" class="row6"><span>Anim</span></label>
-		<label for="settings-sound" class="row6"><span>Sound</span></label>
-		<label for="settings-three-dimensional" class="row6"><span>3D</span></label>
-	</section>
-	<p slot="left" class="remote-label">settings</p>
-</Block>
+		<label for="volume-up" class="row9">volume</label>
+		<button id="volume-up" class="three-dimensional remote-button volume-button row8"
+			><span class="front"><Fragment set:html={Up} /></span></button
+		>
+		<label for="volume-down" class="row9 visually-hidden">volume</label>
+		<button id="volume-down" class="three-dimensional remote-button volume-button row10"
+			><span class="front"><Fragment set:html={Up} /></span></button
+		>
+
+		<label for="remote-button-1" class="row3">1</label>
+		<button id="remote-button-1" class="three-dimensional remote-button row4"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-2" class="row3">2</label>
+		<button id="remote-button-2" class="three-dimensional remote-button row4"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-3" class="row3">3</label>
+		<button id="remote-button-3" class="three-dimensional remote-button row4"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-4" class="row5">4</label>
+		<button id="remote-button-4" class="three-dimensional remote-button row6"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-5" class="row5">5</label>
+		<button id="remote-button-5" class="three-dimensional remote-button row6"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-6" class="row5">6</label>
+		<button id="remote-button-6" class="three-dimensional remote-button row6"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-7" class="row7">7</label>
+		<button id="remote-button-7" class="three-dimensional remote-button row8"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-8" class="row7">8</label>
+		<button id="remote-button-8" class="three-dimensional remote-button row8"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-9" class="row7">9</label>
+		<button id="remote-button-9" class="three-dimensional remote-button row8"
+			><span class="front"></span></button
+		>
+		<label for="remote-button-0" class="row9">0</label>
+		<button id="remote-button-0" class="three-dimensional remote-button row10"
+			><span class="front"></span></button
+		>
+		<label for="remote-home" class="row11">home</label>
+		<button id="remote-home" class="three-dimensional remote-button row12"
+			><span class="front"></span></button
+		>
+		<label for="remote-back" class="row11">back</label>
+		<button id="remote-back" class="three-dimensional remote-button row12"
+			><span class="front"></span></button
+		>
+		<label for="remote-select" class="row11">select</label>
+		<button id="remote-select" class="three-dimensional remote-button row12"
+			><span class="front"></span></button
+		>
+
+		<label for="settings-animation" class="row13">Anim</label>
+		<label for="settings-animation" class="three-dimensional remote-button row14" tabindex="0"
+			><span class="front"></span></label
+		>
+		<label for="settings-sound" class="row13">Sound</label>
+		<label for="settings-sound" class="three-dimensional remote-button row14" tabindex="0"
+			><span class="front"></span></label
+		>
+		<label for="settings-three-dimensional" class="row13">3D</label>
+		<label
+			for="settings-three-dimensional"
+			class="three-dimensional remote-button row14"
+			tabindex="0"><span class="front"></span></label
+		>
+	</div>
+	<div class="left">
+		<p class="remote-label">settings</p>
+	</div>
+</section>
 
 <style is:global>
 	@layer components {
@@ -65,155 +114,116 @@ const { className = "", inert } = Astro.props;
 			--block-depth: var(--remote-depth);
 			--block-border: 2px solid var(--tv-border-color);
 			--block-border-radius: var(--tv-border-radius);
-
-			--block-render-front: block;
-			--block-render-top: block;
-			--block-render-right: block;
-			--block-render-back: block;
-			--block-render-bottom: block;
-			--block-render-left: block;
 		}
 
 		.remote-front {
 			--offset-direction: -1;
 
-			display: grid;
 			grid-template-columns:
 				var(--remote-button-width) var(--remote-button-width) var(--remote-button-width)
 				calc(var(--remote-button-width) * 1.25);
 			grid-auto-rows: var(--remote-button-height);
-			row-gap: calc(var(--remote-button-height) + var(--remote-button-gap));
-			column-gap: var(--remote-button-gap);
+			gap: var(--remote-button-gap);
 
-			padding: var(--remote-button-height) calc(var(--remote-button-height) / 2);
+			padding: calc(var(--remote-button-height) / 2);
 			padding-bottom: 5rem;
 
-			transform: translateZ(1px);
-
-			.channel,
-			.volumne,
-			.power {
+			[for="remote-power"],
+			.power-button,
+			[for="channel-down"],
+			[for="channel-up"],
+			[for="volume-down"],
+			[for="volume-up"],
+			.volume-button,
+			.channel-button {
 				grid-column: 4/5;
-				width: var(--remote-button-width);
-				height: var(--remote-button-height);
-				place-self: center;
 			}
-
 			&::before {
 				content: "";
-				grid-area: 2 / 4 / 8 / 5;
+				grid-area: 4 / 4 / 14 / 5;
 				background: grey;
 			}
 
-			& :where(.channel, .volumne):nth-of-type(2n + 1) svg {
+			& :where(.channel-button, .volume-button):nth-of-type(2n + 1) svg {
 				transform: rotate(180deg);
 			}
 
-			.row1 {
-				grid-row-start: 3;
-			}
-			.row2 {
-				grid-row-start: 4;
-			}
-			.row3 {
-				grid-row-start: 5;
-			}
-			.row4 {
-				grid-row-start: 6;
-			}
-
-			.row5 {
-				grid-row-start: 7;
-			}
-			.row6 {
-				grid-row-start: 9;
+			& > * {
+				place-self: center;
 			}
 		}
 
-		.power {
-			--block-background: var(--power-active, rgb(255, 0, 0));
+		.remote-button {
 			--block-depth: 5px;
-			--block-border: 2px solid var(--power-active-border, rgb(130, 0, 0));
-			--block-width: var(--remote-button-width);
-			--block-height: var(--remote-button-height);
-
 			transform: translateZ(var(--block-depth));
-
-			padding: 0;
-
-			& span {
-				--offset-direction: 1;
-			}
+			cursor: pointer;
+			box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+			border: none;
+			appearance: none;
+			background: transparent;
 
 			&:active {
 				transform: translateZ(calc(var(--block-depth) / 2));
-			}
-		}
-
-		.remote-settings {
-			color: black;
-			font-size: var(--font--2);
-			display: grid;
-			grid-template-columns:
-				var(--remote-button-width) var(--remote-button-width) var(--remote-button-width)
-				calc(var(--remote-button-width) * 1.25);
-			grid-auto-rows: var(--remote-button-height);
-			column-gap: var(--remote-button-gap);
-			position: relative;
-			margin-inline: -4px;
-			padding: 4px;
-
-			& span {
-				--offset-direction: 1;
-			}
-		}
-
-		:where(.remote-front) :where(button, label) {
-			border: none;
-			appearance: none;
-			background: var(--tv-background);
-			position: relative;
-			display: grid;
-			padding: 2px;
-			background: black;
-
-			& * {
-				grid-area: 1 / 1 / 2 / 2;
-			}
-
-			& span {
-				color: var(--black);
-				font-size: var(--font--2);
-				position: absolute;
-				justify-self: center;
-				height: var(--remote-button-height);
-				top: calc(
-					(var(--remote-button-height) + var(--remote-button-gap) / 2) * var(--offset-direction)
-				);
-			}
-
-			& svg {
-				height: 100%;
-				aspect-ratio: 1;
-				place-self: center;
-			}
-
-			&::before {
-				content: "";
-				position: absolute;
-				inset: 1px;
-				background: var(--tv-background);
-				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
-				border-radius: 4px;
-			}
-
-			&:active::before {
 				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
 			}
+
+			.front {
+				width: var(--remote-button-width);
+				height: var(--remote-button-height);
+			}
+		}
+
+		.power-button {
+			--block-background: var(--power-active, rgb(255, 0, 0));
+			--block-border: 1px solid var(--power-active-border, rgb(130, 0, 0));
 		}
 
 		.remote-label {
-			transform: rotate(90.01deg) translateX(100%) scaleX(calc(1 / var(--remote-scale)));
+			transform: rotate(90.01deg) rotateX(-180.01deg) translateX(100%)
+				scaleX(calc(1 / var(--remote-scale)));
+		}
+
+		.row1 {
+			grid-row-start: 1;
+		}
+		.row2 {
+			grid-row-start: 2;
+		}
+		.row3 {
+			grid-row-start: 4;
+		}
+		.row4 {
+			grid-row-start: 5;
+		}
+		.row5 {
+			grid-row-start: 6;
+		}
+		.row6 {
+			grid-row-start: 7;
+		}
+		.row7 {
+			grid-row-start: 8;
+		}
+		.row8 {
+			grid-row-start: 9;
+		}
+		.row9 {
+			grid-row-start: 10;
+		}
+		.row10 {
+			grid-row-start: 11;
+		}
+		.row11 {
+			grid-row-start: 12;
+		}
+		.row12 {
+			grid-row-start: 13;
+		}
+		.row13 {
+			grid-row-start: 15;
+		}
+		.row14 {
+			grid-row-start: 16;
 		}
 	}
 </style>

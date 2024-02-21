@@ -1,10 +1,7 @@
 ---
-import Block from "./block.astro";
 import StaticBackground from "./screen/static-background.astro";
 import VHSPlayer from "./vhs-player.astro";
 import ScreenCurvature from "./screen/screen-curvature.astro";
-import TvToggle from "./tv-toggle.astro";
-
 import Power from "./icons/power.svg?raw";
 
 export interface Props {
@@ -14,25 +11,39 @@ export interface Props {
 const { className = "" } = Astro.props;
 ---
 
-<Block className={`tv ${className}`}>
-	<div class="tv-layout">
+<section class=`tv three-dimensional ${className}`>
+	<div class="front tv-layout">
 		<aside class="tv-screen screen-inset screen-inset-inline"></aside>
 		<aside class="tv-screen screen-inset screen-inset-block"></aside>
 
 		<aside class="screen-background screen-content screen-clipped-border overflow-hidden">
-			<StaticBackground className="full-screen" />
+			<StaticBackground className="full-screen screen-animation" />
 		</aside>
 
 		<ScreenCurvature />
 		<VHSPlayer className="vhs-slot" />
-		<TvToggle id="tv-power-button" className="tv-power-button">
-			<Fragment set:html={Power} slot="icon" />
-			<span>copy and paetow tv</span>
-		</TvToggle>
+
+		<div class="tv-power-button">
+			<label
+				for="tv-power-button"
+				class="three-dimensional"
+				aria-label="toggles the screen on and off"
+			>
+				<span class="front"><Fragment set:html={Power} slot="icon" /></span>
+				<input
+					type="checkbox"
+					name="tv-power-button"
+					id="tv-power-button"
+					checked
+					class="visually-hidden"
+				/>
+			</label>
+			Copy and Paetow TV
+		</div>
 	</div>
-	<div slot="right" class="speaker"></div>
-	<div slot="left" class="speaker"></div>
-</Block>
+	<div class="right speaker"></div>
+	<div class="left speaker"></div>
+</section>
 
 <style is:global>
 	@layer components {
@@ -41,25 +52,19 @@ const { className = "" } = Astro.props;
 			--block-background: var(--tv-background);
 			--block-border: var(--tv-border);
 			--block-border-radius: var(--tv-border-radius);
+			--default-display: grid;
 
 			pointer-events: none;
 
 			.tv-layout {
 				box-shadow: inset 0 0 7px 3px hsla(0, 100%, 100%, 0.25);
-				pointer-events: none;
 			}
 
 			.screen-content {
 				transform: translateZ(calc(var(--screen-offset-z) / -2));
 			}
-
-			.screen-content svg {
-				background-color: var(--tv-background);
-				aspect-ratio: 1;
-				transform: scale(1.5);
-			}
 		}
-		.tv > div:first-of-type {
+		.tv > .front {
 			background: linear-gradient(
 					to left,
 					var(--tv-background),
@@ -91,20 +96,48 @@ const { className = "" } = Astro.props;
 		}
 
 		.tv-power-button {
-			--tv-button-background: rgb(255, 0, 0);
-			--tv-button-background-border: rgb(130, 0, 0);
-			--tv-button-active-background: limegreen;
-			--tv-button-active-background-border: green;
+			--block-depth: 10px;
+			--block-background: rgb(255, 0, 0);
+			--block-border: 2px solid rgb(130, 0, 0);
+
+			width: max-content;
 			pointer-events: initial;
+			display: grid;
+			gap: 12px;
+			grid-auto-flow: column;
+			align-self: center;
+			height: max-content;
+
+			&:has(:checked) {
+				--block-background: limegreen;
+				--block-border: 2px solid green;
+			}
+
+			.front {
+				width: var(--remote-button-width);
+				height: var(--remote-button-height);
+			}
+
+			.three-dimensional {
+				transform: translateZ(var(--block-depth));
+				box-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
+			}
+
+			.three-dimensional:has(:checked) {
+				transform: translateZ(calc(var(--block-depth) / 1.5));
+				box-shadow: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
+			}
 		}
 
 		.screen-background {
 			background: var(--black);
-		}
 
-		:has(#tv-power-button:not(:checked)) .screen-background svg {
-			scale: 0 0;
-			animation: on 500ms ease reverse;
+			& svg {
+				background-color: var(--tv-background);
+				aspect-ratio: 1;
+				transform: scale(1.5);
+				pointer-events: none;
+			}
 		}
 
 		.screen-inset {
@@ -173,8 +206,7 @@ const { className = "" } = Astro.props;
 
 			&::before {
 				content: "";
-				aspect-ratio: 2.5;
-				width: calc(var(--tv-depth) * 0.8);
+				aspect-ratio: 1.5;
 				display: block;
 				border-radius: 50%;
 

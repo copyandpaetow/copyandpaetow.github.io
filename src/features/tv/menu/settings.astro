@@ -17,17 +17,24 @@ const { className = "", animationDefault = true, tvRealismDefault = true } = Ast
 			name="settings-animation"
 			id="settings-animation"
 			checked={animationDefault}
+			class="visually-hidden"
 		/>
 	</li>
 	<li>
 		<label for="settings-sound">Sound</label>
 		<hr />
-		<input type="checkbox" name="settings-sound" id="settings-sound" />
+		<input type="checkbox" name="settings-sound" id="settings-sound" class="visually-hidden" />
 	</li>
 	<li>
 		<label for="settings-three-dimensional">3D effects</label>
 		<hr />
-		<input type="checkbox" name="settings-three-dimensional" id="settings-three-dimensional" />
+		<input
+			type="checkbox"
+			name="settings-three-dimensional"
+			id="settings-three-dimensional"
+			class="visually-hidden"
+			checked
+		/>
 	</li>
 	<li>
 		<label for="settings-tv-realism">TV realism</label>
@@ -37,6 +44,7 @@ const { className = "", animationDefault = true, tvRealismDefault = true } = Ast
 			name="settings-tv-realism"
 			id="settings-tv-realism"
 			checked={tvRealismDefault}
+			class="visually-hidden"
 		/>
 	</li>
 </ol>
@@ -44,15 +52,6 @@ const { className = "", animationDefault = true, tvRealismDefault = true } = Ast
 <style is:global>
 	@layer components {
 		.content-settings {
-			& input {
-				appearance: none;
-				background-color: var(--block-background);
-				position: absolute;
-				width: 0;
-				height: 0;
-				z-index: -1;
-			}
-
 			& li {
 				display: grid;
 				grid-template-columns: max-content max-content 1fr max-content;

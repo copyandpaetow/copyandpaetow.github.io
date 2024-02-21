@@ -21,7 +21,7 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="screen-root screen-content-layout">
+	<body class="screen-root screen-content-layout page">
 		<nav class="navigation details-layout">
 			<details>
 				<summary>
@@ -64,13 +64,15 @@ const { title } = Astro.props;
 		<main>
 			<slot />
 		</main>
-		<slot name="footer" />
+		<footer>
+			<slot name="footer" />
+		</footer>
 	</body>
 </html>
 
 <style is:global>
 	@layer components {
-		body {
+		.page {
 			--save-screen-padding: 0.5rem;
 			--screen-gap: 2rem 0rem;
 
@@ -80,10 +82,14 @@ const { title } = Astro.props;
 			@media (min-width: 28rem) {
 				--save-screen-padding: 2rem;
 			}
-		}
 
-		header {
-			margin-top: 5rem;
+			& header {
+				margin-top: 5rem;
+			}
+
+			& footer {
+				padding-bottom: 5rem;
+			}
 		}
 
 		.full-screen-menu {
@@ -126,6 +132,21 @@ const { title } = Astro.props;
 				height: fit-content;
 				position: sticky;
 				top: 0;
+				grid-column: full-screen;
+				padding: 1rem 2rem;
+				text-align: end;
+			}
+
+			&:not(:has(> [open])) summary {
+				:hover,
+				:focus,
+				:active {
+					background: white;
+				}
+			}
+
+			.visible-closed {
+				text-decoration: underline;
 			}
 		}
 	}

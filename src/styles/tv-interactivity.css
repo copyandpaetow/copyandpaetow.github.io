@@ -1,0 +1,23 @@
+:has(#settings-three-dimensional:checked):has(#that-3d-episode:target) {
+	.camera {
+		--block-render-top: block;
+		--block-render-right: block;
+		--block-render-y: "";
+		--block-render-x: "";
+		--perspective: 2000px;
+		--camera-truck: 1200px;
+		--camera-pan: -40deg;
+		--camera-dolly: 1000px;
+		--camera-pedestal: 1130px;
+		--camera-roll: -34deg;
+	}
+
+	.interactive-remote {
+		--block-y-direction: -1;
+	}
+}
+
+.camera:not(:has(#that-3d-episode:target)) .remote-button:not(.power-button) {
+	--block-render-y: none;
+	--block-render-x: none;
+}

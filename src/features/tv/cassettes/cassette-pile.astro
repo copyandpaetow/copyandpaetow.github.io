@@ -6,7 +6,7 @@ import IndexPreview from "../content/index-preview.astro";
 import NowPreview from "../content/now-preview.astro";
 import ThirdDimensionPreview from "../content/third-dimension-preview.astro";
 import DinkelbergPreview from "../content/dinkelberg-preview.astro";
-import Cassette from "./cassette.astro";
+import CassetteTape from "./cassette-tape.astro";
 
 export interface Props {
 	className?: string;
@@ -35,10 +35,10 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#intro"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews the intro"
 		>
-			<Cassette decoType="c">the intro nobody asked for</Cassette>
+			<CassetteTape decoType="c" className="front">the intro nobody asked for</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
@@ -56,10 +56,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#now"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews what I am working on at the moment"
 		>
-			<Cassette decoType="c" tapeType="stripes" color="var(--cyan)">now</Cassette>
+			<CassetteTape className="front" decoType="c" tapeType="stripes" color="var(--cyan)">
+				now
+			</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
@@ -77,10 +79,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#bewegung"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews the bewegung github project"
 		>
-			<Cassette decoType="a" tapeType="stripes">how to make an animation library</Cassette>
+			<CassetteTape className="front" decoType="a" tapeType="stripes">
+				how to make an animation library
+			</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
@@ -98,10 +102,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#that-3d-episode"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and shows the whole scene in 3D"
 		>
-			<Cassette decoType="b" tapeType="checked" color="var(--orange)">That 3D episode</Cassette>
+			<CassetteTape className="front" decoType="b" tapeType="checked" color="var(--orange)">
+				That 3D episode
+			</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
@@ -119,10 +125,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#dinkelberg"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews a meme"
 		>
-			<Cassette decoType="b" tapeType="checked" color="var(--magenta)">DINKELBERG</Cassette>
+			<CassetteTape className="front" decoType="b" tapeType="checked" color="var(--magenta)">
+				DINKELBERG
+			</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
@@ -140,12 +148,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#printer"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews a meme video"
 		>
-			<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+			<CassetteTape className="front" decoType="b" tapeType="checked" color="var(--blue)">
 				How to fix your printer
-			</Cassette>
+			</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root fullscreen-content-layout overflow-scroll"
@@ -163,10 +171,10 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#about"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews content about myself"
 		>
-			<Cassette decoType="c" tapeType="stripes">about</Cassette>
+			<CassetteTape className="front" decoType="c" tapeType="stripes">about</CassetteTape>
 		</a>
 		<dialog
 			class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
@@ -184,12 +192,12 @@ const randomNumber = (min: number, max: number) => {
 	>
 		<a
 			href="#css-database"
-			class="vhs-slot cassette-body"
+			class="vhs-slot cassette-body three-dimensional"
 			aria-label="jumps to the tv and previews a meme video"
 		>
-			<Cassette decoType="b" tapeType="checked" color="var(--blue)">
+			<CassetteTape className="front" decoType="b" tapeType="checked" color="var(--blue)">
 				Connect your database with CSS
-			</Cassette>
+			</CassetteTape>
 		</a>
 
 		<dialog
@@ -259,6 +267,7 @@ const randomNumber = (min: number, max: number) => {
 			.cassette-content {
 				animation: on 500ms ease;
 				transform: translateZ(calc(var(--screen-offset-z) / 2));
+				position: relative;
 			}
 
 			:has(#tv-power-button:not(:checked)) & .cassette-content {
@@ -276,9 +285,15 @@ const randomNumber = (min: number, max: number) => {
 			--block-width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
 			--block-aspect-ratio: var(--cassette-aspect-ratio);
 			--block-border-radius: var(--tv-border-radius);
+			--default-display: grid;
 
 			transform: translateX(calc(var(--cassette-offset-x))) translateZ(var(--cassette-offset-z));
 			text-decoration: none;
+		}
+
+		.cassette-body.three-dimensional {
+			width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
+			aspect-ratio: var(--cassette-aspect-ratio);
 		}
 	}
 </style>

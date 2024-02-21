@@ -14,17 +14,15 @@ import Room from "../features/tv/room.astro";
 			its content</span
 		>
 	</header>
-	<main>
-		<div class="camera">
-			<div class="tv-scene scene small-screen z-layer-interactivity">
-				<Remote className="interactive" />
+	<main class="camera">
+		<div class="tv-scene scene small-screen z-layer-interactivity">
+			<Remote className="interactive" />
 
-				<TV className="tv-interactive" />
+			<TV className="tv-interactive" />
 
-				<CassettePile className="interactive" />
+			<CassettePile className="interactive" />
 
-				<Room />
-			</div>
+			<Room />
 		</div>
 	</main>
 </Layout>
@@ -35,7 +33,7 @@ import Room from "../features/tv/room.astro";
 			contain: layout;
 		}
 
-		main {
+		:where(main) {
 			display: grid;
 			place-content: center;
 		}
