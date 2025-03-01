@@ -11,8 +11,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.0.0",
-    "typescript": "^5.0.4",
-    "prettier": "^3.0.3"
+    "astro": "^5.4.1",
+    "typescript": "^5.8.2",
+    "prettier": "^3.5.2"
   }
 }
