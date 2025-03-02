@@ -1,0 +1,149 @@
+---
+import { getCollection } from "astro:content";
+import CassetteTape from "./cassette-tape.astro";
+import type { AstroInstance } from "astro";
+
+export interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+
+const randomNumber = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const previewComponents = import.meta.glob("/src/articles/*/preview.astro") ;
+
+const tvContent = await getCollection("tvContent");
+const data = await Promise.all(
+  tvContent.map(async (article) => {
+    const filePath = `/${article.filePath?.split("data.md")[0]}${article.data.file}`;
+    const component = previewComponents[filePath];
+
+    return {
+      ...article.data,
+      component:  await component() as AstroInstance,
+    };
+  })
+);
+
+const validData = data.filter(entry => entry.component)
+
+
+---
+
+<script>
+  import { cassetteInteractionEnhancement } from "./cassette-interaction.ts";
+
+  setTimeout(cassetteInteractionEnhancement, 2000);
+</script>
+
+<ul role="list" class=`small-screen cassette-pile ${className}`>
+  {validData.map(entry => (
+      <li
+    id={entry.id}
+    class="tv-layout cassette"
+    style=`
+	--cassette-offset-x: ${randomNumber(-10, 10)}%;
+	--cassette-offset-z: ${randomNumber(1, 30)}px;`
+  >
+    <a
+     href={`#${entry.id}`}
+      class="vhs-slot cassette-body three-dimensional"
+      aria-label={`jumps to the tv and previews the ${entry.title}`}
+    >
+      <CassetteTape decoType={entry.type} className="front"
+        >{entry.title}</CassetteTape>
+    </a>
+    <dialog
+      class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+    >
+      <entry.component.default></entry.component.default>
+    </dialog>
+  </li>
+  ))}
+</ul>
+
+
+<style is:global>
+  @layer components {
+    .cassette-pile {
+      --list-gap: var(--cassette-gap) 0;
+
+      &:has(:target):not(:has(li:nth-of-type(1):target))
+        > li:nth-of-type(1)
+        .cassette-body,
+      &:has(li:nth-of-type(1):target) > li:nth-of-type(2) .cassette-body {
+        transform: translateZ(var(--cassette-offset-z));
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :has(:target) {
+        scroll-behavior: smooth;
+      }
+    }
+
+    .cassette:not(:target) {
+      grid-template-columns: 1fr max-content 1fr;
+      grid-template-rows: max-content;
+      grid-template-areas: ". vhs-slot .";
+      height: 100%;
+
+      .cassette-content {
+        display: none;
+      }
+    }
+
+    :target {
+      scroll-margin-block-start: var(--tv-height);
+    }
+
+    .cassette:target {
+      order: -1;
+      margin-top: calc(var(--tv-height) * -1);
+      transform: translateZ(calc(var(--tv-offset-z) - var(--screen-offset-z)));
+      width: 100%;
+
+      .cassette-body {
+        transform: translateZ(
+          calc(var(--cassette-active-offset-z) + var(--screen-offset-z))
+        );
+        place-self: center;
+      }
+
+      .cassette-content {
+        animation: on var(--tv-animation-duration) ease;
+        transform: translateZ(calc(var(--screen-offset-z) / 2));
+        position: relative;
+      }
+
+      :has(#tv-power-button:not(:checked)) & .cassette-content {
+        scale: 0 0;
+        animation: on var(--tv-animation-duration) ease reverse;
+      }
+    }
+
+    .cassette-body {
+      --cassette-background: hsla(0, 0%, 10%, 1);
+
+      --block-border: var(--cassette-border);
+      --block-background: var(--cassette-background);
+      --block-depth: calc(var(--cassette-depth));
+      --block-width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
+      --block-aspect-ratio: var(--cassette-aspect-ratio);
+      --block-border-radius: var(--tv-border-radius);
+      --default-display: grid;
+
+      transform: translateX(calc(var(--cassette-offset-x)))
+        translateZ(var(--cassette-offset-z));
+      text-decoration: none;
+    }
+
+    .cassette-body.three-dimensional {
+      width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
+      aspect-ratio: var(--cassette-aspect-ratio);
+    }
+  }
+</style>

@@ -1,5 +1,8 @@
 /*
 
+todo: zoom & teletext
+- we allow for zooming the content for better readability. We likely cant see much of the tapes so we need a teletext
+
 todo: cleanup
 - several values are not aligned like borders, colors, distances, calculations
 - other things to unify: hover/active states

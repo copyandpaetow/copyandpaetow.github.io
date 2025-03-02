@@ -1,8 +1,9 @@
-@layer reset, theme, utilities, components;
+@layer reset, theme, components, utilities;
 
 @import "./resets.css" layer(reset);
 @import "./theme.css" layer(theme);
 @import "./utilities.css" layer(utilities);
+@import "./layout.css" layer(utilities);
 @import "./three-dimensional.css" layer(components);
 @import "./tv.css" layer(components);
 @import "./tv-screen.css" layer(components);
