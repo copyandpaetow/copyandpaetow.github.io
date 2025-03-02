@@ -10,6 +10,10 @@ import Room from "./room.astro";
 </main>
 
 <style is:global>
+  :where(main) {
+    contain: layout;
+  }
+
   .camera {
     --_perspective: var(--perspective, 200000px);
     --_camera-truck: var(--camera-truck, 0px);

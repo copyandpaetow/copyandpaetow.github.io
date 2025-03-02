@@ -1,9 +1,9 @@
 ---
+import "../styles/styles.css";
 import Scene from "@components/scene/scene.astro";
 import CassettePile from "../components/cassettes/cassette-pile.astro";
 import Remote from "../components/remote/remote.astro";
 import TV from "../components/tv/tv.astro";
-import "../styles/styles.css";
 ---
 
 <!doctype html>
@@ -16,9 +16,9 @@ import "../styles/styles.css";
     <meta name="generator" content={Astro.generator} />
     <title>Copy and Paetow</title>
   </head>
-  <body>
+  <body class="centered">
     <header class="visually-hidden">
-      <h1>Hey, it</h1>
+      <h1>portfolio page</h1>
       <span
         >The scene features a retro tv standing on a pile of vhs tapes.
         Selecting a tape will preview its content</span
@@ -33,9 +33,3 @@ import "../styles/styles.css";
     </Scene>
   </body>
 </html>
-
-<style>
-  :where(main) {
-    contain: layout;
-  }
-</style>

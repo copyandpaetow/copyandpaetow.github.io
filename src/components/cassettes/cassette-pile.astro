@@ -56,11 +56,11 @@ const validData = data.filter(entry => entry.component)
       <CassetteTape decoType={entry.type} className="front"
         >{entry.title}</CassetteTape>
     </a>
-    <dialog
+    <section
       class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
     >
       <entry.component.default></entry.component.default>
-    </dialog>
+    </section>
   </li>
   ))}
 </ul>

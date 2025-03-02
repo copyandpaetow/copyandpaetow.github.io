@@ -18,7 +18,9 @@ const { className = "" } = Astro.props;
 </script>
 
 <div class=`remote ${className}`>
-  <RemoteBody className="interactive-remote" />
+  <section class="remote-body three-dimensional interactive-remote" inert>
+    <RemoteBody />
+  </section>
   <section
     id="settings-menu"
     class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden screen-animation"
@@ -53,59 +55,121 @@ const { className = "" } = Astro.props;
   </section>
 </div>
 
-<style is:global>
-  @layer components {
+<style>
+  .remote {
+    height: var(--remote-depth);
+
+    display: grid;
+
+    & > * {
+      grid-area: 1 / 1 /-1 / -1;
+    }
+  }
+
+  .remote-body {
+    --block-background: var(--tv-background);
+    --block-depth: var(--remote-depth);
+    --block-border: var(--remote-border-width) solid var(--remote-border);
+    --block-border-radius: var(--tv-border-radius);
+  }
+
+  .interactive-remote {
+    transform-origin: top left;
+    transform: translateY(-1px) translateX(25%) rotateY(115deg)
+      rotateX(90.01deg) scale3d(var(--remote-scale), var(--remote-scale), 1);
+    width: max-content;
+
+    --block-render-front: grid;
+    --block-render-bottom: block;
+    --block-render-left: block;
+    --block-render-x: "";
+    --block-render-y: "";
+    --block-x-direction: -1;
+  }
+
+  :global(
+      :has(#settings-three-dimensional:checked):has(#that-3d-episode:target)
+    )
     .interactive-remote {
-      transform-origin: top left;
-      transform: translateY(-1px) translateX(25%) rotateY(115deg)
-        rotateX(90.01deg) scale3d(var(--remote-scale), var(--remote-scale), 1);
-      width: max-content;
+    --block-y-direction: -1;
+  }
 
-      --block-render-front: grid;
-      --block-render-bottom: block;
-      --block-render-left: block;
-      --block-render-x: "";
-      --block-render-y: "";
-      --block-x-direction: -1;
+  @media (scripting: enabled) {
+    .remote:has([open]) .interactive-remote {
+      --remote-active-rotation: 0deg;
+
+      position: absolute;
+      left: 50%;
+      transform: translateZ(300px) translateY(var(--remote-active-offset))
+        translateX(-50%) rotateX(var(--remote-active-rotation));
     }
 
-    .remote {
-      height: var(--remote-depth);
-
-      display: grid;
-
-      & > * {
-        grid-area: 1 / 1 /-1 / -1;
-      }
+    :global(
+      :is(
+          :has(#settings-three-dimensional:checked),
+          :has(#settings-three-dimensional:checked):has(#that-3d-episode:target)
+        )
+        .remote:has(.remote-button:active)
+        .interactive-remote
+    ) {
+      --remote-active-rotation: 45deg;
     }
 
-    .remote-toggle {
+    :global(
+        :has(#settings-three-dimensional:checked):has(#that-3d-episode:target)
+      )
+      .remote:has([open])
+      .interactive-remote {
+      --remote-active-rotation: 25deg;
+
+      --block-render-top: block;
+      --block-render-right: block;
+      --block-y-direction: 1;
+      --block-x-direction: 1;
+    }
+  }
+
+  .remote-toggle {
+    width: 100%;
+    height: var(--remote-depth);
+  }
+
+  .remote-screen.details-layout {
+    &:not(:has([open])) {
+      background: transparent;
+      height: fit-content;
+    }
+
+    &:not(:has([open]))::before,
+    &:not(:has([open]))::after {
+      content: none;
+    }
+
+    &:has([open]) {
+      position: absolute;
+      grid-area: unset;
+      inset: var(--tv-absolute-screen-position);
+      transform: translateZ(16px);
+    }
+
+    &:not(:has([open])) > details > summary {
       width: 100%;
       height: var(--remote-depth);
+      outline-color: transparent;
+
+      .visible-open {
+        display: none;
+      }
     }
+  }
 
-    .remote-screen.details-layout {
-      &:not(:has([open])) {
-        background: transparent;
-        height: fit-content;
-      }
-
-      &:not(:has([open]))::before,
-      &:not(:has([open]))::after {
-        content: none;
-      }
-
-      &:has([open]) {
-        position: absolute;
-        grid-area: unset;
-        inset: var(--tv-absolute-screen-position);
-        transform: translateZ(16px);
-      }
-
-      &:not(:has([open])) > details > summary {
-        width: 100%;
-        height: var(--remote-depth);
-      }
+  .remote:has(.remote-screen > details:not([open]) > summary:focus-visible)
+    .remote-body {
+    &::before {
+      outline: 2px solid blue;
+    }
+    .left {
+      outline: 2px solid blue;
     }
   }
 </style>

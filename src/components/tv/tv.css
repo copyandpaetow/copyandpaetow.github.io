@@ -1,347 +1,251 @@
-.scene {
-	--tv-padding-block: 10dvh;
-	--tv-width: clamp(
-		calc(var(--min-width) - 2 * var(--min-padding)),
-		calc(100vw - 2 * var(--min-padding)),
-		500px
-	);
-	--tv-depth: 300px;
-	--tv-background: silver;
-	--tv-padding: 8px;
-	--tv-height: calc(
-		var(--screen-height) + var(--vhs-slot-height) + 2 * var(--tv-padding) + var(--module-gap)
-	);
-	--tv-outline-color: var(--blue);
-	--tv-outline-width: 2px;
-	--tv-outline: var(--tv-outline-width) solid var(--tv-outline-color);
-	--tv-power-on-color: var(--green);
-	--tv-power-off-color: var(--red);
-	--tv-border-radius: 2px;
-	--tv-offset-z: 25px;
-	--tv-animation-duration: 500ms;
-
-	--module-border-radius: 0.25rem;
-	--module-gap: 32px;
-
-	--screen-padding: 0.5rem;
-	--screen-border-color: var(--grey-85);
-	--screen-border-color-offset: var(--grey-90);
-	--screen-module-ratio: 1.1;
-	--screen-height: calc(((var(--tv-width) - 2 * var(--tv-padding)) / var(--screen-module-ratio)));
-	--screen-offset-z: 20px;
-	--screen-text-color: var(--black);
-
-	--speaker-grill-color: var(--grey-85);
-
-	--tv-button-depth: 5px;
-	--tv-button-gap: 8px;
-	--tv-button-width: 44px;
-	--tv-button-height: 24px;
-	--tv-button-shadow: 1px 1px 2px 1px hsla(0, 0%, 0%, 0.25);
-	--tv-button-shadow-active: 1px 1px 1px 0px hsla(0, 0%, 0%, 0.25);
-	--vhs-slot-padding: 0.2rem;
-	--vhs-slot-width: calc(var(--tv-width) - 2 * var(--tv-padding));
-	--vhs-slot-height: calc(
-		var(--vhs-slot-width) / var(--cassette-aspect-ratio) + 2 * var(--vhs-slot-padding)
-	);
-
-	--cassette-depth: 220px;
-	--cassette-aspect-ratio: 4.5;
-	--cassette-active-offset-z: 20px;
-	--cassette-pile-offset-z: calc((var(--tv-depth)) / 2);
-	--cassette-gap: 2px;
-	--cassette-border: 4px solid var(--black);
-
-	--remote-depth: 30px;
-	--remote-scale: 0.4;
-	--remote-border: var(--grey-80);
-	--remote-button-gap: 8px;
-	--remote-border-width: 2px;
-	--remote-bottom-padding: 5rem;
-
-	--remote-active-offset: calc(
-		var(--screen-height) + 2 * var(--screen-padding) + var(--tv-padding) + var(--remote-depth)
-	);
-	--inner-screen-width: calc(var(--tv-width) - 2 * var(--tv-screen-inset));
-	--inner-screen-height: calc(var(--screen-height) - 2 * var(--screen-padding));
-	--tv-offset-top: calc(var(--tv-padding-block) + var(--remote-depth));
-	--tv-screen-inset: calc(var(--tv-padding) + var(--screen-padding));
-
-	--tv-absolute-screen-position: calc(var(--remote-depth) + var(--tv-screen-inset)) 0 0
-		calc((100% - var(--tv-width)) / 2 + var(--tv-screen-inset));
-
-	@media (min-width: 22rem) {
-		--tv-padding: 12px;
-		--cassette-aspect-ratio: 5.5;
-		--remote-scale: 0.5;
-	}
-
-	@media (min-width: 28rem) {
-		--cassette-aspect-ratio: 6.5;
-		--tv-padding: 20px;
-		--screen-module-ratio: 1.2;
-	}
-}
-
-.z-layer-interactivity {
-	/* this are required for safari and firefox interactivity */
-	transform: translateZ(calc(var(--tv-depth) * -1));
-
-	.interactive {
-		transform: translateZ(var(--tv-depth));
-	}
-
-	.tv-interactive {
-		transform: translateZ(calc(var(--tv-depth) + var(--tv-offset-z)));
-	}
-}
-
 .tv-scene {
-	width: var(--tv-width);
-	padding-block: var(--tv-padding-block);
+  width: var(--tv-width);
+  padding-block: var(--tv-padding-block);
 }
 
 @keyframes on {
-	0%,
-	33% {
-		scale: 0 0;
-		filter: brightness(100);
-	}
-	66% {
-		scale: 1 0.01;
-		filter: brightness(100);
-	}
-	67% {
-		filter: brightness(1);
-	}
-	100% {
-		scale: 1 1;
-	}
+  0%,
+  33% {
+    scale: 0 0;
+    filter: brightness(100);
+  }
+  66% {
+    scale: 1 0.01;
+    filter: brightness(100);
+  }
+  67% {
+    filter: brightness(1);
+  }
+  100% {
+    scale: 1 1;
+  }
 }
 
 .small-screen {
-	--screen-content-height: var(--inner-screen-height);
-	--screen-content-width: var(--inner-screen-width);
-	--screen-save-area: 0;
-	--content-size: 1fr;
-	--save-screen-padding-block: 2vh;
-	--save-screen-padding-inline: 2vw;
+  --screen-content-height: var(--inner-screen-height);
+  --screen-content-width: var(--inner-screen-width);
+  --screen-save-area: 0;
+  --content-size: 1fr;
+  --save-screen-padding-block: 2vh;
+  --save-screen-padding-inline: 2vw;
 }
 
 .screen-content-layout {
-	--_gap: var(--screen-gap, 0.5rem 0);
-	--_height: var(--screen-content-height, 100%);
-	--_width: var(--screen-content-width, 100%);
-	--_padding-block: var(--save-screen-padding-block, 0);
-	--_padding-inline: var(--save-screen-padding-inline, 0);
-	--_content: var(--content-size, minmax(19rem, 40rem));
-	--_save-area: var(--screen-save-area, minmax(1rem, 1fr));
+  --_gap: var(--screen-gap, 0.5rem 0);
+  --_height: var(--screen-content-height, 100%);
+  --_width: var(--screen-content-width, 100%);
+  --_padding-block: var(--save-screen-padding-block, 0);
+  --_padding-inline: var(--save-screen-padding-inline, 0);
+  --_content: var(--content-size, minmax(19rem, 40rem));
+  --_save-area: var(--screen-save-area, minmax(1rem, 1fr));
 
-	height: var(--_height);
-	width: var(--_width);
-	padding-block: var(--_padding-block);
-	padding-inline: var(--_padding-inline);
+  height: var(--_height);
+  width: var(--_width);
+  padding-block: var(--_padding-block);
+  padding-inline: var(--_padding-inline);
 
-	display: grid;
-	grid-auto-rows: max-content;
-	grid-template-columns:
-		[full-screen-start] var(--_save-area)
-		[save-screen-start] var(--_content)
-		[save-screen-end] var(--_save-area)
-		[full-screen-end];
-	gap: var(--_gap);
+  display: grid;
+  grid-auto-rows: max-content;
+  grid-template-columns:
+    [full-screen-start] var(--_save-area)
+    [save-screen-start] var(--_content)
+    [save-screen-end] var(--_save-area)
+    [full-screen-end];
+  gap: var(--_gap);
 
-	:where(&) > :where(*) {
-		grid-column: save-screen;
-	}
+  :where(&) > :where(*) {
+    grid-column: save-screen;
+  }
 
-	:where(&) > :where(.full-screen) {
-		grid-column: full-screen;
-	}
+  :where(&) > :where(.full-screen) {
+    grid-column: full-screen;
+  }
 }
 
 .fullscreen-content-layout {
-	--_padding-block: var(--save-screen-padding-block, 0);
-	--_padding-inline: var(--save-screen-padding-inline, 0);
-	--_height: var(--screen-content-height, 100%);
-	--_width: var(--screen-content-width, 100%);
-	--_gap: var(--screen-gap, 0 0);
+  --_padding-block: var(--save-screen-padding-block, 0);
+  --_padding-inline: var(--save-screen-padding-inline, 0);
+  --_height: var(--screen-content-height, 100%);
+  --_width: var(--screen-content-width, 100%);
+  --_gap: var(--screen-gap, 0 0);
 
-	height: var(--_height);
-	width: var(--_width);
+  height: var(--_height);
+  width: var(--_width);
 
-	display: grid;
-	grid-template-columns:
-		[full-screen-start] var(--_padding-inline)
-		[save-screen-start] 1fr
-		[save-screen-end] var(--_padding-inline)
-		[full-screen-end];
-	grid-template-rows:
-		[full-screen-start] var(--_padding-block)
-		[save-screen-start] 1fr
-		[save-screen-end] var(--_padding-block)
-		[full-screen-end];
-	gap: var(--_gap);
+  display: grid;
+  grid-template-columns:
+    [full-screen-start] var(--_padding-inline)
+    [save-screen-start] 1fr
+    [save-screen-end] var(--_padding-inline)
+    [full-screen-end];
+  grid-template-rows:
+    [full-screen-start] var(--_padding-block)
+    [save-screen-start] 1fr
+    [save-screen-end] var(--_padding-block)
+    [full-screen-end];
+  gap: var(--_gap);
 
-	:where(&) > :where(*:not(.full-screen)) {
-		grid-area: save-screen;
-		place-self: start;
-	}
+  :where(&) > :where(*:not(.full-screen)) {
+    grid-area: save-screen;
+    place-self: start;
+  }
 
-	:where(&) > :where(.full-screen) {
-		grid-area: full-screen;
-		height: 100%;
-	}
+  :where(&) > :where(.full-screen) {
+    grid-area: full-screen;
+    height: 100%;
+  }
 }
 
 .screen-clipped-border {
-	clip-path: url(#crtPath);
+  clip-path: url(#crtPath);
 }
 
 .details-layout {
-	--_height: var(--screen-content-height, 100%);
-	--_width: var(--screen-content-width, 100%);
-	--_padding-inline: var(--save-screen-padding-inline, 0);
-	--_padding-block: var(--save-screen-padding-block, 0);
-	--_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
-	--_gap: var(--screen-gap, 0);
-	--_summary-height: 2rem;
-	--_content-height: var(--content-height, 1fr);
-	--_content-width: var(--content-width, 1fr);
+  --_height: var(--screen-content-height, 100%);
+  --_width: var(--screen-content-width, 100%);
+  --_padding-inline: var(--save-screen-padding-inline, 0);
+  --_padding-block: var(--save-screen-padding-block, 0);
+  --_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+  --_gap: var(--screen-gap, 0);
+  --_summary-height: 2rem;
+  --_content-height: var(--content-height, 1fr);
+  --_content-width: var(--content-width, 1fr);
 
-	& details {
-		display: contents;
-	}
+  & details {
+    display: contents;
+  }
 
-	&:has(> [open]) {
-		height: var(--_height);
-		width: var(--_width);
-		grid-area: full-screen;
-		position: absolute;
-		inset: 0;
-		z-index: 2;
-		background-color: var(--_screen-background);
+  &:has(> [open]) {
+    height: var(--_height);
+    width: var(--_width);
+    grid-area: full-screen;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background-color: var(--_screen-background);
 
-		display: grid;
-		gap: var(--_gap);
-		grid-template-columns:
-			[full-screen-start] var(--_padding-inline)
-			[save-screen-start] var(--_content-width)
-			[save-screen-end] var(--_padding-inline)
-			[full-screen-end];
-		grid-template-rows:
-			[full-screen-start] var(--_padding-block)
-			[summary-start] var(--_summary-height)
-			[summary-end save-screen-start] var(--_content-height)
-			[save-screen-end] var(--_padding-block)
-			[full-screen-end];
-	}
+    display: grid;
+    gap: var(--_gap);
+    grid-template-columns:
+      [full-screen-start] var(--_padding-inline)
+      [save-screen-start] var(--_content-width)
+      [save-screen-end] var(--_padding-inline)
+      [full-screen-end];
+    grid-template-rows:
+      [full-screen-start] var(--_padding-block)
+      [summary-start] var(--_summary-height)
+      [summary-end save-screen-start] var(--_content-height)
+      [save-screen-end] var(--_padding-block)
+      [full-screen-end];
+  }
 
-	&:has(> [open]) > details > * {
-		grid-area: save-screen;
-	}
+  &:has(> [open]) > details > * {
+    grid-area: save-screen;
+  }
 
-	&:has(> [open]) > details > summary {
-		grid-row: summary;
-		align-self: start;
-	}
+  &:has(> [open]) > details > summary {
+    grid-row: summary;
+    align-self: start;
+  }
 
-	&:has(.content:has([open])) > details > summary {
-		display: none;
-	}
+  &:has(.content:has([open])) > details > summary {
+    display: none;
+  }
 }
 
 .details-layout .content {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 
-	&:has([open]) {
-		display: contents;
-	}
+  &:has([open]) {
+    display: contents;
+  }
 
-	&:has(> .full-screen) {
-		grid-area: full-screen;
-		z-index: -1;
-	}
+  &:has(> .full-screen) {
+    grid-area: full-screen;
+    z-index: -1;
+  }
 
-	&:has([open]) > *:not(:has([open])) {
-		display: none;
-	}
+  &:has([open]) > *:not(:has([open])) {
+    display: none;
+  }
 }
 
 li.details-layout:has([open])::before {
-	content: none;
+  content: none;
 }
 
 :where(summary)::-webkit-details-marker {
-	display: none;
+  display: none;
 }
 
 :where(summary)::marker {
-	content: none;
+  content: none;
 }
 
 :where(summary) {
-	width: fit-content;
-	height: fit-content;
-	display: inline-block;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
 }
 
 :where(details) {
-	&:not([open]) > summary .visible-open {
-		display: none;
-	}
+  &:not([open]) > summary .visible-open {
+    display: none;
+  }
 
-	&[open] > summary .visible-open {
-		display: grid;
-	}
+  &[open] > summary .visible-open {
+    display: grid;
+  }
 
-	&[open] > summary .visible-closed {
-		display: none;
-	}
+  &[open] > summary .visible-closed {
+    display: none;
+  }
 }
 
 .tv-layout {
-	height: var(--tv-height);
-	width: 100%;
+  height: var(--tv-height);
+  width: 100%;
 
-	display: grid;
-	grid-template-columns:
-		var(--tv-padding)
-		[vhs-slot-start screen-frame-start] var(--screen-padding)
-		[screen-content-start] 1fr
-		[screen-content-end] var(--screen-padding)
-		[vhs-slot-end screen-frame-end] var(--tv-padding);
+  display: grid;
+  grid-template-columns:
+    var(--tv-padding)
+    [vhs-slot-start screen-frame-start] var(--screen-padding)
+    [screen-content-start] 1fr
+    [screen-content-end] var(--screen-padding)
+    [vhs-slot-end screen-frame-end] var(--tv-padding);
 
-	grid-template-rows:
-		var(--tv-padding)
-		[screen-frame-start] var(--screen-padding)
-		[screen-content-start] calc(var(--screen-height) - 2 * var(--screen-padding))
-		[screen-content-end] var(--screen-padding)
-		[screen-frame-end button-row-start]
-		var(--module-gap)
-		[button-row-end vhs-slot-start] var(--vhs-slot-height)
-		[vhs-slot-end]
-		var(--tv-padding);
+  grid-template-rows:
+    var(--tv-padding)
+    [screen-frame-start] var(--screen-padding)
+    [screen-content-start] calc(
+      var(--screen-height) - 2 * var(--screen-padding)
+    )
+    [screen-content-end] var(--screen-padding)
+    [screen-frame-end button-row-start]
+    var(--module-gap)
+    [button-row-end vhs-slot-start] var(--vhs-slot-height)
+    [vhs-slot-end]
+    var(--tv-padding);
 
-	.tv-screen {
-		grid-area: screen-frame;
-	}
+  .tv-screen {
+    grid-area: screen-frame;
+  }
 
-	.screen-content {
-		grid-area: screen-content;
-	}
+  .screen-content {
+    grid-area: screen-content;
+  }
 
-	.tv-power-button {
-		grid-area: button-row / screen-content;
-	}
+  .tv-power-button {
+    grid-area: button-row / screen-content;
+  }
 
-	.vhs-slot {
-		grid-area: vhs-slot;
-	}
+  .vhs-slot {
+    grid-area: vhs-slot;
+  }
 }
 
 :has(#tv-power-button:not(:checked)) .screen-animation {
-	scale: 0 0;
-	animation: on 500ms ease reverse;
+  scale: 0 0;
+  animation: on 500ms ease reverse;
 }

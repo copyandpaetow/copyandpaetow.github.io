@@ -2,8 +2,11 @@
 
 @import "./resets.css" layer(reset);
 @import "./theme.css" layer(theme);
+
+@import "@components/scene/scene.css" layer(components);
+@import "@components/scene/three-dimensional.css" layer(components);
+@import "@components/tv/screen.css" layer(components);
+@import "@components/tv/tv.css" layer(components);
+
 @import "./utilities.css" layer(utilities);
 @import "./layout.css" layer(utilities);
-@import "@components/tv/tv-screen.css" layer(components);
-@import "@components/tv/tv.css" layer(components);
-@import "@components/scene/three-dimensional.css" layer(components);

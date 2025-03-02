@@ -120,6 +120,10 @@ const { className = "" } = Astro.props;
         color-mix(in HSL, var(--tv-power-on-color) 75%, var(--black));
     }
 
+    &:has(:focus-visible) .front {
+      outline: 2px solid blue;
+    }
+
     .front {
       width: var(--tv-button-width);
       height: var(--tv-button-height);
@@ -210,10 +214,6 @@ const { className = "" } = Astro.props;
   }
 
   .speaker {
-    display: grid;
-    place-content: start center;
-    height: 100%;
-    width: 100%;
     padding: 1rem;
 
     &::before {
