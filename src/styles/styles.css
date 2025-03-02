@@ -4,7 +4,6 @@
 @import "./theme.css" layer(theme);
 @import "./utilities.css" layer(utilities);
 @import "./layout.css" layer(utilities);
-@import "./three-dimensional.css" layer(components);
-@import "./tv.css" layer(components);
-@import "./tv-screen.css" layer(components);
-@import "./tv-interactivity.css" layer(components);
+@import "@components/tv/tv-screen.css" layer(components);
+@import "@components/tv/tv.css" layer(components);
+@import "@components/scene/three-dimensional.css" layer(components);

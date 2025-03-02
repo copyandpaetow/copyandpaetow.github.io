@@ -4,7 +4,7 @@ date: "2024-02-21"
 tags:
   - "portfolio"
 type: "gimmick"
-title: "dinkelberg"
+title: "dinkelberg?"
 id: "dinkelberg"
 description: "DINKELBERG"
 ---

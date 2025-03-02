@@ -1,111 +1,111 @@
 ---
-import Back from "../icons/back.svg?raw";
+import Back from "@icons/back.svg";
 import RemoteBody from "./remote-body.astro";
-import Settings from "../menu/settings.astro";
-import Program from "../menu/program.astro";
+import Settings from "./settings.astro";
+import Program from "./program.astro";
 
 export interface Props {
-	className?: string;
+  className?: string;
 }
 
 const { className = "" } = Astro.props;
 ---
 
 <script>
-	import { remoteInteractions } from "./remote-interactions.ts";
+  import { remoteInteractions } from "./remote-interactions.ts";
 
-	remoteInteractions();
+  remoteInteractions();
 </script>
 
 <div class=`remote ${className}`>
-	<RemoteBody className="interactive-remote" />
-	<section
-		id="settings-menu"
-		class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden screen-animation"
-	>
-		<details>
-			<summary>
-				<p class="visible-closed visually-hidden">open remote menu</p>
-				<p class="visible-open with-icon-start"><Fragment set:html={Back} /> exit</p>
-			</summary>
+  <RemoteBody className="interactive-remote" />
+  <section
+    id="settings-menu"
+    class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden screen-animation"
+  >
+    <details>
+      <summary>
+        <p class="visible-closed visually-hidden">open remote menu</p>
+        <p class="visible-open with-icon-start"><Back /> exit</p>
+      </summary>
 
-			<ol class="content overflow-scroll">
-				<li class="details-layout">
-					<details>
-						<summary>
-							<p class="visible-closed">program</p>
-							<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-						</summary>
-						<Program className="content overflow-scroll" />
-					</details>
-				</li>
-				<li class="details-layout">
-					<details>
-						<summary>
-							<p class="visible-closed">settings</p>
-							<p class="visible-open with-icon-start"><Fragment set:html={Back} /> back</p>
-						</summary>
-						<Settings className="content overflow-scroll" />
-					</details>
-				</li>
-			</ol>
-		</details>
-	</section>
+      <ol class="content overflow-scroll">
+        <li class="details-layout">
+          <details>
+            <summary>
+              <p class="visible-closed">program</p>
+              <p class="visible-open with-icon-start"><Back /> back</p>
+            </summary>
+            <Program className="content overflow-scroll" />
+          </details>
+        </li>
+        <li class="details-layout">
+          <details>
+            <summary>
+              <p class="visible-closed">settings</p>
+              <p class="visible-open with-icon-start"><Back /> back</p>
+            </summary>
+            <Settings className="content overflow-scroll" />
+          </details>
+        </li>
+      </ol>
+    </details>
+  </section>
 </div>
 
 <style is:global>
-	@layer components {
-		.interactive-remote {
-			transform-origin: top left;
-			transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
-				scale3d(var(--remote-scale), var(--remote-scale), 1);
-			width: max-content;
+  @layer components {
+    .interactive-remote {
+      transform-origin: top left;
+      transform: translateY(-1px) translateX(25%) rotateY(115deg)
+        rotateX(90.01deg) scale3d(var(--remote-scale), var(--remote-scale), 1);
+      width: max-content;
 
-			--block-render-front: grid;
-			--block-render-bottom: block;
-			--block-render-left: block;
-			--block-render-x: "";
-			--block-render-y: "";
-			--block-x-direction: -1;
-		}
+      --block-render-front: grid;
+      --block-render-bottom: block;
+      --block-render-left: block;
+      --block-render-x: "";
+      --block-render-y: "";
+      --block-x-direction: -1;
+    }
 
-		.remote {
-			height: var(--remote-depth);
+    .remote {
+      height: var(--remote-depth);
 
-			display: grid;
+      display: grid;
 
-			& > * {
-				grid-area: 1 / 1 /-1 / -1;
-			}
-		}
+      & > * {
+        grid-area: 1 / 1 /-1 / -1;
+      }
+    }
 
-		.remote-toggle {
-			width: 100%;
-			height: var(--remote-depth);
-		}
+    .remote-toggle {
+      width: 100%;
+      height: var(--remote-depth);
+    }
 
-		.remote-screen.details-layout {
-			&:not(:has([open])) {
-				background: transparent;
-				height: fit-content;
-			}
+    .remote-screen.details-layout {
+      &:not(:has([open])) {
+        background: transparent;
+        height: fit-content;
+      }
 
-			&:not(:has([open]))::before,
-			&:not(:has([open]))::after {
-				content: none;
-			}
+      &:not(:has([open]))::before,
+      &:not(:has([open]))::after {
+        content: none;
+      }
 
-			&:has([open]) {
-				position: absolute;
-				grid-area: unset;
-				inset: var(--tv-absolute-screen-position);
-				transform: translateZ(16px);
-			}
+      &:has([open]) {
+        position: absolute;
+        grid-area: unset;
+        inset: var(--tv-absolute-screen-position);
+        transform: translateZ(16px);
+      }
 
-			&:not(:has([open])) > details > summary {
-				width: 100%;
-				height: var(--remote-depth);
-			}
-		}
-	}
+      &:not(:has([open])) > details > summary {
+        width: 100%;
+        height: var(--remote-depth);
+      }
+    }
+  }
 </style>

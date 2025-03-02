@@ -5,7 +5,7 @@ tags:
   - "3d"
   - "portfolio"
 type: "text"
-title: "3d challenges"
-id: "3d-challenges"
+title: "that 3D episode"
+id: "that-3d-episode"
 description: "Adventures and nightmares with cross browser 3D"
 ---

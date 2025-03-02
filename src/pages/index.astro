@@ -1,31 +1,38 @@
 ---
-import Layout from "../layouts/layout.astro";
-import TV from "../components/tv.astro";
+import Scene from "@components/scene/scene.astro";
 import CassettePile from "../components/cassettes/cassette-pile.astro";
 import Remote from "../components/remote/remote.astro";
-import Room from "../components/room.astro";
+import TV from "../components/tv/tv.astro";
+import "../styles/styles.css";
 ---
 
-<Layout title="Copy and Paetow">
-  <header class="visually-hidden">
-    <h1>Hey, it</h1>
-    <span
-      >The scene features a retro tv standing on a pile of vhs tapes. Selecting
-      a tape will preview its content</span
-    >
-  </header>
-  <main class="camera centered">
-    <div class="tv-scene scene small-screen z-layer-interactivity">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="copyandpaetow" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Copy and Paetow</title>
+  </head>
+  <body>
+    <header class="visually-hidden">
+      <h1>Hey, it</h1>
+      <span
+        >The scene features a retro tv standing on a pile of vhs tapes.
+        Selecting a tape will preview its content</span
+      >
+    </header>
+    <Scene>
       <Remote className="interactive" />
 
       <TV className="tv-interactive" />
 
       <CassettePile className="interactive" />
-
-      <Room />
-    </div>
-  </main>
-</Layout>
+    </Scene>
+  </body>
+</html>
 
 <style>
   :where(main) {
