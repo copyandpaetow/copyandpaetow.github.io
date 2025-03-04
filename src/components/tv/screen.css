@@ -90,7 +90,7 @@
       0.08em 0 0.08em fuchsia;
   }
 
-  & h1 {
+  h1 {
     font-size: var(--font--1);
   }
 
@@ -98,19 +98,11 @@
     margin-block: 0.5em 1em;
   }
 
-  & button {
+  button {
     background: transparent;
     border-color: transparent;
     appearance: none;
     text-align: start;
-    width: fit-content;
-  }
-
-  & a {
-    width: fit-content;
-  }
-
-  & li {
     width: fit-content;
   }
 
@@ -124,7 +116,7 @@
     }
   }
 
-  & li:not(.details-layout):has(button, a, label) {
+  li:has(button, a, label) {
     &:focus-within,
     &:hover {
       background-color: white;
@@ -137,7 +129,8 @@
     }
   }
 
-  & li.details-layout:not(:has([open])) {
+  summary > p,
+  li.screen-menu:not(:has([open])) {
     &:hover {
       background-color: white;
       color: black;

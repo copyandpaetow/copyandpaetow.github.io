@@ -1,104 +1,91 @@
 @font-face {
-	font-family: "Press Start 2P";
-	src: url("/fonts/pressStart2p.woff2") format("woff2");
-	font-weight: normal;
-	font-style: normal;
+  font-family: "Press Start 2P";
+  src: url("/fonts/pressStart2p.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 *,
 ::after,
 ::before {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :where(*) {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 :where(html) {
-	line-height: 1.5;
-	font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
 
-	@media (prefers-reduced-motion: no-preference) {
-		& :focus-within {
-			scroll-behavior: smooth;
-		}
-	}
+  @media (prefers-reduced-motion: no-preference) {
+    & :focus-within {
+      scroll-behavior: smooth;
+    }
+  }
 }
 
 :where(body) {
-	min-height: 100dvh;
-	background-color: var(--grey-80);
+  min-height: 100dvh;
+  background-color: var(--grey-80);
 }
 
 :where(h1, h2, h3, button, input, label) {
-	line-height: 1.1;
+  line-height: 1.1;
 }
 
 :where(h1, h2, h3) {
-	text-wrap: balance;
+  text-wrap: balance;
 }
 
 :where(select, button, input, textarea) {
-	font: inherit;
+  font: inherit;
 }
 
-:where(.list),
-:where(ol, ul) {
-	display: grid;
-	grid-auto-rows: max-content;
-	gap: var(--list-gap, 1rem);
-	list-style: none;
-}
+:where(.list, ol, ul) {
+  display: grid;
+  grid-auto-rows: max-content;
+  gap: var(--list-gap, 1rem);
 
-:where(ol, ul):where(:not([role="list"])) > :where(li) {
-	display: grid;
-	grid-auto-flow: column;
-	gap: var(--list-item-gap, 0.5rem);
-}
-
-:where(ul):not([role="list"]) > :where(li)::before {
-	content: ". ";
-	align-self: start;
-}
-
-:where(ol):not([role="list"]) {
-	counter-reset: orderedlist;
-
-	:where(&) > :where(li)::before {
-		counter-increment: orderedlist;
-		content: counter(orderedlist) ". ";
-	}
+  &:where(:not([role="list"])) {
+    list-style: none;
+  }
 }
 
 :where(img, picture) {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 
 :where(picture:has(img)) {
-	height: 100%;
-	object-fit: contain;
+  height: 100%;
+  object-fit: contain;
 
-	& img {
-		height: 100%;
-		width: 100%;
-	}
+  & img {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 :where(video) {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 :where(a, button, input, summary),
 :where(label:has(input)) {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 :where(svg) {
-	height: 100%;
-	width: 100%;
+  height: 100%;
+  width: 100%;
+}
+
+:where(summary)::-webkit-details-marker,
+:where(summary)::marker {
+  display: none;
 }

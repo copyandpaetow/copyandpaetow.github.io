@@ -5,4 +5,5 @@ export default defineConfig({
   site: "https://copyandpaetow.github.io",
   devToolbar: { enabled: false },
   experimental: { svg: true },
+  scopedStyleStrategy: "where",
 });

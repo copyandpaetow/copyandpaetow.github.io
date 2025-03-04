@@ -3,6 +3,7 @@ import Back from "@icons/back.svg";
 import RemoteBody from "./remote-body.astro";
 import Settings from "./settings.astro";
 import Program from "./program.astro";
+import ScreenMenu from "./screen-menu.astro";
 
 export interface Props {
   className?: string;
@@ -21,49 +22,30 @@ const { className = "" } = Astro.props;
   <section class="remote-body three-dimensional interactive-remote" inert>
     <RemoteBody />
   </section>
-  <section
+  <ScreenMenu
+    tag="section"
     id="settings-menu"
-    class="remote-screen details-layout screen-clipped-border screen-root overflow-hidden screen-animation"
+    className="screen-clipped-border screen-root overflow-hidden screen-animation top-level"
   >
-    <details>
-      <summary>
-        <p class="visible-closed visually-hidden">open remote menu</p>
-        <p class="visible-open with-icon-start"><Back /> exit</p>
-      </summary>
-
-      <ol class="content overflow-scroll">
-        <li class="details-layout">
-          <details>
-            <summary>
-              <p class="visible-closed">program</p>
-              <p class="visible-open with-icon-start"><Back /> back</p>
-            </summary>
-            <Program className="content overflow-scroll" />
-          </details>
-        </li>
-        <li class="details-layout">
-          <details>
-            <summary>
-              <p class="visible-closed">settings</p>
-              <p class="visible-open with-icon-start"><Back /> back</p>
-            </summary>
-            <Settings className="content overflow-scroll" />
-          </details>
-        </li>
-      </ol>
-    </details>
-  </section>
+    <p class="visually-hidden" slot="summary-open">open remote menu</p>
+    <p class="with-icon-start" slot="summary-close"><Back /> exit</p>
+    <ScreenMenu>
+      <p slot="summary-open">program</p>
+      <p class="with-icon-start" slot="summary-close"><Back /> back</p>
+      <Program className=" " />
+    </ScreenMenu>
+    <ScreenMenu>
+      <p slot="summary-open">settings</p>
+      <p class="with-icon-start" slot="summary-close"><Back /> back</p>
+      <Settings className=" " />
+    </ScreenMenu>
+  </ScreenMenu>
 </div>
 
 <style>
   .remote {
     height: var(--remote-depth);
-
-    display: grid;
-
-    & > * {
-      grid-area: 1 / 1 /-1 / -1;
-    }
+    position: relative;
   }
 
   .remote-body {
@@ -112,7 +94,7 @@ const { className = "" } = Astro.props;
         .remote:has(.remote-button:active)
         .interactive-remote
     ) {
-      --remote-active-rotation: 45deg;
+      --remote-active-rotation: 25deg;
     }
 
     :global(
@@ -126,40 +108,6 @@ const { className = "" } = Astro.props;
       --block-render-right: block;
       --block-y-direction: 1;
       --block-x-direction: 1;
-    }
-  }
-
-  .remote-toggle {
-    width: 100%;
-    height: var(--remote-depth);
-  }
-
-  .remote-screen.details-layout {
-    &:not(:has([open])) {
-      background: transparent;
-      height: fit-content;
-    }
-
-    &:not(:has([open]))::before,
-    &:not(:has([open]))::after {
-      content: none;
-    }
-
-    &:has([open]) {
-      position: absolute;
-      grid-area: unset;
-      inset: var(--tv-absolute-screen-position);
-      transform: translateZ(16px);
-    }
-
-    &:not(:has([open])) > details > summary {
-      width: 100%;
-      height: var(--remote-depth);
-      outline-color: transparent;
-
-      .visible-open {
-        display: none;
-      }
     }
   }
 

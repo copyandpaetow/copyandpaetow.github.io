@@ -39,7 +39,7 @@ const validData = data.filter(entry => entry.component)
   setTimeout(cassetteInteractionEnhancement, 2000);
 </script>
 
-<ul role="list" class=`small-screen cassette-pile ${className}`>
+<ul class=`small-screen cassette-pile ${className}`>
   {validData.map(entry => (
       <li
     id={entry.id}
@@ -57,7 +57,7 @@ const validData = data.filter(entry => entry.component)
         >{entry.title}</CassetteTape>
     </a>
     <section
-      class="screen-content cassette-content screen-clipped-border screen-root screen-content-layout overflow-scroll"
+      class={`screen-content cassette-content screen-clipped-border screen-root ${entry.type !== "gimmick" ? "screen-content-layout" : ""} overflow-scroll`}
     >
       <entry.component.default></entry.component.default>
     </section>

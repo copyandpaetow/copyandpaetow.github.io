@@ -1,0 +1,145 @@
+---
+export interface Props {
+  id?: string;
+  className?: string;
+  tag?: TagType;
+}
+
+type TagType = "section" | "li";
+
+const { className = "", tag = "li", id } = Astro.props;
+
+const Tag = tag;
+---
+
+<Tag class={`screen-menu screen-menu-layout ${className}`} {...id && { id }}>
+  <details>
+    <summary>
+      <slot name="summary-open" />
+      <slot name="summary-close" />
+    </summary>
+    <div class="content screen-menu-layout">
+      <ol role="list">
+        <slot />
+      </ol>
+    </div>
+  </details>
+</Tag>
+
+<style>
+  :where(details) {
+    display: contents;
+  }
+
+  :where(summary) {
+    display: inline-block;
+    cursor: pointer;
+    width: fit-content;
+    list-style: none;
+  }
+
+  .screen-menu {
+    --_height: var(--screen-content-height, fit-content);
+    --_width: var(--screen-content-width, 100%);
+    --_padding-inline: var(--save-screen-padding-inline, 0);
+    --_padding-block: var(--save-screen-padding-block, 0);
+    --_screen-background: var(--screen-background, hsl(207.1, 15.9%, 61.76%));
+    --_gap: var(--screen-gap, 0);
+    --_summary-height: 2rem;
+    --_content-height: var(--content-height, 1fr);
+    --_content-width: var(--content-width, 1fr);
+
+    position: absolute;
+    inset: 0;
+    background: var(--_screen-background);
+  }
+
+  .screen-menu:not(:has(> [open])) {
+    display: contents;
+    background: transparent;
+
+    &::before,
+    &::after {
+      content: none;
+    }
+
+    > details > summary > :last-child {
+      display: none;
+    }
+
+    > details > summary > :first-child::before {
+      counter-increment: orderedlist;
+      content: counter(orderedlist) ".\00a0";
+    }
+  }
+
+  .screen-menu.top-level {
+    display: unset;
+
+    &:has([open]) {
+      inset: var(--tv-absolute-screen-position);
+      transform: translateZ(16px);
+      width: var(--inner-screen-width);
+      height: var(--inner-screen-height);
+      display: grid;
+    }
+
+    &:not(:has([open])) > details > summary {
+      width: 100%;
+      height: var(--remote-depth);
+    }
+  }
+
+  .screen-menu:has(> [open]) {
+    height: var(--_height);
+    width: var(--_width);
+
+    > details > summary {
+      grid-row: summary;
+      grid-column: save-screen;
+      align-self: start;
+      z-index: 1;
+    }
+
+    > details > summary > :first-child {
+      display: none;
+    }
+
+    > details > .content {
+      width: var(--inner-screen-width);
+      height: var(--inner-screen-height);
+      position: relative;
+    }
+
+    > details > .content:has([open]) {
+      z-index: 1;
+    }
+
+    > details > .content > ol:has([open]) {
+      grid-area: full-screen;
+    }
+  }
+
+  .content > ol {
+    grid-area: save-screen;
+    width: 100%;
+    counter-reset: orderedlist;
+    gap: 0.5rem;
+  }
+
+  .screen-menu-layout {
+    display: grid;
+    gap: var(--_gap);
+    grid-template-columns:
+      [full-screen-start] var(--_padding-inline)
+      [save-screen-start] var(--_content-width)
+      [save-screen-end] var(--_padding-inline)
+      [full-screen-end];
+    grid-template-rows:
+      [full-screen-start] var(--_padding-block)
+      [summary-start] var(--_summary-height)
+      [summary-end save-screen-start] var(--_content-height)
+      [save-screen-end] var(--_padding-block)
+      [full-screen-end];
+  }
+</style>

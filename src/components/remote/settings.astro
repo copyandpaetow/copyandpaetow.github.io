@@ -1,77 +1,92 @@
 ---
 export interface Props {
-	className?: string;
-	animationDefault?: boolean;
-	tvRealismDefault?: boolean;
+  className?: string;
+  animationDefault?: boolean;
+  tvRealismDefault?: boolean;
 }
 
-const { className = "", animationDefault = true, tvRealismDefault = true } = Astro.props;
+const {
+  className = "",
+  animationDefault = true,
+  tvRealismDefault = true,
+} = Astro.props;
 ---
 
 <ol class=`content-settings ${className}`>
-	<li>
-		<label for="settings-animation">Animations</label>
-		<hr />
-		<input
-			type="checkbox"
-			name="settings-animation"
-			id="settings-animation"
-			checked={animationDefault}
-			class="visually-hidden"
-		/>
-	</li>
-	<li>
-		<label for="settings-sound">Sound</label>
-		<hr />
-		<input type="checkbox" name="settings-sound" id="settings-sound" class="visually-hidden" />
-	</li>
-	<li>
-		<label for="settings-three-dimensional">3D effects</label>
-		<hr />
-		<input
-			type="checkbox"
-			name="settings-three-dimensional"
-			id="settings-three-dimensional"
-			class="visually-hidden"
-			checked
-		/>
-	</li>
-	<li>
-		<label for="settings-tv-realism">TV realism</label>
-		<hr />
-		<input
-			type="checkbox"
-			name="settings-tv-realism"
-			id="settings-tv-realism"
-			checked={tvRealismDefault}
-			class="visually-hidden"
-		/>
-	</li>
+  <li>
+    <label for="settings-animation">Animations</label>
+    <hr />
+    <input
+      type="checkbox"
+      name="settings-animation"
+      id="settings-animation"
+      checked={animationDefault}
+      class="visually-hidden"
+    />
+  </li>
+  <li>
+    <label for="settings-sound">Sound</label>
+    <hr />
+    <input
+      type="checkbox"
+      name="settings-sound"
+      id="settings-sound"
+      class="visually-hidden"
+    />
+  </li>
+  <li>
+    <label for="settings-three-dimensional">3D effects</label>
+    <hr />
+    <input
+      type="checkbox"
+      name="settings-three-dimensional"
+      id="settings-three-dimensional"
+      class="visually-hidden"
+      checked
+    />
+  </li>
+  <li>
+    <label for="settings-tv-realism">TV realism</label>
+    <hr />
+    <input
+      type="checkbox"
+      name="settings-tv-realism"
+      id="settings-tv-realism"
+      checked={tvRealismDefault}
+      class="visually-hidden"
+    />
+  </li>
 </ol>
 
-<style is:global>
-	@layer components {
-		.content-settings {
-			& li {
-				grid-template-columns: max-content max-content 1fr max-content;
-				grid-template-areas: "number title line state";
-				align-items: center;
-				width: 100%;
-			}
+<style>
+  .content-settings {
+    counter-reset: orderedlist;
 
-			& hr {
-				border-bottom: var(--border-width) dotted currentColor;
-				transform: translateY(2px);
-				align-self: center;
-			}
+    li {
+      display: grid;
+      grid-template-columns: max-content max-content 1fr max-content;
+      grid-template-areas: "number title line state";
+      align-items: center;
+      width: 100%;
+    }
 
-			& li::after {
-				content: "off";
-			}
+    hr {
+      border-bottom: var(--border-width) dotted currentColor;
+      transform: translateY(2px);
+      align-self: center;
+    }
 
-			& li:has(input:checked)::after {
-				content: "on";
-			}
-		}
-	}
+    li::before {
+      counter-increment: orderedlist;
+      content: counter(orderedlist) ".\00a0";
+    }
+
+    li::after {
+      content: "off";
+    }
+
+    li:has(input:checked)::after {
+      content: "on";
+    }
+  }
 </style>
