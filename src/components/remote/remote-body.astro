@@ -4,7 +4,14 @@ import Up from "@icons/up.svg";
 ---
 
 <div class="front remote-front">
-  <label for="remote-power" class="row1"> exit</label>
+  <label for="remote-exit" class="row1"> exit</label>
+  <button
+    id="remote-exit"
+    class="three-dimensional remote-button exit-button row2"
+    ><span class="front"></span></button
+  >
+
+  <label for="remote-power" class="row1"> power</label>
   <button
     id="remote-power"
     class="three-dimensional remote-button power-button row2"
@@ -174,14 +181,6 @@ import Up from "@icons/up.svg";
     --block-background: var(--tv-power-off-color);
     --block-border: 2px solid
       color-mix(in HSL, var(--tv-power-off-color) 75%, var(--black));
-  }
-
-  :global(
-    :not(:has(#that-3d-episode:target)):not(:has(#settings-menu details[open]))
-      .remote-button:not(.power-button)
-  ) {
-    --block-render-y: none;
-    --block-render-x: none;
   }
 
   .remote-label {

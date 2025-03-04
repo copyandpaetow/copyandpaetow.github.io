@@ -16,7 +16,7 @@ const addButtonListeners = (
     { signal }
   );
 
-  document.getElementById("remote-power")?.addEventListener(
+  document.getElementById("remote-exit")?.addEventListener(
     "click",
     () => {
       remoteContent.removeAttribute("open");
@@ -25,17 +25,24 @@ const addButtonListeners = (
   );
 };
 
-export const remoteInteractions = () => {
+export const remoteInteractivityEnhancements = () => {
   const remote = document.querySelector(".remote") as HTMLElement;
   const remoteBody = remote.querySelector(".interactive-remote") as HTMLElement;
   const remoteScreen = remote.querySelector("details") as HTMLDetailsElement;
-
-  console.log({ remote, remoteBody, remoteScreen });
 
   const controller = new AbortController();
   const signal = controller.signal;
 
   try {
+    document.getElementById("remote-power")?.addEventListener(
+      "click",
+      () => {
+        remoteScreen.toggleAttribute("open");
+        document.getElementById("tv-power-button")?.click();
+      },
+      { signal }
+    );
+
     remoteScreen?.addEventListener(
       "toggle",
       () => {

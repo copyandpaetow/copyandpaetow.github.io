@@ -1,0 +1,4 @@
+:has(#tv-power-button:not(:checked)) .screen-animation {
+  scale: 0 0;
+  animation: on 500ms ease reverse;
+}

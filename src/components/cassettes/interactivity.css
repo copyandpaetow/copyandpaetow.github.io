@@ -1,0 +1,4 @@
+:has(#tv-power-button:not(:checked)) .cassette-content {
+  scale: 0 0;
+  animation: on var(--tv-animation-duration) ease reverse;
+}

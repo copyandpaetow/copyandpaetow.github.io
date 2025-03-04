@@ -120,6 +120,10 @@ const Tag = tag;
     }
   }
 
+  :global(*):has(> .screen-menu > [open]) > .screen-menu:not(:has(> [open])) {
+    display: none;
+  }
+
   .content > ol {
     grid-area: save-screen;
     width: 100%;

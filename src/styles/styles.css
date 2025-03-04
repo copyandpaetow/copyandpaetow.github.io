@@ -1,4 +1,4 @@
-@layer reset, theme, components, utilities;
+@layer reset, theme, components, interactivity, utilities;
 
 @import "./resets.css" layer(reset);
 @import "./theme.css" layer(theme);
@@ -7,6 +7,10 @@
 @import "@components/scene/three-dimensional.css" layer(components);
 @import "@components/tv/screen.css" layer(components);
 @import "@components/tv/tv.css" layer(components);
+
+@import "@components/remote/interactivity.css" layer(interactivity);
+@import "@components/cassettes/interactivity.css" layer(interactivity);
+@import "@components/tv/interactivity.css" layer(interactivity);
 
 @import "./utilities.css" layer(utilities);
 @import "./layout.css" layer(utilities);

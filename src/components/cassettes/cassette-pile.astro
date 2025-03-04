@@ -1,7 +1,6 @@
 ---
-import { getCollection } from "astro:content";
+import { tvContent } from "src/articles/content";
 import CassetteTape from "./cassette-tape.astro";
-import type { AstroInstance } from "astro";
 
 export interface Props {
   className?: string;
@@ -13,34 +12,17 @@ const randomNumber = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const previewComponents = import.meta.glob("/src/articles/*/preview.astro") ;
-
-const tvContent = await getCollection("tvContent");
-const data = await Promise.all(
-  tvContent.map(async (article) => {
-    const filePath = `/${article.filePath?.split("data.md")[0]}${article.data.file}`;
-    const component = previewComponents[filePath];
-
-    return {
-      ...article.data,
-      component:  await component() as AstroInstance,
-    };
-  })
-);
-
-const validData = data.filter(entry => entry.component)
-
 
 ---
 
 <script>
-  import { cassetteInteractionEnhancement } from "./interaction.ts";
+  import { cassetteInteractivityEnhancement } from "./interactivity.ts";
 
-  setTimeout(cassetteInteractionEnhancement, 2000);
+  setTimeout(cassetteInteractivityEnhancement, 2000);
 </script>
 
 <ul class=`small-screen cassette-pile ${className}`>
-  {validData.map(entry => (
+  {tvContent.map(entry => (
       <li
     id={entry.id}
     class="tv-layout cassette"
@@ -66,8 +48,8 @@ const validData = data.filter(entry => entry.component)
 </ul>
 
 
-<style is:global>
-  @layer components {
+<style>
+
     .cassette-pile {
       --list-gap: var(--cassette-gap) 0;
 
@@ -119,10 +101,6 @@ const validData = data.filter(entry => entry.component)
         position: relative;
       }
 
-      :has(#tv-power-button:not(:checked)) & .cassette-content {
-        scale: 0 0;
-        animation: on var(--tv-animation-duration) ease reverse;
-      }
     }
 
     .cassette-body {
@@ -145,5 +123,5 @@ const validData = data.filter(entry => entry.component)
       width: calc(var(--vhs-slot-width) - 2 * var(--vhs-slot-padding));
       aspect-ratio: var(--cassette-aspect-ratio);
     }
-  }
+
 </style>

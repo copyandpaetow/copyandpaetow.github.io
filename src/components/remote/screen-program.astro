@@ -1,0 +1,21 @@
+---
+import Back from "@icons/back.svg";
+import { tvContent } from "src/articles/content";
+
+export interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<!-- TODO: this needs to adapt to what tapes are filtered --><!-- TODO: maybe add a random time (or one from the client here) for when they are 'playing" -->
+<ol {...className && { class: className }}>
+  {tvContent.map((entry) => <li>{entry.title}</li>)}
+</ol>
+
+<style>
+  ol {
+    gap: 0.2rem;
+  }
+</style>
