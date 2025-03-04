@@ -2,7 +2,7 @@
 import StaticBackground from "./screen-static-background.astro";
 import VHSPlayer from "./vhs-player.astro";
 import ScreenCurvature from "./screen-curvature.astro";
-import Power from "@icons/power.svg";
+import Power from "@icons/power.astro";
 
 export interface Props {
   className?: string;
@@ -31,7 +31,7 @@ const { className = "" } = Astro.props;
         class="three-dimensional"
         aria-label="toggles the screen on and off"
       >
-        <span class="front"><Power slot="icon" /></span>
+        <span class="front"><Power /></span>
         <input
           type="checkbox"
           name="tv-power-button"
