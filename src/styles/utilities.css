@@ -1,60 +1,60 @@
 .visually-hidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .hidden-without-js {
-	@media (scripting: none) {
-		display: none;
-	}
+  @media (scripting: none) {
+    display: none;
+  }
 }
 
 .with-icon-start {
-	grid-template-columns: max-content 1fr;
+  grid-template-columns: max-content 1fr;
 }
 
 .with-icon-end {
-	grid-template-columns: 1fr max-content;
+  grid-template-columns: max-content max-content;
 }
 
 .with-icon-end,
 .with-icon-start {
-	display: grid;
-	align-items: center;
-	z-index: 1;
-	gap: 0.25rem;
+  display: grid;
+  align-items: center;
+  z-index: 1;
+  gap: 0.25rem;
 
-	& svg {
-		height: 20px;
-		width: 20px;
-	}
+  & svg {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .overflow-scroll {
-	overscroll-behavior: contain;
-	overflow-y: auto;
-	scrollbar-width: none;
-	&::-webkit-scrollbar {
-		display: none;
-	}
+  overscroll-behavior: contain;
+  overflow-y: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .overflow-hidden {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .display-contents {
-	display: contents;
+  display: contents;
 }
 
 .disabled {
-	color: currentColor;
-	cursor: not-allowed;
-	opacity: 0.5;
-	pointer-events: none;
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
 }

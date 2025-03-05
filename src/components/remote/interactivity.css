@@ -9,6 +9,11 @@
   --block-y-direction: -1;
 }
 
+.interactive-remote {
+  transform: translateY(-1px) translateX(25%) rotateY(115deg) rotateX(90.01deg)
+    scale3d(var(--remote-scale), var(--remote-scale), 1);
+}
+
 @media (scripting: enabled) {
   .remote:has([open]) .interactive-remote {
     --remote-active-rotation: 0deg;

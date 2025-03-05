@@ -2,6 +2,7 @@
 
 todo: zoom & teletext
 - we allow for zooming the content for better readability. We likely cant see much of the tapes so we need a teletext
+- add pagination 
 
 todo: cleanup
 - several values are not aligned like borders, colors, distances, calculations
@@ -18,6 +19,7 @@ todo: animation
 - animate the remote opening
 
 todo: remote
+- streamline rendering
 - enable channel functionality
 => channel
 => numbers
